@@ -1,0 +1,2369 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<title>SQLAlchemy 0.5 Documentation - module sqlalchemy.util</title>
+	
+    
+    <link rel="stylesheet" href="style.css"></link>
+    <link rel="stylesheet" href="docs.css"></link>
+    <link href="syntaxhighlight.css" rel="stylesheet" type="text/css"></link>
+    <script src="scripts.js"></script>
+
+    <link rel="stylesheet" href="docutil.css"></link>
+
+
+
+</head>
+<body>
+
+
+
+
+
+
+
+
+<div id="topanchor"><a name="top">&nbsp;</a></div>
+
+
+<h1>SQLAlchemy 0.5 Documentation</h1>
+
+<div id="pagecontrol"><a href="index.html">Multiple Pages</a> | <a href="documentation.html">One Page</a></div>
+
+<div class="versionheader">
+  Version: <span class="versionnum">0.5.0rc4</span>
+  Last Updated: 11/14/08 16:38:11
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="topnav">
+
+    
+    <div class="navbanner">
+        <a href="index.html" class="totoc">Table of Contents</a>
+        
+    <div class="prevnext">
+            Up: <a href="docstrings.html">API Documentation</a>
+
+               |   
+            Previous: <a href="sqlalchemy_types.html">module sqlalchemy.types</a>
+
+               |   
+            Next: <a href="sqlalchemy_orm.html">module sqlalchemy.orm</a>
+    </div>
+
+        <h2>module sqlalchemy.util</h2>
+    </div>
+
+	
+	
+    <ul>
+        
+        <li><a style="" href="sqlalchemy_util.html#docstrings_sqlalchemy.util_modfunc">Module Functions</a></li>
+
+	        <li>
+                
+    <ul>
+        
+        <li><a style="" href="sqlalchemy_util.html#docstrings_sqlalchemy.util_modfunc_accepts_a_list_as_starargs">accepts_a_list_as_starargs()</a></li>
+
+        
+        <li><a style="" href="sqlalchemy_util.html#docstrings_sqlalchemy.util_modfunc_as_interface">as_interface()</a></li>
+
+        
+        <li><a style="" href="sqlalchemy_util.html#docstrings_sqlalchemy.util_modfunc_asbool">asbool()</a></li>
+
+        
+        <li><a style="" href="sqlalchemy_util.html#docstrings_sqlalchemy.util_modfunc_assert_arg_type">assert_arg_type()</a></li>
+
+        
+        <li><a style="" href="sqlalchemy_util.html#docstrings_sqlalchemy.util_modfunc_class_hierarchy">class_hierarchy()</a></li>
+
+        
+        <li><a style="" href="sqlalchemy_util.html#docstrings_sqlalchemy.util_modfunc_coerce_kw_type">coerce_kw_type()</a></li>
+
+        
+        <li><a style="" href="sqlalchemy_util.html#docstrings_sqlalchemy.util_modfunc_decode_slice">decode_slice()</a></li>
+
+        
+        <li><a style="" href="sqlalchemy_util.html#docstrings_sqlalchemy.util_modfunc_decorator">decorator()</a></li>
+
+        
+        <li><a style="" href="sqlalchemy_util.html#docstrings_sqlalchemy.util_modfunc_deprecated">deprecated()</a></li>
+
+        
+        <li><a style="" href="sqlalchemy_util.html#docstrings_sqlalchemy.util_modfunc_dictlike_iteritems">dictlike_iteritems()</a></li>
+
+        
+        <li><a style="" href="sqlalchemy_util.html#docstrings_sqlalchemy.util_modfunc_duck_type_collection">duck_type_collection()</a></li>
+
+        
+        <li><a style="" href="sqlalchemy_util.html#docstrings_sqlalchemy.util_modfunc_flatten_iterator">flatten_iterator()</a></li>
+
+        
+        <li><a style="" href="sqlalchemy_util.html#docstrings_sqlalchemy.util_modfunc_format_argspec_init">format_argspec_init()</a></li>
+
+        
+        <li><a style="" href="sqlalchemy_util.html#docstrings_sqlalchemy.util_modfunc_format_argspec_plus">format_argspec_plus()</a></li>
+
+        
+        <li><a style="" href="sqlalchemy_util.html#docstrings_sqlalchemy.util_modfunc_function_named">function_named()</a></li>
+
+        
+        <li><a style="" href="sqlalchemy_util.html#docstrings_sqlalchemy.util_modfunc_get_cls_kwargs">get_cls_kwargs()</a></li>
+
+        
+        <li><a style="" href="sqlalchemy_util.html#docstrings_sqlalchemy.util_modfunc_get_func_kwargs">get_func_kwargs()</a></li>
+
+        
+        <li><a style="" href="sqlalchemy_util.html#docstrings_sqlalchemy.util_modfunc_getargspec_init">getargspec_init()</a></li>
+
+        
+        <li><a style="" href="sqlalchemy_util.html#docstrings_sqlalchemy.util_modfunc_iterate_attributes">iterate_attributes()</a></li>
+
+        
+        <li><a style="" href="sqlalchemy_util.html#docstrings_sqlalchemy.util_modfunc_monkeypatch_proxied_specials">monkeypatch_proxied_specials()</a></li>
+
+        
+        <li><a style="" href="sqlalchemy_util.html#docstrings_sqlalchemy.util_modfunc_pending_deprecation">pending_deprecation()</a></li>
+
+        
+        <li><a style="" href="sqlalchemy_util.html#docstrings_sqlalchemy.util_modfunc_reset_memoized">reset_memoized()</a></li>
+
+        
+        <li><a style="" href="sqlalchemy_util.html#docstrings_sqlalchemy.util_modfunc_set_creation_order">set_creation_order()</a></li>
+
+        
+        <li><a style="" href="sqlalchemy_util.html#docstrings_sqlalchemy.util_modfunc_to_list">to_list()</a></li>
+
+        
+        <li><a style="" href="sqlalchemy_util.html#docstrings_sqlalchemy.util_modfunc_to_set">to_set()</a></li>
+
+        
+        <li><a style="" href="sqlalchemy_util.html#docstrings_sqlalchemy.util_modfunc_unbound_method_to_callable">unbound_method_to_callable()</a></li>
+
+        
+        <li><a style="" href="sqlalchemy_util.html#docstrings_sqlalchemy.util_modfunc_unique_list">unique_list()</a></li>
+
+        
+        <li><a style="" href="sqlalchemy_util.html#docstrings_sqlalchemy.util_modfunc_unique_symbols">unique_symbols()</a></li>
+
+        
+        <li><a style="" href="sqlalchemy_util.html#docstrings_sqlalchemy.util_modfunc_update_wrapper">update_wrapper()</a></li>
+
+        
+        <li><a style="" href="sqlalchemy_util.html#docstrings_sqlalchemy.util_modfunc_warn">warn()</a></li>
+
+        
+        <li><a style="" href="sqlalchemy_util.html#docstrings_sqlalchemy.util_modfunc_warn_deprecated">warn_deprecated()</a></li>
+
+        
+        <li><a style="" href="sqlalchemy_util.html#docstrings_sqlalchemy.util_modfunc_warn_exception">warn_exception()</a></li>
+
+        
+        <li><a style="" href="sqlalchemy_util.html#docstrings_sqlalchemy.util_modfunc_warn_pending_deprecation">warn_pending_deprecation()</a></li>
+
+    </ul>
+
+	        </li>
+        
+        <li><a style="" href="sqlalchemy_util.html#docstrings_sqlalchemy.util_IdentitySet">class IdentitySet(object)</a></li>
+
+        
+        <li><a style="" href="sqlalchemy_util.html#docstrings_sqlalchemy.util_OrderedDict">class OrderedDict(dict)</a></li>
+
+        
+        <li><a style="" href="sqlalchemy_util.html#docstrings_sqlalchemy.util_OrderedIdentitySet">class OrderedIdentitySet(IdentitySet)</a></li>
+
+        
+        <li><a style="" href="sqlalchemy_util.html#docstrings_sqlalchemy.util_OrderedProperties">class OrderedProperties(object)</a></li>
+
+        
+        <li><a style="" href="sqlalchemy_util.html#docstrings_sqlalchemy.util_OrderedSet">class OrderedSet(set)</a></li>
+
+        
+        <li><a style="" href="sqlalchemy_util.html#docstrings_sqlalchemy.util_PopulateDict">class PopulateDict(dict)</a></li>
+
+        
+        <li><a style="" href="sqlalchemy_util.html#docstrings_sqlalchemy.util_ScopedRegistry">class ScopedRegistry(object)</a></li>
+
+        
+        <li><a style="" href="sqlalchemy_util.html#docstrings_sqlalchemy.util_UniqueAppender">class UniqueAppender(object)</a></li>
+
+        
+        <li><a style="" href="sqlalchemy_util.html#docstrings_sqlalchemy.util_WeakCompositeKey">class WeakCompositeKey(object)</a></li>
+
+        
+        <li><a style="" href="sqlalchemy_util.html#docstrings_sqlalchemy.util_WeakIdentityMapping">class WeakIdentityMapping()</a></li>
+
+        
+        <li><a style="" href="sqlalchemy_util.html#docstrings_sqlalchemy.util_defaultdict">class defaultdict(dict)</a></li>
+
+        
+        <li><a style="" href="sqlalchemy_util.html#docstrings_sqlalchemy.util_memoized_instancemethod">class memoized_instancemethod(object)</a></li>
+
+        
+        <li><a style="" href="sqlalchemy_util.html#docstrings_sqlalchemy.util_memoized_property">class memoized_property(object)</a></li>
+
+        
+        <li><a style="" href="sqlalchemy_util.html#docstrings_sqlalchemy.util_symbol">class symbol(object)</a></li>
+
+        
+        <li><a style="" href="sqlalchemy_util.html#docstrings_sqlalchemy.util_symbol">class symbol(object)</a></li>
+
+    </ul>
+
+	</div>
+
+
+
+    
+
+    
+    
+    <A name="docstrings_sqlalchemy.util"></a>
+    
+    <div class="sectionL2">
+
+    <h3>module sqlalchemy.util</h3>
+    
+    
+    
+
+        
+    
+    <A name="docstrings_sqlalchemy.util_modfunc"></a>
+    
+    <div class="sectionL3">
+
+    <h3>Module Functions</h3>
+    
+    
+                
+    <div class="darkcell">
+    
+    <A name="docstrings_sqlalchemy.util_modfunc_accepts_a_list_as_starargs"></a>
+    <b>def accepts_a_list_as_starargs(<i>list_deprecation=None</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                
+    <div class="darkcell">
+    
+    <A name="docstrings_sqlalchemy.util_modfunc_as_interface"></a>
+    <b>def as_interface(<i>obj</i>, <i>cls=None</i>, <i>methods=None</i>, <i>required=None</i>)</b>
+    <div class="docstring">
+    <p>Ensure basic interface compliance for an instance or dict of callables.</p>
+<p>Checks that <tt class="docutils literal"><span class="pre">obj</span></tt> implements public methods of <tt class="docutils literal"><span class="pre">cls</span></tt> or has members
+listed in <tt class="docutils literal"><span class="pre">methods</span></tt>.  If <tt class="docutils literal"><span class="pre">required</span></tt> is not supplied, implementing at
+least one interface method is sufficient.  Methods present on <tt class="docutils literal"><span class="pre">obj</span></tt> that
+are not in the interface are ignored.</p>
+<p>If <tt class="docutils literal"><span class="pre">obj</span></tt> is a dict and <tt class="docutils literal"><span class="pre">dict</span></tt> does not meet the interface
+requirements, the keys of the dictionary are inspected. Keys present in
+<tt class="docutils literal"><span class="pre">obj</span></tt> that are not in the interface will raise TypeErrors.</p>
+<p>Raises TypeError if <tt class="docutils literal"><span class="pre">obj</span></tt> does not meet the interface criteria.</p>
+<p>In all passing cases, an object with callable members is returned.  In the
+simple case, <tt class="docutils literal"><span class="pre">obj</span></tt> is returned as-is; if dict processing kicks in then
+an anonymous class is returned.</p>
+<dl class="docutils">
+<dt>obj</dt>
+<dd>A type, instance, or dictionary of callables.</dd>
+<dt>cls</dt>
+<dd>Optional, a type.  All public methods of cls are considered the
+interface.  An <tt class="docutils literal"><span class="pre">obj</span></tt> instance of cls will always pass, ignoring
+<tt class="docutils literal"><span class="pre">required</span></tt>..</dd>
+<dt>methods</dt>
+<dd>Optional, a sequence of method names to consider as the interface.</dd>
+<dt>required</dt>
+<dd>Optional, a sequence of mandatory implementations. If omitted, an
+<tt class="docutils literal"><span class="pre">obj</span></tt> that provides at least one interface method is considered
+sufficient.  As a convenience, required may be a type, in which case
+all public methods of the type are required.</dd>
+</dl>
+
+    </div>
+    </div>
+
+                
+    <div class="darkcell">
+    
+    <A name="docstrings_sqlalchemy.util_modfunc_asbool"></a>
+    <b>def asbool(<i>obj</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                
+    <div class="darkcell">
+    
+    <A name="docstrings_sqlalchemy.util_modfunc_assert_arg_type"></a>
+    <b>def assert_arg_type(<i>arg</i>, <i>argtype</i>, <i>name</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                
+    <div class="darkcell">
+    
+    <A name="docstrings_sqlalchemy.util_modfunc_class_hierarchy"></a>
+    <b>def class_hierarchy(<i>cls</i>)</b>
+    <div class="docstring">
+    <p>Return an unordered sequence of all classes related to cls.</p>
+<p>Traverses diamond hierarchies.</p>
+<p>Fibs slightly: subclasses of builtin types are not returned.  Thus
+class_hierarchy(class A(object)) returns (A, object), not A plus every
+class systemwide that derives from object.</p>
+<p>Old-style classes are discarded and hierarchies rooted on them
+will not be descended.</p>
+
+    </div>
+    </div>
+
+                
+    <div class="darkcell">
+    
+    <A name="docstrings_sqlalchemy.util_modfunc_coerce_kw_type"></a>
+    <b>def coerce_kw_type(<i>kw</i>, <i>key</i>, <i>type_</i>, <i>flexi_bool=True</i>)</b>
+    <div class="docstring">
+    <p>If 'key' is present in dict 'kw', coerce its value to type 'type_' if
+necessary.  If 'flexi_bool' is True, the string '0' is considered false
+when coercing to boolean.</p>
+
+    </div>
+    </div>
+
+                
+    <div class="darkcell">
+    
+    <A name="docstrings_sqlalchemy.util_modfunc_decode_slice"></a>
+    <b>def decode_slice(<i>slc</i>)</b>
+    <div class="docstring">
+    <p>decode a slice object as sent to __getitem__.</p>
+<p>takes into account the 2.5 __index__() method, basically.</p>
+
+    </div>
+    </div>
+
+                
+    <div class="darkcell">
+    
+    <A name="docstrings_sqlalchemy.util_modfunc_decorator"></a>
+    <b>def decorator(<i>target</i>)</b>
+    <div class="docstring">
+    <p>A signature-matching decorator factory.</p>
+
+    </div>
+    </div>
+
+                
+    <div class="darkcell">
+    
+    <A name="docstrings_sqlalchemy.util_modfunc_deprecated"></a>
+    <b>def deprecated(<i>message=None</i>, <i>add_deprecation_to_docstring=True</i>)</b>
+    <div class="docstring">
+    <p>Decorates a function and issues a deprecation warning on use.</p>
+<dl class="docutils">
+<dt>message</dt>
+<dd>If provided, issue message in the warning.  A sensible default
+is used if not provided.</dd>
+<dt>add_deprecation_to_docstring</dt>
+<dd>Default True.  If False, the wrapped function's __doc__ is left
+as-is.  If True, the 'message' is prepended to the docs if
+provided, or sensible default if message is omitted.</dd>
+</dl>
+
+    </div>
+    </div>
+
+                
+    <div class="darkcell">
+    
+    <A name="docstrings_sqlalchemy.util_modfunc_dictlike_iteritems"></a>
+    <b>def dictlike_iteritems(<i>dictlike</i>)</b>
+    <div class="docstring">
+    <p>Return a (key, value) iterator for almost any dict-like object.</p>
+
+    </div>
+    </div>
+
+                
+    <div class="darkcell">
+    
+    <A name="docstrings_sqlalchemy.util_modfunc_duck_type_collection"></a>
+    <b>def duck_type_collection(<i>specimen</i>, <i>default=None</i>)</b>
+    <div class="docstring">
+    <p>Given an instance or class, guess if it is or is acting as one of
+the basic collection types: list, set and dict.  If the __emulates__
+property is present, return that preferentially.</p>
+
+    </div>
+    </div>
+
+                
+    <div class="darkcell">
+    
+    <A name="docstrings_sqlalchemy.util_modfunc_flatten_iterator"></a>
+    <b>def flatten_iterator(<i>x</i>)</b>
+    <div class="docstring">
+    <p>Given an iterator of which further sub-elements may also be
+iterators, flatten the sub-elements into a single iterator.</p>
+
+    </div>
+    </div>
+
+                
+    <div class="darkcell">
+    
+    <A name="docstrings_sqlalchemy.util_modfunc_format_argspec_init"></a>
+    <b>def format_argspec_init(<i>method</i>, <i>grouped=True</i>)</b>
+    <div class="docstring">
+    <p>format_argspec_plus with considerations for typical __init__ methods</p>
+<p>Wraps format_argspec_plus with error handling strategies for typical
+__init__ cases:</p>
+<pre class="literal-block">
+object.__init__ -&gt; (self)
+other unreflectable (usually C) -&gt; (self, *args, **kwargs)
+</pre>
+
+    </div>
+    </div>
+
+                
+    <div class="darkcell">
+    
+    <A name="docstrings_sqlalchemy.util_modfunc_format_argspec_plus"></a>
+    <b>def format_argspec_plus(<i>fn</i>, <i>grouped=True</i>)</b>
+    <div class="docstring">
+    <p>Returns a dictionary of formatted, introspected function arguments.</p>
+<p>A enhanced variant of inspect.formatargspec to support code generation.</p>
+<dl class="docutils">
+<dt>fn</dt>
+<dd>An inspectable callable or tuple of inspect getargspec() results.</dd>
+<dt>grouped</dt>
+<dd>Defaults to True; include (parens, around, argument) lists</dd>
+</dl>
+<p>Returns:</p>
+<dl class="docutils">
+<dt>args</dt>
+<dd>Full inspect.formatargspec for fn</dd>
+<dt>self_arg</dt>
+<dd>The name of the first positional argument, varargs[0], or None
+if the function defines no positional arguments.</dd>
+<dt>apply_pos</dt>
+<dd>args, re-written in calling rather than receiving syntax.  Arguments are
+passed positionally.</dd>
+<dt>apply_kw</dt>
+<dd>Like apply_pos, except keyword-ish args are passed as keywords.</dd>
+</dl>
+<p>Example:</p>
+<pre class="literal-block">
+&gt;&gt;&gt; format_argspec_plus(lambda self, a, b, c=3, **d: 123)
+{'args': '(self, a, b, c=3, **d)',
+ 'self_arg': 'self',
+ 'apply_kw': '(self, a, b, c=c, **d)',
+ 'apply_pos': '(self, a, b, c, **d)'}
+</pre>
+
+    </div>
+    </div>
+
+                
+    <div class="darkcell">
+    
+    <A name="docstrings_sqlalchemy.util_modfunc_function_named"></a>
+    <b>def function_named(<i>fn</i>, <i>name</i>)</b>
+    <div class="docstring">
+    <p>Return a function with a given __name__.</p>
+<p>Will assign to __name__ and return the original function if possible on
+the Python implementation, otherwise a new function will be constructed.</p>
+
+    </div>
+    </div>
+
+                
+    <div class="darkcell">
+    
+    <A name="docstrings_sqlalchemy.util_modfunc_get_cls_kwargs"></a>
+    <b>def get_cls_kwargs(<i>cls</i>)</b>
+    <div class="docstring">
+    <p>Return the full set of inherited kwargs for the given <cite>cls</cite>.</p>
+<p>Probes a class's __init__ method, collecting all named arguments.  If the
+__init__ defines a **kwargs catch-all, then the constructor is presumed to
+pass along unrecognized keywords to it's base classes, and the collection
+process is repeated recursively on each of the bases.</p>
+
+    </div>
+    </div>
+
+                
+    <div class="darkcell">
+    
+    <A name="docstrings_sqlalchemy.util_modfunc_get_func_kwargs"></a>
+    <b>def get_func_kwargs(<i>func</i>)</b>
+    <div class="docstring">
+    <p>Return the full set of legal kwargs for the given <cite>func</cite>.</p>
+
+    </div>
+    </div>
+
+                
+    <div class="darkcell">
+    
+    <A name="docstrings_sqlalchemy.util_modfunc_getargspec_init"></a>
+    <b>def getargspec_init(<i>method</i>)</b>
+    <div class="docstring">
+    <p>inspect.getargspec with considerations for typical __init__ methods</p>
+<p>Wraps inspect.getargspec with error handling for typical __init__ cases:</p>
+<pre class="literal-block">
+object.__init__ -&gt; (self)
+other unreflectable (usually C) -&gt; (self, *args, **kwargs)
+</pre>
+
+    </div>
+    </div>
+
+                
+    <div class="darkcell">
+    
+    <A name="docstrings_sqlalchemy.util_modfunc_iterate_attributes"></a>
+    <b>def iterate_attributes(<i>cls</i>)</b>
+    <div class="docstring">
+    <p>iterate all the keys and attributes associated with a class, without using getattr().</p>
+<p>Does not use getattr() so that class-sensitive descriptors (i.e. property.__get__())
+are not called.</p>
+
+    </div>
+    </div>
+
+                
+    <div class="darkcell">
+    
+    <A name="docstrings_sqlalchemy.util_modfunc_monkeypatch_proxied_specials"></a>
+    <b>def monkeypatch_proxied_specials(<i>into_cls</i>, <i>from_cls</i>, <i>skip=None</i>, <i>only=None</i>, <i>name='self.proxy'</i>, <i>from_instance=None</i>)</b>
+    <div class="docstring">
+    <p>Automates delegation of __specials__ for a proxying type.</p>
+
+    </div>
+    </div>
+
+                
+    <div class="darkcell">
+    
+    <A name="docstrings_sqlalchemy.util_modfunc_pending_deprecation"></a>
+    <b>def pending_deprecation(<i>version</i>, <i>message=None</i>, <i>add_deprecation_to_docstring=True</i>)</b>
+    <div class="docstring">
+    <p>Decorates a function and issues a pending deprecation warning on use.</p>
+<dl class="docutils">
+<dt>version</dt>
+<dd>An approximate future version at which point the pending deprecation
+will become deprecated.  Not used in messaging.</dd>
+<dt>message</dt>
+<dd>If provided, issue message in the warning.  A sensible default
+is used if not provided.</dd>
+<dt>add_deprecation_to_docstring</dt>
+<dd>Default True.  If False, the wrapped function's __doc__ is left
+as-is.  If True, the 'message' is prepended to the docs if
+provided, or sensible default if message is omitted.</dd>
+</dl>
+
+    </div>
+    </div>
+
+                
+    <div class="darkcell">
+    
+    <A name="docstrings_sqlalchemy.util_modfunc_reset_memoized"></a>
+    <b>def reset_memoized(<i>instance</i>, <i>name</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                
+    <div class="darkcell">
+    
+    <A name="docstrings_sqlalchemy.util_modfunc_set_creation_order"></a>
+    <b>def set_creation_order(<i>instance</i>)</b>
+    <div class="docstring">
+    <p>Assign a '_creation_order' sequence to the given instance.</p>
+<p>This allows multiple instances to be sorted in order of creation
+(typically within a single thread; the counter is not particularly
+threadsafe).</p>
+
+    </div>
+    </div>
+
+                
+    <div class="darkcell">
+    
+    <A name="docstrings_sqlalchemy.util_modfunc_to_list"></a>
+    <b>def to_list(<i>x</i>, <i>default=None</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                
+    <div class="darkcell">
+    
+    <A name="docstrings_sqlalchemy.util_modfunc_to_set"></a>
+    <b>def to_set(<i>x</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                
+    <div class="darkcell">
+    
+    <A name="docstrings_sqlalchemy.util_modfunc_unbound_method_to_callable"></a>
+    <b>def unbound_method_to_callable(<i>func_or_cls</i>)</b>
+    <div class="docstring">
+    <p>Adjust the incoming callable such that a 'self' argument is not required.</p>
+
+    </div>
+    </div>
+
+                
+    <div class="darkcell">
+    
+    <A name="docstrings_sqlalchemy.util_modfunc_unique_list"></a>
+    <b>def unique_list(<i>seq</i>, <i>compare_with=<type 'set'></i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                
+    <div class="darkcell">
+    
+    <A name="docstrings_sqlalchemy.util_modfunc_unique_symbols"></a>
+    <b>def unique_symbols(<i>used</i>, <i>*bases</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                
+    <div class="darkcell">
+    
+    <A name="docstrings_sqlalchemy.util_modfunc_update_wrapper"></a>
+    <b>def update_wrapper(<i>wrapper</i>, <i>wrapped</i>, <i>assigned=('__module__', '__name__', '__doc__')</i>, <i>updated=('__dict__',)</i>)</b>
+    <div class="docstring">
+    <p>Update a wrapper function to look like the wrapped function</p>
+<p>wrapper is the function to be updated
+wrapped is the original function
+assigned is a tuple naming the attributes assigned directly
+from the wrapped function to the wrapper function (defaults to
+functools.WRAPPER_ASSIGNMENTS)
+updated is a tuple naming the attributes off the wrapper that
+are updated with the corresponding attribute from the wrapped
+function (defaults to functools.WRAPPER_UPDATES)</p>
+
+    </div>
+    </div>
+
+                
+    <div class="darkcell">
+    
+    <A name="docstrings_sqlalchemy.util_modfunc_warn"></a>
+    <b>def warn(<i>msg</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                
+    <div class="darkcell">
+    
+    <A name="docstrings_sqlalchemy.util_modfunc_warn_deprecated"></a>
+    <b>def warn_deprecated(<i>msg</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                
+    <div class="darkcell">
+    
+    <A name="docstrings_sqlalchemy.util_modfunc_warn_exception"></a>
+    <b>def warn_exception(<i>func</i>, <i>*args</i>, <i>**kwargs</i>)</b>
+    <div class="docstring">
+    <p>executes the given function, catches all exceptions and converts to a warning.</p>
+
+    </div>
+    </div>
+
+                
+    <div class="darkcell">
+    
+    <A name="docstrings_sqlalchemy.util_modfunc_warn_pending_deprecation"></a>
+    <b>def warn_pending_deprecation(<i>msg</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+        
+
+    </div>
+
+
+
+
+            
+    
+
+    
+    
+    <A name="docstrings_sqlalchemy.util_IdentitySet"></a>
+    
+    <div class="sectionL3">
+
+    <h3>class IdentitySet(object)</h3>
+    
+    
+    <div class="darkcell"><p>A set that considers only object id() for uniqueness.</p>
+<p>This strategy has edge cases for builtin types- it's possible to have
+two 'foo' strings in one of these sets, for example.  Use sparingly.</p>
+</div>
+    
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def __init__(<i>self</i>, <i>iterable=None</i>)</b>
+    <div class="docstring">
+    <p>Construct a new <tt class="docutils literal"><span class="pre">IdentitySet</span></tt>.</p>
+
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def add(<i>self</i>, <i>value</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def clear(<i>self</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def copy(<i>self</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def __copy__(<i>self</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def difference(<i>self</i>, <i>iterable</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def difference_update(<i>self</i>, <i>iterable</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def discard(<i>self</i>, <i>value</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def intersection(<i>self</i>, <i>iterable</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def intersection_update(<i>self</i>, <i>iterable</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def issubset(<i>self</i>, <i>iterable</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def issuperset(<i>self</i>, <i>iterable</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def pop(<i>self</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def remove(<i>self</i>, <i>value</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def symmetric_difference(<i>self</i>, <i>iterable</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def symmetric_difference_update(<i>self</i>, <i>iterable</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def union(<i>self</i>, <i>iterable</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def update(<i>self</i>, <i>iterable</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def __and__(<i>self</i>, <i>other</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def __cmp__(<i>self</i>, <i>other</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def __contains__(<i>self</i>, <i>value</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def __eq__(<i>self</i>, <i>other</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def __ge__(<i>self</i>, <i>other</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def __gt__(<i>self</i>, <i>other</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def __iand__(<i>self</i>, <i>other</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def __ior__(<i>self</i>, <i>other</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def __isub__(<i>self</i>, <i>other</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def __iter__(<i>self</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def __ixor__(<i>self</i>, <i>other</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def __le__(<i>self</i>, <i>other</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def __len__(<i>self</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def __lt__(<i>self</i>, <i>other</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def __ne__(<i>self</i>, <i>other</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def __or__(<i>self</i>, <i>other</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def __sub__(<i>self</i>, <i>other</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def __xor__(<i>self</i>, <i>other</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+
+    
+
+            <a href="#top" class="totoc">back to section top</a>
+    </div>
+
+
+
+            
+    
+
+    
+    
+    <A name="docstrings_sqlalchemy.util_OrderedDict"></a>
+    
+    <div class="sectionL3">
+
+    <h3>class OrderedDict(dict)</h3>
+    
+    
+    <div class="darkcell"><p>A dict that returns keys/values/items in the order they were added.</p>
+</div>
+    
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def __init__(<i>self</i>, <i>_OrderedDict____sequence=None</i>, <i>**kwargs</i>)</b>
+    <div class="docstring">
+    <p>Construct a new <tt class="docutils literal"><span class="pre">OrderedDict</span></tt>.</p>
+
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def clear(<i>self</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def items(<i>self</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def iteritems(<i>self</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def iterkeys(<i>self</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def itervalues(<i>self</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def keys(<i>self</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def pop(<i>self</i>, <i>key</i>, <i>*default</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def popitem(<i>self</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def setdefault(<i>self</i>, <i>key</i>, <i>value</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def sort(<i>self</i>, <i>*arg</i>, <i>**kw</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def update(<i>self</i>, <i>_OrderedDict____sequence=None</i>, <i>**kwargs</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def values(<i>self</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def __delitem__(<i>self</i>, <i>key</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def __iter__(<i>self</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def __setitem__(<i>self</i>, <i>key</i>, <i>object</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+
+    
+
+            <a href="#top" class="totoc">back to section top</a>
+    </div>
+
+
+
+            
+    
+
+    
+    
+    <A name="docstrings_sqlalchemy.util_OrderedIdentitySet"></a>
+    
+    <div class="sectionL3">
+
+    <h3>class OrderedIdentitySet(<a href="sqlalchemy_util.html#docstrings_sqlalchemy.util_IdentitySet">IdentitySet</a>)</h3>
+    
+    
+    
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def __init__(<i>self</i>, <i>iterable=None</i>)</b>
+    <div class="docstring">
+    <p>Construct a new <tt class="docutils literal"><span class="pre">OrderedIdentitySet</span></tt>.</p>
+
+    </div>
+    </div>
+
+
+    
+
+            <a href="#top" class="totoc">back to section top</a>
+    </div>
+
+
+
+            
+    
+
+    
+    
+    <A name="docstrings_sqlalchemy.util_OrderedProperties"></a>
+    
+    <div class="sectionL3">
+
+    <h3>class OrderedProperties(object)</h3>
+    
+    
+    <div class="darkcell"><p>An object that maintains the order in which attributes are set upon it.</p>
+<p>Also provides an iterator and a very basic getitem/setitem
+interface to those attributes.</p>
+<p>(Not really a dict, since it iterates over values, not keys.  Not really
+a list, either, since each value must have a key associated; hence there is
+no append or extend.)</p>
+</div>
+    
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def __init__(<i>self</i>)</b>
+    <div class="docstring">
+    <p>Construct a new <tt class="docutils literal"><span class="pre">OrderedProperties</span></tt>.</p>
+
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def clear(<i>self</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def get(<i>self</i>, <i>key</i>, <i>default=None</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def has_key(<i>self</i>, <i>key</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def keys(<i>self</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def update(<i>self</i>, <i>value</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def __add__(<i>self</i>, <i>other</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def __contains__(<i>self</i>, <i>key</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def __delitem__(<i>self</i>, <i>key</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def __getattr__(<i>self</i>, <i>key</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def __getitem__(<i>self</i>, <i>key</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def __iter__(<i>self</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def __len__(<i>self</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def __setattr__(<i>self</i>, <i>key</i>, <i>object</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def __setitem__(<i>self</i>, <i>key</i>, <i>object</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+
+    
+
+            <a href="#top" class="totoc">back to section top</a>
+    </div>
+
+
+
+            
+    
+
+    
+    
+    <A name="docstrings_sqlalchemy.util_OrderedSet"></a>
+    
+    <div class="sectionL3">
+
+    <h3>class OrderedSet(set)</h3>
+    
+    
+    
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def __init__(<i>self</i>, <i>d=None</i>)</b>
+    <div class="docstring">
+    <p>Construct a new <tt class="docutils literal"><span class="pre">OrderedSet</span></tt>.</p>
+
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def add(<i>self</i>, <i>element</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def clear(<i>self</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def __sub__(<i>self</i>, <i>other</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def difference(<i>self</i>, <i>other</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def __isub__(<i>self</i>, <i>other</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def difference_update(<i>self</i>, <i>other</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def discard(<i>self</i>, <i>element</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def insert(<i>self</i>, <i>pos</i>, <i>element</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def __and__(<i>self</i>, <i>other</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def intersection(<i>self</i>, <i>other</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def __iand__(<i>self</i>, <i>other</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def intersection_update(<i>self</i>, <i>other</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def remove(<i>self</i>, <i>element</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def symmetric_difference(<i>self</i>, <i>other</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def __xor__(<i>self</i>, <i>other</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def symmetric_difference_update(<i>self</i>, <i>other</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def __ixor__(<i>self</i>, <i>other</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def __or__(<i>self</i>, <i>other</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def union(<i>self</i>, <i>other</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def update(<i>self</i>, <i>iterable</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def __ior__(<i>self</i>, <i>iterable</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def __getitem__(<i>self</i>, <i>key</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def __iter__(<i>self</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+
+    
+
+            <a href="#top" class="totoc">back to section top</a>
+    </div>
+
+
+
+            
+    
+
+    
+    
+    <A name="docstrings_sqlalchemy.util_PopulateDict"></a>
+    
+    <div class="sectionL3">
+
+    <h3>class PopulateDict(dict)</h3>
+    
+    
+    <div class="darkcell"><p>A dict which populates missing values via a creation function.</p>
+<p>Note the creation function takes a key, unlike
+collections.defaultdict.</p>
+</div>
+    
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def __init__(<i>self</i>, <i>creator</i>)</b>
+    <div class="docstring">
+    <p>Construct a new <tt class="docutils literal"><span class="pre">PopulateDict</span></tt>.</p>
+
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def __missing__(<i>self</i>, <i>key</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+
+    
+
+            <a href="#top" class="totoc">back to section top</a>
+    </div>
+
+
+
+            
+    
+
+    
+    
+    <A name="docstrings_sqlalchemy.util_ScopedRegistry"></a>
+    
+    <div class="sectionL3">
+
+    <h3>class ScopedRegistry(object)</h3>
+    
+    
+    <div class="darkcell"><p>A Registry that can store one or multiple instances of a single
+class on a per-thread scoped basis, or on a customized scope.</p>
+<dl class="docutils">
+<dt>createfunc</dt>
+<dd>a callable that returns a new object to be placed in the registry</dd>
+<dt>scopefunc</dt>
+<dd>a callable that will return a key to store/retrieve an object.
+If None, ScopedRegistry uses a threading.local object instead.</dd>
+</dl>
+</div>
+    
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def __init__(<i>self</i>, <i>createfunc</i>, <i>scopefunc</i>)</b>
+    <div class="docstring">
+    <p>Construct a new <tt class="docutils literal"><span class="pre">ScopedRegistry</span></tt>.</p>
+
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def clear(<i>self</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def has(<i>self</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def set(<i>self</i>, <i>obj</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def __call__(<i>self</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+
+    
+
+            <a href="#top" class="totoc">back to section top</a>
+    </div>
+
+
+
+            
+    
+
+    
+    
+    <A name="docstrings_sqlalchemy.util_UniqueAppender"></a>
+    
+    <div class="sectionL3">
+
+    <h3>class UniqueAppender(object)</h3>
+    
+    
+    <div class="darkcell"><p>Appends items to a collection ensuring uniqueness.</p>
+<p>Additional appends() of the same object are ignored.  Membership is
+determined by identity (<tt class="docutils literal"><span class="pre">is</span> <span class="pre">a</span></tt>) not equality (<tt class="docutils literal"><span class="pre">==</span></tt>).</p>
+</div>
+    
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def __init__(<i>self</i>, <i>data</i>, <i>via=None</i>)</b>
+    <div class="docstring">
+    <p>Construct a new <tt class="docutils literal"><span class="pre">UniqueAppender</span></tt>.</p>
+
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def append(<i>self</i>, <i>item</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def __iter__(<i>self</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+
+    
+
+            <a href="#top" class="totoc">back to section top</a>
+    </div>
+
+
+
+            
+    
+
+    
+    
+    <A name="docstrings_sqlalchemy.util_WeakCompositeKey"></a>
+    
+    <div class="sectionL3">
+
+    <h3>class WeakCompositeKey(object)</h3>
+    
+    
+    <div class="darkcell"><p>an weak-referencable, hashable collection which is strongly referenced
+until any one of its members is garbage collected.</p>
+</div>
+    
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def __init__(<i>self</i>, <i>*args</i>)</b>
+    <div class="docstring">
+    <p>Construct a new <tt class="docutils literal"><span class="pre">WeakCompositeKey</span></tt>.</p>
+
+    </div>
+    </div>
+
+                    
+         <div class="darkcell">
+         <A name=""></a>
+         <b>args = property()</b>
+         <div class="docstring">
+         
+         </div> 
+         </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def __cmp__(<i>self</i>, <i>other</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def __iter__(<i>self</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+
+    
+
+            <a href="#top" class="totoc">back to section top</a>
+    </div>
+
+
+
+            
+    
+
+    
+    
+    <A name="docstrings_sqlalchemy.util_WeakIdentityMapping"></a>
+    
+    <div class="sectionL3">
+
+    <h3>class WeakIdentityMapping()</h3>
+    
+    
+    <div class="darkcell"><p>A WeakKeyDictionary with an object identity index.</p>
+<p>Adds a .by_id dictionary to a regular WeakKeyDictionary.  Trades
+performance during mutation operations for accelerated lookups by id().</p>
+<p>The usual cautions about weak dictionaries and iteration also apply to
+this subclass.</p>
+</div>
+    
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def __init__(<i>self</i>)</b>
+    <div class="docstring">
+    <p>Construct a new <tt class="docutils literal"><span class="pre">WeakIdentityMapping</span></tt>.</p>
+
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def clear(<i>self</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def pop(<i>self</i>, <i>object</i>, <i>default=<symbol 'none></i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def popitem(<i>self</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def setdefault(<i>self</i>, <i>object</i>, <i>default=None</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def update(<i>self</i>, <i>*a</i>, <i>**kw</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def __delitem__(<i>self</i>, <i>object</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def __setitem__(<i>self</i>, <i>object</i>, <i>value</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+
+    
+
+            <a href="#top" class="totoc">back to section top</a>
+    </div>
+
+
+
+            
+    
+
+    
+    
+    <A name="docstrings_sqlalchemy.util_defaultdict"></a>
+    
+    <div class="sectionL3">
+
+    <h3>class defaultdict(dict)</h3>
+    
+    
+    <div class="darkcell"><p>defaultdict(default_factory) --&gt; dict with default factory</p>
+<p>The default factory is called without arguments to produce
+a new value when a key is not present, in __getitem__ only.
+A defaultdict compares equal to a dict with the same items.</p>
+</div>
+    
+
+                    
+         <div class="darkcell">
+         <A name=""></a>
+         <b>default_factory = property()</b>
+         <div class="docstring">
+         <p>Factory for default value called by __missing__().</p>
+
+         </div> 
+         </div>
+
+
+    
+
+            <a href="#top" class="totoc">back to section top</a>
+    </div>
+
+
+
+            
+    
+
+    
+    
+    <A name="docstrings_sqlalchemy.util_memoized_instancemethod"></a>
+    
+    <div class="sectionL3">
+
+    <h3>class memoized_instancemethod(object)</h3>
+    
+    
+    <div class="darkcell"><p>Decorate a method memoize its return value.</p>
+<p>Best applied to no-arg methods: memoization is not sensitive to
+argument values, and will always return the same value even when
+called with different arguments.</p>
+</div>
+    
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def __init__(<i>self</i>, <i>fget</i>, <i>doc=None</i>)</b>
+    <div class="docstring">
+    <p>Construct a new <tt class="docutils literal"><span class="pre">memoized_instancemethod</span></tt>.</p>
+
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def __get__(<i>self</i>, <i>obj</i>, <i>cls</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+
+    
+
+            <a href="#top" class="totoc">back to section top</a>
+    </div>
+
+
+
+            
+    
+
+    
+    
+    <A name="docstrings_sqlalchemy.util_memoized_property"></a>
+    
+    <div class="sectionL3">
+
+    <h3>class memoized_property(object)</h3>
+    
+    
+    <div class="darkcell"><p>A read-only &#64;property that is only evaluated once.</p>
+</div>
+    
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def __init__(<i>self</i>, <i>fget</i>, <i>doc=None</i>)</b>
+    <div class="docstring">
+    <p>Construct a new <tt class="docutils literal"><span class="pre">memoized_property</span></tt>.</p>
+
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def __get__(<i>self</i>, <i>obj</i>, <i>cls</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+
+    
+
+            <a href="#top" class="totoc">back to section top</a>
+    </div>
+
+
+
+            
+    
+
+    
+    
+    <A name="docstrings_sqlalchemy.util_symbol"></a>
+    
+    <div class="sectionL3">
+
+    <h3>class symbol(object)</h3>
+    
+    
+    <div class="darkcell"><p>A constant symbol.</p>
+<pre class="doctest-block">
+&gt;&gt;&gt; symbol('foo') is symbol('foo')
+True
+&gt;&gt;&gt; symbol('foo')
+&lt;symbol 'foo&gt;
+</pre>
+<p>A slight refinement of the MAGICCOOKIE=object() pattern.  The primary
+advantage of symbol() is its repr().  They are also singletons.</p>
+<p>Repeated calls of symbol('name') will all return the same instance.</p>
+</div>
+    
+
+
+    
+
+            <a href="#top" class="totoc">back to section top</a>
+    </div>
+
+
+
+            
+    
+
+    
+    
+    <A name="docstrings_sqlalchemy.util_symbol"></a>
+    
+    <div class="sectionL3">
+
+    <h3>class symbol(object)</h3>
+    
+    
+    
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def __init__(<i>self</i>, <i>name</i>)</b>
+    <div class="docstring">
+    <p>Construct a new named symbol.</p>
+
+    </div>
+    </div>
+
+
+    
+
+            <a href="#top" class="totoc">back to section top</a>
+    </div>
+
+
+
+    
+
+    </div>
+
+
+
+
+
+    <div class="bottomnav">
+        
+    <div class="prevnext">
+            Up: <a href="docstrings.html">API Documentation</a>
+
+               |   
+            Previous: <a href="sqlalchemy_types.html">module sqlalchemy.types</a>
+
+               |   
+            Next: <a href="sqlalchemy_orm.html">module sqlalchemy.orm</a>
+    </div>
+
+    </div>
+
+
+
+
+
+
+
+
+</body>
+</html>
+
+
+
+
+
+

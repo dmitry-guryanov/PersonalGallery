@@ -1,0 +1,2 @@
+recursive-include gallery/public *
+recursive-include gallery/templates *

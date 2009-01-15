@@ -1,0 +1,494 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<title>SQLAlchemy 0.5 Documentation - module sqlalchemy.sql.visitors</title>
+	
+    
+    <link rel="stylesheet" href="style.css"></link>
+    <link rel="stylesheet" href="docs.css"></link>
+    <link href="syntaxhighlight.css" rel="stylesheet" type="text/css"></link>
+    <script src="scripts.js"></script>
+
+    <link rel="stylesheet" href="docutil.css"></link>
+
+
+
+</head>
+<body>
+
+
+
+
+
+
+
+
+<div id="topanchor"><a name="top">&nbsp;</a></div>
+
+
+<h1>SQLAlchemy 0.5 Documentation</h1>
+
+<div id="pagecontrol"><a href="index.html">Multiple Pages</a> | <a href="documentation.html">One Page</a></div>
+
+<div class="versionheader">
+  Version: <span class="versionnum">0.5.0rc4</span>
+  Last Updated: 11/14/08 16:38:11
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="topnav">
+
+    
+    <div class="navbanner">
+        <a href="index.html" class="totoc">Table of Contents</a>
+        
+    <div class="prevnext">
+            Up: <a href="docstrings.html">API Documentation</a>
+
+               |   
+            Previous: <a href="sqlalchemy_sql_expression.html">module sqlalchemy.sql.expression</a>
+
+               |   
+            Next: <a href="sqlalchemy_types.html">module sqlalchemy.types</a>
+    </div>
+
+        <h2>module sqlalchemy.sql.visitors</h2>
+    </div>
+
+	
+	
+    <ul>
+        
+        <li><a style="" href="sqlalchemy_sql_visitors.html#docstrings_sqlalchemy.sql.visitors_modfunc">Module Functions</a></li>
+
+	        <li>
+                
+    <ul>
+        
+        <li><a style="" href="sqlalchemy_sql_visitors.html#docstrings_sqlalchemy.sql.visitors_modfunc_cloned_traverse">cloned_traverse()</a></li>
+
+        
+        <li><a style="" href="sqlalchemy_sql_visitors.html#docstrings_sqlalchemy.sql.visitors_modfunc_iterate">iterate()</a></li>
+
+        
+        <li><a style="" href="sqlalchemy_sql_visitors.html#docstrings_sqlalchemy.sql.visitors_modfunc_iterate_depthfirst">iterate_depthfirst()</a></li>
+
+        
+        <li><a style="" href="sqlalchemy_sql_visitors.html#docstrings_sqlalchemy.sql.visitors_modfunc_replacement_traverse">replacement_traverse()</a></li>
+
+        
+        <li><a style="" href="sqlalchemy_sql_visitors.html#docstrings_sqlalchemy.sql.visitors_modfunc_traverse">traverse()</a></li>
+
+        
+        <li><a style="" href="sqlalchemy_sql_visitors.html#docstrings_sqlalchemy.sql.visitors_modfunc_traverse_using">traverse_using()</a></li>
+
+    </ul>
+
+	        </li>
+        
+        <li><a style="" href="sqlalchemy_sql_visitors.html#docstrings_sqlalchemy.sql.visitors_ClauseVisitor">class ClauseVisitor(object)</a></li>
+
+        
+        <li><a style="" href="sqlalchemy_sql_visitors.html#docstrings_sqlalchemy.sql.visitors_CloningVisitor">class CloningVisitor(ClauseVisitor)</a></li>
+
+        
+        <li><a style="" href="sqlalchemy_sql_visitors.html#docstrings_sqlalchemy.sql.visitors_ReplacingCloningVisitor">class ReplacingCloningVisitor(CloningVisitor)</a></li>
+
+        
+        <li><a style="" href="sqlalchemy_sql_visitors.html#docstrings_sqlalchemy.sql.visitors_Visitable">class Visitable(object)</a></li>
+
+        
+        <li><a style="" href="sqlalchemy_sql_visitors.html#docstrings_sqlalchemy.sql.visitors_VisitableType">class VisitableType(type)</a></li>
+
+    </ul>
+
+	</div>
+
+
+
+    
+
+    
+    
+    <A name="docstrings_sqlalchemy.sql.visitors"></a>
+    
+    <div class="sectionL2">
+
+    <h3>module sqlalchemy.sql.visitors</h3>
+    
+    
+    <div class="darkcell"><p>Visitor/traversal interface and library functions.</p>
+<p>SQLAlchemy schema and expression constructs rely on a Python-centric
+version of the classic &quot;visitor&quot; pattern as the primary way in which
+they apply functionality.  The most common use of this pattern
+is statement compilation, where individual expression classes match
+up to rendering methods that produce a string result.   Beyond this,
+the visitor system is also used to inspect expressions for various
+information and patterns, as well as for usage in
+some kinds of expression transformation.  Other kinds of transformation
+use a non-visitor traversal system.</p>
+<p>For many examples of how the visit system is used, see the
+sqlalchemy.sql.util and the sqlalchemy.sql.compiler modules.
+For an introduction to clause adaption, see
+<a class="reference" href="http://techspot.zzzeek.org/?p=19">http://techspot.zzzeek.org/?p=19</a> .</p>
+</div>
+    
+
+        
+    
+    <A name="docstrings_sqlalchemy.sql.visitors_modfunc"></a>
+    
+    <div class="sectionL3">
+
+    <h3>Module Functions</h3>
+    
+    
+                
+    <div class="darkcell">
+    
+    <A name="docstrings_sqlalchemy.sql.visitors_modfunc_cloned_traverse"></a>
+    <b>def cloned_traverse(<i>obj</i>, <i>opts</i>, <i>visitors</i>)</b>
+    <div class="docstring">
+    <p>clone the given expression structure, allowing modifications by visitors.</p>
+
+    </div>
+    </div>
+
+                
+    <div class="darkcell">
+    
+    <A name="docstrings_sqlalchemy.sql.visitors_modfunc_iterate"></a>
+    <b>def iterate(<i>obj</i>, <i>opts</i>)</b>
+    <div class="docstring">
+    <p>traverse the given expression structure, returning an iterator.</p>
+<p>traversal is configured to be breadth-first.</p>
+
+    </div>
+    </div>
+
+                
+    <div class="darkcell">
+    
+    <A name="docstrings_sqlalchemy.sql.visitors_modfunc_iterate_depthfirst"></a>
+    <b>def iterate_depthfirst(<i>obj</i>, <i>opts</i>)</b>
+    <div class="docstring">
+    <p>traverse the given expression structure, returning an iterator.</p>
+<p>traversal is configured to be depth-first.</p>
+
+    </div>
+    </div>
+
+                
+    <div class="darkcell">
+    
+    <A name="docstrings_sqlalchemy.sql.visitors_modfunc_replacement_traverse"></a>
+    <b>def replacement_traverse(<i>obj</i>, <i>opts</i>, <i>replace</i>)</b>
+    <div class="docstring">
+    <p>clone the given expression structure, allowing element replacement by a given replacement function.</p>
+
+    </div>
+    </div>
+
+                
+    <div class="darkcell">
+    
+    <A name="docstrings_sqlalchemy.sql.visitors_modfunc_traverse"></a>
+    <b>def traverse(<i>obj</i>, <i>opts</i>, <i>visitors</i>)</b>
+    <div class="docstring">
+    <p>traverse and visit the given expression structure using the default iterator.</p>
+
+    </div>
+    </div>
+
+                
+    <div class="darkcell">
+    
+    <A name="docstrings_sqlalchemy.sql.visitors_modfunc_traverse_using"></a>
+    <b>def traverse_using(<i>iterator</i>, <i>obj</i>, <i>visitors</i>)</b>
+    <div class="docstring">
+    <p>visit the given expression structure using the given iterator of objects.</p>
+
+    </div>
+    </div>
+
+        
+
+    </div>
+
+
+
+
+            
+    
+
+    
+    
+    <A name="docstrings_sqlalchemy.sql.visitors_ClauseVisitor"></a>
+    
+    <div class="sectionL3">
+
+    <h3>class ClauseVisitor(object)</h3>
+    
+    
+    <div class="darkcell"><p>Base class for visitor objects which can traverse using
+the traverse() function.</p>
+</div>
+    
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def chain(<i>self</i>, <i>visitor</i>)</b>
+    <div class="docstring">
+    <p>'chain' an additional ClauseVisitor onto this ClauseVisitor.</p>
+<p>the chained visitor will receive all visit events after this one.</p>
+
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def iterate(<i>self</i>, <i>obj</i>)</b>
+    <div class="docstring">
+    <p>traverse the given expression structure, returning an iterator of all elements.</p>
+
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def traverse(<i>self</i>, <i>obj</i>)</b>
+    <div class="docstring">
+    <p>traverse and visit the given expression structure.</p>
+
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def traverse_single(<i>self</i>, <i>obj</i>)</b>
+    <div class="docstring">
+    
+    </div>
+    </div>
+
+
+    
+
+            <a href="#top" class="totoc">back to section top</a>
+    </div>
+
+
+
+            
+    
+
+    
+    
+    <A name="docstrings_sqlalchemy.sql.visitors_CloningVisitor"></a>
+    
+    <div class="sectionL3">
+
+    <h3>class CloningVisitor(<a href="sqlalchemy_sql_visitors.html#docstrings_sqlalchemy.sql.visitors_ClauseVisitor">ClauseVisitor</a>)</h3>
+    
+    
+    <div class="darkcell"><p>Base class for visitor objects which can traverse using
+the cloned_traverse() function.</p>
+</div>
+    
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def copy_and_process(<i>self</i>, <i>list_</i>)</b>
+    <div class="docstring">
+    <p>Apply cloned traversal to the given list of elements, and return the new list.</p>
+
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def traverse(<i>self</i>, <i>obj</i>)</b>
+    <div class="docstring">
+    <p>traverse and visit the given expression structure.</p>
+
+    </div>
+    </div>
+
+
+    
+
+            <a href="#top" class="totoc">back to section top</a>
+    </div>
+
+
+
+            
+    
+
+    
+    
+    <A name="docstrings_sqlalchemy.sql.visitors_ReplacingCloningVisitor"></a>
+    
+    <div class="sectionL3">
+
+    <h3>class ReplacingCloningVisitor(<a href="sqlalchemy_sql_visitors.html#docstrings_sqlalchemy.sql.visitors_CloningVisitor">CloningVisitor</a>)</h3>
+    
+    
+    <div class="darkcell"><p>Base class for visitor objects which can traverse using
+the replacement_traverse() function.</p>
+</div>
+    
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def replace(<i>self</i>, <i>elem</i>)</b>
+    <div class="docstring">
+    <p>receive pre-copied elements during a cloning traversal.</p>
+<p>If the method returns a new element, the element is used
+instead of creating a simple copy of the element.  Traversal
+will halt on the newly returned element if it is re-encountered.</p>
+
+    </div>
+    </div>
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def traverse(<i>self</i>, <i>obj</i>)</b>
+    <div class="docstring">
+    <p>traverse and visit the given expression structure.</p>
+
+    </div>
+    </div>
+
+
+    
+
+            <a href="#top" class="totoc">back to section top</a>
+    </div>
+
+
+
+            
+    
+
+    
+    
+    <A name="docstrings_sqlalchemy.sql.visitors_Visitable"></a>
+    
+    <div class="sectionL3">
+
+    <h3>class Visitable(object)</h3>
+    
+    
+    <div class="darkcell"><p>Base class for visitable objects, applies the
+<tt class="docutils literal"><span class="pre">VisitableType</span></tt> metaclass.</p>
+</div>
+    
+
+
+    
+
+            <a href="#top" class="totoc">back to section top</a>
+    </div>
+
+
+
+            
+    
+
+    
+    
+    <A name="docstrings_sqlalchemy.sql.visitors_VisitableType"></a>
+    
+    <div class="sectionL3">
+
+    <h3>class VisitableType(type)</h3>
+    
+    
+    <div class="darkcell"><p>Metaclass which applies a <cite>__visit_name__</cite> attribute and
+<cite>_compiler_dispatch</cite> method to classes.</p>
+</div>
+    
+
+                    
+    <div class="darkcell">
+    
+    <A name=""></a>
+    <b>def __init__(<i>cls</i>, <i>clsname</i>, <i>bases</i>, <i>dict</i>)</b>
+    <div class="docstring">
+    <p>Construct a new <tt class="docutils literal"><span class="pre">VisitableType</span></tt>.</p>
+
+    </div>
+    </div>
+
+
+    
+
+            <a href="#top" class="totoc">back to section top</a>
+    </div>
+
+
+
+    
+
+    </div>
+
+
+
+
+
+    <div class="bottomnav">
+        
+    <div class="prevnext">
+            Up: <a href="docstrings.html">API Documentation</a>
+
+               |   
+            Previous: <a href="sqlalchemy_sql_expression.html">module sqlalchemy.sql.expression</a>
+
+               |   
+            Next: <a href="sqlalchemy_types.html">module sqlalchemy.types</a>
+    </div>
+
+    </div>
+
+
+
+
+
+
+
+
+</body>
+</html>
+
+
+
+
+
+
