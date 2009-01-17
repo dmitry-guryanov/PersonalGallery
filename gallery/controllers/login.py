@@ -1,5 +1,6 @@
 import logging
 import md5
+import yaml
 
 from gallery.lib.base import *
 
@@ -19,6 +20,10 @@ class LoginController(BaseController):
 		"""
 		Verify username and password
 		"""
+
+		if request.params.get("Cancel"):
+			h.redirect_to(h.url_for(controller="/album"))
+
 		# Both fields filled?
 		form_username = str(request.params.get('username'))
 		form_password = str(request.params.get('password'))
@@ -33,11 +38,7 @@ class LoginController(BaseController):
 		session['user'] = form_username
 		session.save()
 
-		# Send user back to the page he originally wanted to get to
-		if session.get('path_before_login'):
-			redirect_to(session['path_before_login'])
-		else: # if previous target is unknown just send the user to a welcome page
-			return render('/loggedin.mako')
+		h.redirect_to(h.url_for(controller="/album"))
 
 	def logout(self):
 		"""
@@ -46,5 +47,5 @@ class LoginController(BaseController):
 		if 'user' in session:
 			del session['user']
 			session.save()
-		return render('/logout.mako')
+		h.redirect_to(h.url_for(controller="/album"))
 
