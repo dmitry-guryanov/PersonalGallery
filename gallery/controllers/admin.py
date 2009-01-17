@@ -2,6 +2,7 @@ import logging
 import os
 import shutil
 import tempfile
+import types
 import mimetypes
 
 from gallery.lib.base import *
@@ -97,28 +98,32 @@ class AdminController(BaseController):
 			return render("/photo_add.mako")
 
 	def photo_add_submit(self, aid):
-			new_photo = request.POST['new_photo']
-			
-			name = new_photo.filename.lstrip(os.sep)
-			(tmpfd, tmpname) = tempfile.mkstemp(suffix=name)
-			tmpobj = os.fdopen(tmpfd, "w")
-			shutil.copyfileobj(new_photo.file, tmpobj)
-			tmpobj.close()
-			new_photo.file.close()
 
-			mimetypes.init()
+			for i in range(20):
+				new_photo = request.params.get('new_photo-%d' % i)
+				if type(new_photo) is not types.InstanceType:
+					continue
 
-			tp = mimetypes.guess_type(tmpname)[0]
+				name = new_photo.filename.lstrip(os.sep)
+				(tmpfd, tmpname) = tempfile.mkstemp(suffix=name)
+				tmpobj = os.fdopen(tmpfd, "w")
+				shutil.copyfileobj(new_photo.file, tmpobj)
+				tmpobj.close()
+				new_photo.file.close()
 
-			if tp == "image/jpeg":
-				add_photo(aid, name, tmpname)
-			elif tp == "application/zip":
-				add_archive(aid, tmpname, arc_type = "zip")
-			else:
+				mimetypes.init()
+
+				tp = mimetypes.guess_type(tmpname)[0]
+
+				if tp == "image/jpeg":
+					add_photo(aid, name, tmpname)
+				elif tp == "application/zip":
+					add_archive(aid, tmpname, arc_type = "zip")
+				else:
+					os.unlink(tmpname)
+					return "Unsupported type"
+
 				os.unlink(tmpname)
-				return "Unsupported type"
-
-			os.unlink(tmpname)
 
 			h.redirect_to(controller = "/album", action = "show_first_page", aid = aid)
 			
