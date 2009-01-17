@@ -6,7 +6,7 @@
 
 <%include file="header.mako"/>
 
-<div class=photo>
+<div class="photo">
 % if c.prev:
 	<a href='${h.url_for(controller="photo", aid=c.prev.album_id, pid=c.prev.id)}'
 		id="prevArrow"
@@ -15,7 +15,7 @@
 				visibility: hidden"
 				onmouseover="document.getElementById('prevArrow').style.visibility='visible'"
 				onmouseout="document.getElementById('prevArrow').style.visibility='hidden'">
-			<img src="/gallery-static/i/arrow-left.gif" alt="" width="20" height="17">
+			<img src="/gallery-static/i/arrow-left.gif" alt="" width="20" height="17"/>
 	</a>
 % endif
 
@@ -27,7 +27,7 @@
 				visibility: hidden"
 				onmouseover="document.getElementById('nextArrow').style.visibility='visible'"
 				onmouseout="document.getElementById('nextArrow').style.visibility='hidden'">
-			<img src="/gallery-static/i/arrow-right.gif" alt="" width="20" height="17">
+			<img src="/gallery-static/i/arrow-right.gif" alt="" width="20" height="17"/>
 	</a>
 % endif
 

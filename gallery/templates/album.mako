@@ -1,13 +1,10 @@
-
 <%inherit file="base.html"/>
-
 <%def name="header()">
 </%def>
 
-
 % if c.admin:
-	<div align=center>
-	<div class="admin_navibar" align=right>
+	<div>
+	<div class="admin_navibar" align="right">
 	<li>${h.link_to("edit", h.url_for(controller="album_edit"))}</li>
 	<li>${h.link_to("add photo", h.url_for(controller="admin", action="photo_add"))}</li>
 	</div>
@@ -29,29 +26,23 @@
 % endif
 
 % if c.photos:
-<table class="gallery-thumbs" align = center>
+<table class="gallery-thumbs" align="center">
 % for i in range(len(c.photos)):
 <%
 	p = c.photos[i]
 %>
-
 %	if i % 4 == 0:
-		<tr>
+	<tr>
 %	endif
-
-	<td class="gallery-thumb">
-	<a href='${h.url_for(controller="/photo", aid=p.album_id, pid=p.id)}'><img src="${c.u.get_web_preview_path(p.album_id, p.id)}"/> </a>
-	${h.link_to("")}
-
+		<td class="gallery-thumb">
+			<a href='${h.url_for(controller="/photo", aid=p.album_id, pid=p.id)}'><img alt="${p.display_name}" src="${c.u.get_web_preview_path(p.album_id, p.id)}"/></a>
 % if c.admin:
-	<br/>
-	<a href="/admin/photo_del_submit/${p.album_id}/${p.id}"> del </a>
+			<br/>
+			<a href="/admin/photo_del_submit/${p.album_id}/${p.id}"> del </a>
 % endif
-
-	</td>
-
+		</td>
 %	if i % 4 == 3 or i == len(c.photos) - 1:
-		</tr>
+	</tr>
 %	endif
 % endfor
 </table>
