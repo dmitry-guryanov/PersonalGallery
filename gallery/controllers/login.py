@@ -22,7 +22,7 @@ class LoginController(BaseController):
 		"""
 
 		if request.params.get("Cancel"):
-			h.redirect_to(h.url_for(controller="/album"))
+			h.redirect_to(controller="/album")
 
 		# Both fields filled?
 		form_username = str(request.params.get('username'))
@@ -38,7 +38,8 @@ class LoginController(BaseController):
 		session['user'] = form_username
 		session.save()
 
-		h.redirect_to(h.url_for(controller="/album"))
+
+		h.redirect_to(controller="/album")
 
 	def logout(self):
 		"""

@@ -45,4 +45,5 @@ class AlbumController(BaseController):
 
 
 		s.close()
+
 		return render("/album.mako")

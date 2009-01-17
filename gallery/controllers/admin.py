@@ -120,7 +120,7 @@ class AdminController(BaseController):
 
 			os.unlink(tmpname)
 
-			h.redirect_to(h.url_for(controller = "/album", action = "show_first_page", aid = aid))
+			h.redirect_to(controller = "/album", action = "show_first_page", aid = aid)
 			
 	def photo_del_submit(self, aid, pid):
 
@@ -146,18 +146,18 @@ class AdminController(BaseController):
 			s.delete(photo_obj)
 			s.commit()
 
-			h.redirect_to(h.url_for(controller = "/album", action = "show_first_page", aid = aid))
+			h.redirect_to(controller = "/album", action = "show_first_page", aid = aid)
 
 	def album_edit(self, aid):
 		c.aid = aid
 
 		s = meta.Session
 
-		albums_q = s.query(Album).filter(Album.parent_id == album)
+		albums_q = s.query(Album).filter(Album.parent_id == aid)
 		albums = albums_q.all()
 		c.albums = albums
 
-		photos_q = s.query(Photo).filter(Photo.album_id == album)
+		photos_q = s.query(Photo).filter(Photo.album_id == aid)
 		photos = photos_q.all()
 		c.photos = photos
 		return render('/album_edit.mako')
