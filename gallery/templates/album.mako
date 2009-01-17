@@ -2,8 +2,6 @@
 <%def name="header()">
 </%def>
 
-<div class="main_content">
-
 <%include file="header.mako"/>
 
 % if c.albums:
@@ -42,4 +40,3 @@
 	<h2>There is not photos in this album</h2>
 % endif
 
-</div>
