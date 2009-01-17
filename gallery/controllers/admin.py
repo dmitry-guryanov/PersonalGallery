@@ -148,8 +148,8 @@ class AdminController(BaseController):
 
 			h.redirect_to(h.url_for(controller = "/album", action = "show_first_page", aid = aid))
 
-	def album_edit(self, album):
-		c.album = album
+	def album_edit(self, aid):
+		c.aid = aid
 
 		s = meta.Session
 
