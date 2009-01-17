@@ -24,7 +24,6 @@ def make_map():
     map.connect('album/:aid/:page', controller='album', action='show_page')
     map.connect('login', controller='login', action='index')
     map.connect('login/:action', controller='login')
-    map.connect('album_edit/:aid', controller='album_edit', action='index')
     map.connect('photo/:aid/:pid', controller='photo', action='index')
     map.connect('admin/album_edit/:aid', controller='admin', action='album_edit')
     map.connect('admin/photo_add/:aid', controller='admin', action='photo_add')
