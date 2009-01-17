@@ -11,5 +11,5 @@ Password: ${h.password_field('password')}<br/>
 				${h.submit('enter', 'Login')}
 				${h.submit('cancel', 'Cancel')}
 ${h.end_form()}
-</div
+</div>
 
