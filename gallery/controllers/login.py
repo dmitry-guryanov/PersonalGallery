@@ -48,5 +48,5 @@ class LoginController(BaseController):
 		if 'user' in session:
 			del session['user']
 			session.save()
-		h.redirect_to(h.url_for(controller="/album"))
+		h.redirect_to(controller="/album")
 
