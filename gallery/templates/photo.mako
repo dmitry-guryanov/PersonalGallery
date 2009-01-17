@@ -31,7 +31,7 @@
 	</a>
 % endif
 
-<img alt="" src='${c.u.get_web_photo_path(c.photo.album_id, c.photo.id)}' usemap="#prevnext" width="${c.photo.width}" height="${c.photo.height}" class="gallery-photo"/>
+<img alt="" src='${c.u.get_web_photo_path(c.photo)}' usemap="#prevnext" width="${c.photo.width}" height="${c.photo.height}" class="gallery-photo"/>
 
 </div>
 

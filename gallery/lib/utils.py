@@ -2,6 +2,7 @@ import logging
 import os
 import shutil
 from commands import *
+import re
 
 from gallery.lib.base import *
 from gallery.model import meta, Photo, Album
@@ -21,21 +22,23 @@ class Image:
 	width = 0
 	height = 0
 
-def get_photo_path(aid, pid):
+def get_photo_path(photo):
 #	stpath = config['pylons.paths']['static_files']
-	return os.path.join(permanent_store, str(aid),
-									str(pid) + ".jpg")
+	return os.path.join(permanent_store, str(photo.album_id), photo.name)
 
-def get_preview_path(aid, pid):
+def get_preview_path(photo):
 #	stpath = config['pylons.paths']['static_files']
-	return os.path.join(permanent_store, str(aid),
-									"previews", str(pid) + ".jpg")
+	preview_name = re.sub("([^\.]+)\..+", r"\1-preview.jpg", photo.name)
+	return os.path.join(permanent_store, str(photo.album_id),
+								"previews", preview_name)
 
-def get_web_photo_path(aid, pid):
-	return "%s/%s/%s.jpg" % (web_static_path, str(aid), str(pid))
+def get_web_photo_path(photo):
+	return "%s/%s/%s" % (web_static_path, str(photo.album_id), photo.name)
 
-def get_web_preview_path(aid, pid):
-	return "%s/%s/previews/%s.jpg" % (web_static_path, str(aid), str(pid))
+def get_web_preview_path(photo):
+	preview_name = re.sub("([^\.]+)\..+", r"\1-preview.jpg", photo.name)
+	return "%s/%s/previews/%s" % (web_static_path,
+							str(photo.album_id), preview_name)
 
 def _get_image_info(path):
 	out = getoutput("identify \"%s\"" % path).strip()
@@ -48,6 +51,6 @@ def _get_image_info(path):
 	img.height = int(size[i + 1:])
 	return img
 
-def get_photo_info(album, photo):
-	return _get_image_info(get_photo_path(album, photo))
+def get_photo_info(photo):
+	return _get_image_info(get_photo_path(photo))
 

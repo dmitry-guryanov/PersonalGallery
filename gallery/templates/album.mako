@@ -35,7 +35,7 @@
 	<tr>
 %	endif
 		<td class="gallery-thumb">
-			<a href='${h.url_for(controller="/photo", aid=p.album_id, pid=p.id)}'><img alt="${p.display_name}" src="${c.u.get_web_preview_path(p.album_id, p.id)}"/></a>
+			<a href='${h.url_for(controller="/photo", aid=p.album_id, pid=p.id)}'><img alt="${p.display_name}" src="${c.u.get_web_preview_path(p)}"/></a>
 % if c.admin:
 			<br/>
 			<a href="/admin/photo_del_submit/${p.album_id}/${p.id}"> del </a>
