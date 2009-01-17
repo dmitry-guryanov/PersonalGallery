@@ -120,9 +120,8 @@ class AdminController(BaseController):
 
 			os.unlink(tmpname)
 
-			return 'Successfully uploaded: %s, description: %s<br/> <a href="/album/%s">return to album</a>' % \
-				(new_photo.filename, request.POST['description'], aid)
-
+			h.redirect_to(h.url_for(controller = "/album", action = "show_first_page", aid = aid))
+			
 	def photo_del_submit(self, aid, pid):
 
 			s = meta.Session
@@ -147,10 +146,7 @@ class AdminController(BaseController):
 			s.delete(photo_obj)
 			s.commit()
 
-			msg += 'Successfully succesfully deleted <br/> <a href="/album/%s">return to album</a>' % ( aid)
-
-			return msg
-		
+			h.redirect_to(h.url_for(controller = "/album", action = "show_first_page", aid = aid))
 
 	def album_edit(self, album):
 		c.album = album
