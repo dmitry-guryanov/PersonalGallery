@@ -38,7 +38,7 @@
 			<a href='${h.url_for(controller="/photo", aid=p.album_id, pid=p.id)}'><img alt="${p.display_name}" src="${c.u.get_web_preview_path(p)}"/></a>
 % if c.admin:
 			<br/>
-			<a href="/admin/photo_del_submit/${p.album_id}/${p.id}"> del </a>
+			${h.link_to("del", h.url_for(controller = "admin", action = "photo_del_submit", pid = p.id))}
 % endif
 		</td>
 %	if i % 4 == 3 or i == len(c.photos) - 1:
