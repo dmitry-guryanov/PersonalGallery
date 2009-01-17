@@ -18,6 +18,10 @@ class AlbumController(BaseController):
 		return self.show_page(aid, '0')
 
 	def show_page(self, aid, page):
+
+		if 'user' in session:
+			c.admin = True
+
 		c.album = aid
 		c.page = page
 		c.u = utils
@@ -39,9 +43,6 @@ class AlbumController(BaseController):
 		c.photos = photos
 
 
-
-		if 'user' in session:
-			c.admin = True
 
 		s.close()
 		return render("/album.mako")

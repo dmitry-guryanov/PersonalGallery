@@ -2,15 +2,6 @@
 <%def name="header()">
 </%def>
 
-% if c.admin:
-	<div>
-	<div class="admin_navibar" align="right">
-	<li>${h.link_to("edit", h.url_for(controller="album_edit"))}</li>
-	<li>${h.link_to("add photo", h.url_for(controller="admin", action="photo_add"))}</li>
-	</div>
-	</div>
-% endif
-
 <div class="main_content">
 
 <%include file="header.mako"/>
@@ -35,7 +26,7 @@
 	<tr>
 %	endif
 		<td class="gallery-thumb">
-			<a href='${h.url_for(controller="/photo", aid=p.album_id, pid=p.id)}'><img alt="${p.display_name}" src="${c.u.get_web_preview_path(p)}"/></a>
+			<a class="gallery-thumb-link" href='${h.url_for(controller="/photo", aid=p.album_id, pid=p.id)}'><img alt="${p.display_name}" src="${c.u.get_web_preview_path(p)}"/></a>
 % if c.admin:
 			<br/>
 			${h.link_to("del", h.url_for(controller = "admin", action = "photo_del_submit", pid = p.id))}
