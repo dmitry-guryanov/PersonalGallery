@@ -1,16 +1,15 @@
-<form action='${h.url_for(controller="/login", action="submit")}' method="post" ENCTYPE="multipart/form-data">
-	<table align=center>
-		<tr>
-			<td>user:</td>
-			<td><input type=text name="username" maxlength=30 size=20 value="" ></td>
-		</tr>
-		<tr>
-			<td>password:</td>
-			<td><input type=password name="password" maxlength=30 size=20 value="" ></td>
-		</tr>
-        <tr>
-            <td colspan=2><input name="enter" type="submit" value="Login"></td>
-        </tr>
+<%inherit file="base.html"/>
+<%def name="header()">
+</%def>
 
-	</table>
-</form>
+<div align="center">
+<h2>Log in to your account</h2>
+
+${h.form(h.url(action='submit'), method='post')}
+Username: ${h.text_field('username')}<br/>
+Password: ${h.password_field('password')}<br/>
+				${h.submit('enter', 'Login')}
+				${h.submit('cancel', 'Cancel')}
+${h.end_form()}
+</div
+
