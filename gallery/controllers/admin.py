@@ -158,12 +158,27 @@ class AdminController(BaseController):
 
 		s = meta.Session
 
-		albums_q = s.query(Album).filter(Album.parent_id == aid)
+		albums_q = s.query(Album).filter(Album.id == aid)
 		albums = albums_q.all()
-		c.albums = albums
+		c.album = albums[0]
 
-		photos_q = s.query(Photo).filter(Photo.album_id == aid)
-		photos = photos_q.all()
-		c.photos = photos
 		return render('/album_edit.mako')
+
+	def album_edit_submit(self, aid):
+		if request.params.get("Cancel"):
+			h.redirect_to(controller="/album")
+
+		s = meta.Session
+
+		albums_q = s.query(Album).filter(Album.id == aid)
+		albums = albums_q.all()
+		album = albums[0]
+
+		album.name = request.params.get("name")
+		album.display_name = request.params.get("title")
+		album.descr = request.params.get("description")
+
+		s.commit()
+
+		h.redirect_to(controller = "/album", action = "show_first_page", aid = aid)
 
