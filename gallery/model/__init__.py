@@ -45,6 +45,7 @@ def init_model(engine):
 				Column('name', Unicode),
 				Column('display_name', Unicode),
 				Column('parent_id', Integer),
+				Column('created', DateTime, default = sa.func.now()),
 				Column('pos', Integer),
 				Column('preview', Unicode),
 				Column('descr', Unicode))
