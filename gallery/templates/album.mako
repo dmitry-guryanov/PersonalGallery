@@ -8,7 +8,7 @@
 <div class="gallery-thumbs">
 % for a in c.albums:
 	<div class="gallery-thumb-album">
-		${h.link_to(unicode(a.display_name, 'utf-8'), h.url_for(controller="/album", action="show_first_page", aid=a.id))}
+		${h.link_to(a.display_name, h.url_for(controller="/album", action="show_first_page", aid=a.id))}
 	</div>
 % endfor
 </div>

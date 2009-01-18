@@ -18,7 +18,7 @@ ${h.form(h.url(action='album_edit_submit'), method='post')}
 ${h.text_field('name', value = c.album.name, size = 40)}<br/>
 
 <h4>Title</h4>
-${h.text_field('title', value = unicode(str(c.album.display_name), 'utf-8'), size = 40)}<br/>
+${h.text_field('title', value = c.album.display_name, size = 40)}<br/>
 
 
 <h4>Description</h4>
