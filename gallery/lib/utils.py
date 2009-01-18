@@ -32,6 +32,12 @@ def get_preview_path(photo):
 	return os.path.join(permanent_store, str(photo.album_id),
 								"previews", preview_name)
 
+def get_album_path(album):
+	return os.path.join(permanent_store, str(album.id))
+
+def get_album_preview_path(album):
+	return os.path.join(permanent_store, str(album.id), "previews")
+
 def get_web_photo_path(photo):
 	return "%s/%s/%s" % (web_static_path, str(photo.album_id), photo.name)
 

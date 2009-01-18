@@ -4,6 +4,7 @@ import shutil
 import tempfile
 import types
 import mimetypes
+import datetime
 
 from gallery.lib.base import *
 from gallery.model import meta, Photo, Album
@@ -27,7 +28,7 @@ def resolve_dup_name(path):
 			return (new_name, new_path)
 		i += 1
 
-def add_photo(aid, name, file):
+def add_photo(aid, name, file, only_file = False, rewrite = False):
 	"""
 	Add single photo to album with given ID
 	"""
@@ -42,7 +43,11 @@ def add_photo(aid, name, file):
 	# save file
 	photo_path = get_photo_path(ph)
 	if os.access(photo_path, os.F_OK):
-		ph.name, photo_path = resolve_dup_name(photo_path)
+		if rewrite:
+			os.unlink(photo_path)
+			os.unlink(get_preview_path(ph))
+		else:
+			ph.name, photo_path = resolve_dup_name(photo_path)
 
 	shutil.copyfile(file, photo_path)
 
@@ -59,10 +64,11 @@ def add_photo(aid, name, file):
 								preview_size, preview_file)
 	os.system(cmd)
 
-	ph.width = inf.width
-	ph.height = inf.height
-	s.save(ph)
-	s.commit()
+	if not only_file:
+		ph.width = inf.width
+		ph.height = inf.height
+		s.save(ph)
+		s.commit()
 
 def add_archive(aid, file, arc_type):
 	"""
@@ -83,6 +89,51 @@ def add_archive(aid, file, arc_type):
 				add_photo(aid, f, fpath)
 	
 	shutil.rmtree(tmpdir)
+
+def del_photo(photo):
+	s = meta.Session
+
+	msg = ""
+	try:
+		os.unlink(get_photo_path(photo))
+	except OSError, e:
+		msg += str(e) + "\n"
+
+	try:
+		os.unlink(get_preview_path(photo))
+	except OSError, e:
+		msg += str(e) + "\n"
+
+	s.delete(photo)
+	s.commit()
+	return msg
+
+def del_album(album):
+
+	s = meta.Session
+
+	child_albums = s.query(Album).filter(Album.parent_id == album.id).all()
+
+	msg = ""
+
+	for a in child_albums:
+		msg += del_album(a)
+
+	photos = s.query(Photo).filter(Photo.album_id == album.id).all()
+
+	for p in photos:
+		msg += del_photo(p)
+
+	s.delete(album)
+
+	try:
+		shutil.rmtree(get_album_path(album))
+	except OSError, e:
+		msg += str(e) + "\n"
+
+	s.commit()
+
+	return msg
 
 class AdminController(BaseController):
 
@@ -125,36 +176,36 @@ class AdminController(BaseController):
 
 				os.unlink(tmpname)
 
-			h.redirect_to(controller = "/album", action = "show_first_page", aid = aid)
+			h.redirect_to(controller = "/album",
+						action = "show_first_page", aid = aid)
 			
 	def photo_del_submit(self, aid, pid):
 
-			s = meta.Session
+		s = meta.Session
 
-			photo_q = s.query(Photo)
-			photos = photo_q.filter_by(album_id=aid, id=pid).all()
-			photo_obj = photos[0]
+		photo_q = s.query(Photo)
+		photos = photo_q.filter_by(album_id=aid, id=pid).all()
+		photo_obj = photos[0]
 
-			msg = "<pre>"
+		msg = del_photo(photo_obj)
 
-			try:
-				os.unlink(get_photo_path(photo_obj))
-			except Exception, e:
-				msg += str(e) + "\n"
+		if msg:
+			msg = "<pre>" + msg + "</pre>"
+			return msg + h.link_to("back to album",
+				h.url(controller = "/album",
+						action = "show_first_page", aid = aid))
+		else:
+			h.redirect_to(controller = "/album",
+						action = "show_first_page", aid = aid)
 
-			try:
-				os.unlink(get_preview_path(photo_obj))
-			except Exception, e:
-				msg += str(e) + "\n"
-			msg += "</pre>"
-
-			s.delete(photo_obj)
-			s.commit()
-
-			h.redirect_to(controller = "/album", action = "show_first_page", aid = aid)
+	def album_add(self, aid):
+		c.new_album = True
+		c.album = Album()
+		return render('/album_edit.mako')
 
 	def album_edit(self, aid):
 		c.aid = aid
+		c.new_album = False
 
 		s = meta.Session
 
@@ -170,15 +221,61 @@ class AdminController(BaseController):
 
 		s = meta.Session
 
-		albums_q = s.query(Album).filter(Album.id == aid)
-		albums = albums_q.all()
-		album = albums[0]
+		if request.params.get("new_album"):
+			album = Album()
+			album.parent_id = aid
+			s.save(album)
+			s.commit()
+
+			os.mkdir(get_album_path(album))
+			os.mkdir(get_album_preview_path(album))
+		else:
+			albums_q = s.query(Album).filter(Album.id == aid)
+			albums = albums_q.all()
+			album = albums[0]
 
 		album.name = request.params.get("name")
 		album.display_name = request.params.get("title")
 		album.descr = request.params.get("description")
 
+
+		new_thumb = request.params.get('album_thumbnail')
+		print new_thumb, repr(new_thumb)
+		if type(new_thumb) is types.InstanceType:
+			name = new_thumb.filename.lstrip(os.sep)
+			(tmpfd, tmpname) = tempfile.mkstemp(suffix=name)
+			tmpobj = os.fdopen(tmpfd, "w")
+			shutil.copyfileobj(new_thumb.file, tmpobj)
+			tmpobj.close()
+			new_thumb.file.close()
+
+			add_photo(album.id, "000-album-preview.jpg", tmpname,
+							only_file = True, rewrite = True)
+			os.unlink(tmpname)
+
 		s.commit()
 
-		h.redirect_to(controller = "/album", action = "show_first_page", aid = aid)
+		h.redirect_to(controller = "/album",
+				action = "show_first_page", aid = aid)
+
+	def album_del(self, aid):
+		
+		s = meta.Session
+
+		albums_q = s.query(Album).filter(Album.id == aid)
+		albums = albums_q.all()
+		album = albums[0]
+
+		parent_id = album.parent_id
+
+		msg = del_album(album)
+
+		if msg:
+			msg = "<pre>" + msg + "</pre>"
+			return msg + h.link_to("back to album",
+				h.url(controller = "/album",
+						action = "show_first_page", aid = parent_id))
+		else:
+			h.redirect_to(controller = "/album",
+						action = "show_first_page", aid = parent_id)
 

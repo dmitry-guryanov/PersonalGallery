@@ -37,7 +37,8 @@ def init_model(engine):
 				Column('album_id', Integer),
 				Column('created', DateTime),
 				Column('width', Integer),
-				Column('height', Integer))
+				Column('height', Integer),
+				Column('hidden', Boolean))
 	orm.mapper(Photo, t_photos)
 
 	t_albums = sa.Table("albums", meta.metadata,
@@ -48,6 +49,7 @@ def init_model(engine):
 				Column('created', DateTime, default = sa.func.now()),
 				Column('pos', Integer),
 				Column('preview', Unicode),
-				Column('descr', Unicode))
+				Column('descr', Unicode),
+				Column('hidden', Boolean))
 	orm.mapper(Album, t_albums)
 
