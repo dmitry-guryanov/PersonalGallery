@@ -5,7 +5,11 @@
 
 <%include file="header.mako"/>
 
-<div align="center">
+<div class="prefs-page">
+
+<h3>Add photos to album</h3>
+<div class="prefs-box">
+<h4>Select one or more images or zip archives</h4>
 ${h.form(h.url(action='photo_add_submit'), multipart=True)}
 % for i in range(20):
 <%   if i < 2:
@@ -36,4 +40,5 @@ ${h.end_form()}
 }
 </script>
 
+</div>
 </div>
