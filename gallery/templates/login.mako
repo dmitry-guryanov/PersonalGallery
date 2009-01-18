@@ -1,7 +1,9 @@
 <%inherit file="base.html"/>
 <%def name="header()">
 </%def>
+<%include file="header.mako"/>
 
+<div class="prefs-box">
 <div align="center">
 <h2>Log in to your account</h2>
 
@@ -12,4 +14,4 @@ Password: ${h.password_field('password')}<br/>
 				${h.submit('cancel', 'Cancel')}
 ${h.end_form()}
 </div>
-
+</div>
