@@ -1,6 +1,5 @@
 import logging
 import md5
-import yaml
 
 from gallery.lib.base import *
 
