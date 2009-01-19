@@ -9,7 +9,6 @@
 					h.url_for(controller="/album", action = "show_first_page", aid=a.id))}
 		</div>
 	% endfor
-	<br/>
 	</div>
 </div>
 <!-- ######  /navibar ###### -->
