@@ -32,7 +32,7 @@
 <div class="gallery-thumbs" align="center">
 % for p in c.photos:
 		<div class="gallery-thumb">
-			<a class="gallery-thumb-link" href='${h.url_for(controller="/photo", aid=p.album_id, pid=p.id)}'>
+			<a href='${h.url_for(controller="/photo", aid=p.album_id, pid=p.id)}'>
 				<img alt="${p.display_name}" src="${c.u.get_web_preview_path(p)}"/>
 			</a>
 % if c.admin:
