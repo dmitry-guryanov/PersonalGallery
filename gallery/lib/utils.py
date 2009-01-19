@@ -12,8 +12,8 @@ from pylons import config
 
 log = logging.getLogger(__name__)
 
-permanent_store = "/home/dimak/gallery-static/photos"
-web_static_path = "/gallery-static/photos"
+permanent_store = config.get('permanent_store')
+web_static_path = config.get('web_static_path')
 
 
 preview_size = 150
@@ -23,11 +23,9 @@ class Image:
 	height = 0
 
 def get_photo_path(photo):
-#	stpath = config['pylons.paths']['static_files']
 	return os.path.join(permanent_store, str(photo.album_id), photo.name)
 
 def get_preview_path(photo):
-#	stpath = config['pylons.paths']['static_files']
 	preview_name = re.sub("([^\.]+)\..+", r"\1-preview.jpg", photo.name)
 	return os.path.join(permanent_store, str(photo.album_id),
 								"previews", preview_name)
