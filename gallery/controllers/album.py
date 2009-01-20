@@ -35,10 +35,11 @@ class AlbumController(BaseController):
 		c.cur_album = cur_album
 
 		albums_q = s.query(Album).filter(Album.parent_id == aid)
+		print dir(albums_q)
 		albums = albums_q.all()
 		c.albums = albums
 
-		photos_q = s.query(Photo).filter(Photo.album_id == aid)
+		photos_q = s.query(Photo).filter(Photo.album_id == aid).order_by(Photo.id.desc())
 		photos = photos_q.all()
 		c.photos = photos
 
