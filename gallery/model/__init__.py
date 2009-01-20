@@ -1,7 +1,9 @@
 import gallery.config.environment
 
 import sqlalchemy as sa
-from sqlalchemy import orm, Column
+from sqlalchemy import orm, Column, ForeignKey
+from sqlalchemy.orm import relation, backref
+from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.types import *
 
 
@@ -15,12 +17,35 @@ def flush():
 	"""Flushes all changes to database"""
 	sac.session.flush()
 
+Base = declarative_base()
+class Photo(Base):
+	__tablename__ = "photos"
 
-class Photo(object):
-	pass
+	id = Column(Integer, primary_key=True)
+	name = Column(Unicode)
+	display_name = Column(Unicode)
+	album_id = Column(Integer, ForeignKey('albums.id'))
+	created = Column( DateTime)
+	width = Column(Integer)
+	height = Column(Integer)
+	hidden = Column(Boolean)
 
-class Album(object):
-	pass
+	album = relation("Album", backref = backref("photos", order_by = id))
+
+class Album(Base):
+	__tablename__ = "albums"
+
+	id = Column(Integer, primary_key = True)
+	name = Column(Unicode)
+	display_name = Column(Unicode)
+	parent_id = Column(Integer, ForeignKey('albums.id'))
+	created = Column(DateTime, default = sa.func.now())
+	pos = Column(Integer)
+	preview = Column(Unicode)
+	descr = Column(Unicode)
+	hidden = Column(Boolean)
+
+	albums = relation("Album")
 
 def init_model(engine):
 	"""Call me before using any of the tables or classes in the model."""
@@ -29,27 +54,4 @@ def init_model(engine):
 
 	meta.engine = engine
 	meta.Session = orm.scoped_session(sm)
-
-	t_photos = sa.Table("photos", meta.metadata,
-				Column('id', Integer, primary_key=True),
-				Column('name', Unicode),
-				Column('display_name', Unicode),
-				Column('album_id', Integer),
-				Column('created', DateTime),
-				Column('width', Integer),
-				Column('height', Integer),
-				Column('hidden', Boolean))
-	orm.mapper(Photo, t_photos)
-
-	t_albums = sa.Table("albums", meta.metadata,
-				Column('id', Integer, primary_key = True),
-				Column('name', Unicode),
-				Column('display_name', Unicode),
-				Column('parent_id', Integer),
-				Column('created', DateTime, default = sa.func.now()),
-				Column('pos', Integer),
-				Column('preview', Unicode),
-				Column('descr', Unicode),
-				Column('hidden', Boolean))
-	orm.mapper(Album, t_albums)
 
