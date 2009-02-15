@@ -41,7 +41,7 @@ class PhotoController(BaseController):
 
 		c.photo = ph
 
-		photos = s.query(Photo).filter(Photo.album_id == aid).order_by(Photo.id.desc())
+		photos = s.query(Photo).filter(Photo.album_id == aid).order_by(Photo.created.desc())
 		photo_ids = map(lambda x: x.id, photos)
 
 		cur_idx = photo_ids.index(ph.id)

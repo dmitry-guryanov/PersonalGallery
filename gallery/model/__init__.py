@@ -25,7 +25,7 @@ class Photo(Base):
 	name = Column(Unicode)
 	display_name = Column(Unicode)
 	album_id = Column(Integer, ForeignKey('albums.id'))
-	created = Column( DateTime)
+	created = Column(DateTime)
 	width = Column(Integer)
 	height = Column(Integer)
 	hidden = Column(Boolean)

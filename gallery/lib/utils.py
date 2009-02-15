@@ -56,6 +56,15 @@ def _get_image_info(path):
 	i = size.index('x')
 	img.width = int(size[:i])
 	img.height = int(size[i + 1:])
+	img.exif = {}
+
+	exif_strs = getoutput("exiftool \"%s\"" % path).splitlines()
+	for s in exif_strs:
+		tag, value = s.split(":", 1)
+		tag = tag.strip()
+		value = value.strip()
+		img.exif[tag] = value
+
 	return img
 
 def get_photo_info(photo):

@@ -67,6 +67,11 @@ def add_photo(aid, name, file, only_file = False, rewrite = False):
 	if not only_file:
 		ph.width = inf.width
 		ph.height = inf.height
+		if inf.exif.has_key("Create Date"):
+			ph.created = datetime.datetime.strptime(inf.exif["Create Date"],
+														"%Y:%m:%d %H:%M:%S")
+		else:
+			ph.created = datetime.datetime.now()
 		s.save(ph)
 		s.commit()
 

@@ -1,3 +1,4 @@
+## -*- coding: utf-8 -*-
 <%inherit file="base.html"/>
 <%def name="header()">
 </%def>
@@ -18,6 +19,10 @@
 				${a.display_name}
 			</a>
 			</div>
+			<span class="meta">
+			${len(a.photos)} фотографий<br/>
+			${len(a.albums)} альбомов
+			</span>
 			<p>
 				${a.descr}
 			</p>
