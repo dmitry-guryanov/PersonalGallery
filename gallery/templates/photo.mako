@@ -1,10 +1,10 @@
-
+## -*- coding: utf-8 -*-
 <%inherit file="base.html"/>
 
 <%def name="header()">
 </%def>
 
-<%include file="header.mako"/>
+${h.link_to(u"к альбому", h.url_for(controller="/album", action="show_first_page", aid=c.photo.album_id))}
 
 <div class="photo">
 % if c.prev:
