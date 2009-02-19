@@ -242,7 +242,7 @@ class AdminController(BaseController):
 		album.name = request.params.get("name")
 		album.display_name = request.params.get("title")
 		album.descr = request.params.get("description")
-
+		album.hidden = int(request.params.get("hide_album", 0)) * 65535
 
 		new_thumb = request.params.get('album_thumbnail')
 		print new_thumb, repr(new_thumb)
