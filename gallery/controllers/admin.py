@@ -35,7 +35,6 @@ def add_photo(aid, name, file, only_file = False, rewrite = False):
 
 	ph = Photo()
 	ph.name = name
-	ph.path = name
 	ph.album_id = aid
 
 	s = meta.Session
