@@ -3,6 +3,7 @@ import os
 import shutil
 import tempfile
 import types
+import time
 import mimetypes
 import datetime
 
@@ -67,8 +68,12 @@ def add_photo(aid, name, file, only_file = False, rewrite = False):
 		ph.width = inf.width
 		ph.height = inf.height
 		if inf.exif.has_key("Create Date"):
-			ph.created = datetime.datetime.strptime(inf.exif["Create Date"],
-														"%Y:%m:%d %H:%M:%S")
+			str_date = inf.exif["Create Date"]
+			if re.match("\d+:\d+:\d+ \d+:\d+:\d+.\d+", str_date):
+				str_date = str_date[:-3]
+			cr_time = time.strptime(str_date, "%Y:%m:%d %H:%M:%S")
+			cr_ts = time.mktime(cr_time)
+			ph.created = datetime.datetime.fromtimestamp(cr_ts)
 		else:
 			ph.created = datetime.datetime.now()
 		s.save(ph)
