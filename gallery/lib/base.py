@@ -12,6 +12,7 @@ from pylons.templating import render
 
 import gallery.lib.helpers as h
 import gallery.model as model
+from gallery.model import meta
 
 class BaseController(WSGIController):
     requires_auth = False
@@ -31,7 +32,10 @@ class BaseController(WSGIController):
         # the request is routed to. This routing information is
         # available in environ['pylons.routes_dict']
 
-        return WSGIController.__call__(self, environ, start_response)
+		try:
+	        return WSGIController.__call__(self, environ, start_response)
+		finally:
+			meta.Session.remove()
 
 # Include the '_' function in the public names
 __all__ = [__name for __name in locals().keys() if not __name.startswith('_') \
