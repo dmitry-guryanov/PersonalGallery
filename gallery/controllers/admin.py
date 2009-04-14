@@ -29,12 +29,15 @@ def resolve_dup_name(path):
 			return (new_name, new_path)
 		i += 1
 
-def add_photo(aid, name, file, only_file = False, rewrite = False):
+def add_photo(aid, name, file, photo = None, only_file = False, rewrite = False):
 	"""
 	Add single photo to album with given ID
 	"""
 
-	ph = Photo()
+	if not photo:
+		ph = Photo()
+	else:
+		ph = photo
 	ph.name = unicode(name)
 	ph.album_id = aid
 
@@ -76,7 +79,9 @@ def add_photo(aid, name, file, only_file = False, rewrite = False):
 			ph.created = datetime.datetime.fromtimestamp(cr_ts)
 		else:
 			ph.created = datetime.datetime.now()
-		s.save(ph)
+		
+		if not photo:
+			s.save(ph)
 		s.commit()
 
 def add_archive(aid, file, arc_type):
@@ -236,8 +241,8 @@ class AdminController(BaseController):
 			tmpobj.close()
 			new_photo.file.close()
 
-			add_photo(aid, name, tmpname,
-							only_file = True, rewrite = True)
+			add_photo(aid, name, tmpname, photo = photo,
+							only_file = False, rewrite = True)
 			photo.name = name
 			os.unlink(tmpname)
 
@@ -298,7 +303,7 @@ class AdminController(BaseController):
 			new_thumb.file.close()
 
 			add_photo(album.id, "000-album-preview.jpg", tmpname,
-							only_file = True, rewrite = True)
+							photo = None, only_file = True, rewrite = True)
 			os.unlink(tmpname)
 
 		s.commit()
