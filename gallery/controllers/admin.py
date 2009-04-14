@@ -207,6 +207,45 @@ class AdminController(BaseController):
 			h.redirect_to(controller = "/album",
 						action = "show_first_page", aid = aid)
 
+	def photo_edit(self, aid, pid):
+		s = meta.Session
+		c.photo = s.query(Photo).filter_by(album_id=aid, id=pid)[0]
+		
+		return render('/photo_edit.mako')
+
+	def photo_edit_submit(self, aid, pid):
+		if request.params.get("Cancel"):
+			h.redirect_to(controller="/album",
+						action = "show_first_page", aid = aid)
+
+		s = meta.Session
+
+		photo = s.query(Photo).filter_by(album_id=aid, id=pid)[0]
+
+		photo.name = request.params.get("name")
+		photo.display_name = request.params.get("title")
+		photo.hidden = int(request.params.get("hide_album", 0)) * 65535
+
+		new_photo = request.params.get('photo_file')
+
+		if type(new_photo) is types.InstanceType:
+			name = new_photo.filename.lstrip(os.sep)
+			(tmpfd, tmpname) = tempfile.mkstemp(suffix=name)
+			tmpobj = os.fdopen(tmpfd, "w")
+			shutil.copyfileobj(new_photo.file, tmpobj)
+			tmpobj.close()
+			new_photo.file.close()
+
+			add_photo(aid, name, tmpname,
+							only_file = True, rewrite = True)
+			photo.name = name
+			os.unlink(tmpname)
+
+		s.commit()
+
+		h.redirect_to(controller="/album",
+					action = "show_first_page", aid = aid)
+
 	def album_add(self, aid):
 		c.new_album = True
 		c.album = Album()
