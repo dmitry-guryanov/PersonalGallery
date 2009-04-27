@@ -31,6 +31,13 @@ class AlbumController(BaseController):
 		# top albums
 		c.top_albums = s.query(Album).filter(Album.parent_id == 0).filter(Album.id != 0).all()
 
+		albums = s.query(Album).filter(Album.id == aid).all()
+		if not albums:
+			msg = "<h3>Album '%s' is not found </h3>" % aid
+			return msg + h.link_to("back to album",
+				h.url(controller = "/album",
+						action = "show_first_page", aid = 0))
+
 		cur_album = s.query(Album).filter(Album.id == aid).all()[0]
 		c.cur_album = cur_album
 
