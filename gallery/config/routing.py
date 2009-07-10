@@ -29,7 +29,7 @@ def make_map():
     map.connect('admin/album_del/:aid', controller='admin', action='album_del', aid = 0)
     map.connect('admin/album_edit/:aid', controller='admin', action='album_edit', aid = 0)
     map.connect('admin/album_edit_submit/:aid', controller='admin', action='album_edit_submit', aid = 0)
-    map.connect('admin/photo_add/:aid', controller='admin', action='photo_add')
+    map.connect('admin/photo_add/:aid', controller='admin', action='photo_add', aid = 0)
     map.connect('admin/photo_add_submit/:aid', controller='admin', action='photo_add_submit')
     map.connect('admin/photo_del_submit/:aid/:pid', controller='admin', action='photo_del_submit')
     map.connect('admin/photo_edit/:aid/:pid', controller='admin', action='photo_edit')
