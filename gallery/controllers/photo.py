@@ -41,7 +41,18 @@ class PhotoController(BaseController):
 
 		c.photo = ph
 
-		photos = s.query(Photo).filter(Photo.album_id == aid).order_by(Photo.created.desc())
+		photos_q = s.query(Photo).filter(Photo.album_id == aid)
+
+		cur_album = s.query(Album).filter(Album.id == aid).all()[0]
+		c.cur_album = cur_album
+
+		if cur_album.sort_by == utils.SORT_BY_DATE:
+			photos_q = photos_q.order_by(Photo.created.desc())
+		elif cur_album.sort_by == utils.SORT_BY_DATE_DESC:
+			photos_q = photos_q.order_by(Photo.created)
+
+		photos = photos_q.all()
+
 		photo_ids = map(lambda x: x.id, photos)
 
 		cur_idx = photo_ids.index(ph.id)
@@ -55,6 +66,11 @@ class PhotoController(BaseController):
 			c.next = None
 		else:
 			c.next = photos[cur_idx + 1]
+
+		x = c.next
+		c.next = c.prev
+		c.prev = x
+	
 
 		return render('/photo.mako')
 

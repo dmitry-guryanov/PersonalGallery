@@ -20,8 +20,13 @@
 			</a>
 			</div>
 			<span class="meta">
-			${len(a.photos)} фотографий<br/>
-			${len(a.albums)} альбомов
+% if len(a.photos) > 0:
+				${len(a.photos)} ${c.u.get_mult_word("photo", len(a.photos))}
+% endif
+% if len(a.albums) > 0:
+				${len(a.albums)} ${c.u.get_mult_word("album", len(a.albums))}
+% endif
+
 			</span>
 			<p>
 				${a.descr}

@@ -24,7 +24,7 @@ class LoginController(BaseController):
 			h.redirect_to(controller="/album")
 
 		# Both fields filled?
-		form_username = str(request.params.get('username'))
+		form_username = str(request.params.get('username')).lower()
 		form_password = str(request.params.get('password'))
 
 		if form_username != "dimak":
