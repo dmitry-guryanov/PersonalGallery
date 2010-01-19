@@ -26,9 +26,6 @@ class PhotoController(BaseController):
 
 		s = meta.Session
 
-		# top albums
-		c.top_albums = s.query(Album).filter(Album.parent_id == 0).filter(Album.id != 0).all()
-
 		photo_q = s.query(Photo)
 		photos = photo_q.filter_by(album_id=aid, id=pid).all()
 
@@ -37,9 +34,7 @@ class PhotoController(BaseController):
 			c.name = pid
 			return render('/photo_not_found.mako')
 		else:
-			ph = photos[0]
-
-		c.photo = ph
+			c.photo = photos[0]
 
 		photos_q = s.query(Photo).filter(Photo.album_id == aid)
 
@@ -47,15 +42,15 @@ class PhotoController(BaseController):
 		c.cur_album = cur_album
 
 		if cur_album.sort_by == utils.SORT_BY_DATE:
-			photos_q = photos_q.order_by(Photo.created.desc())
-		elif cur_album.sort_by == utils.SORT_BY_DATE_DESC:
 			photos_q = photos_q.order_by(Photo.created)
+		elif cur_album.sort_by == utils.SORT_BY_DATE_DESC:
+			photos_q = photos_q.order_by(Photo.created.desc())
 
 		photos = photos_q.all()
 
 		photo_ids = map(lambda x: x.id, photos)
 
-		cur_idx = photo_ids.index(ph.id)
+		cur_idx = photo_ids.index(c.photo.id)
 
 		if cur_idx == 0:
 			c.prev = None
@@ -66,11 +61,6 @@ class PhotoController(BaseController):
 			c.next = None
 		else:
 			c.next = photos[cur_idx + 1]
-
-		x = c.next
-		c.next = c.prev
-		c.prev = x
-	
 
 		return render('/photo.mako')
 
