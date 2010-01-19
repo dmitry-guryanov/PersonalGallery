@@ -17,13 +17,41 @@ log = logging.getLogger(__name__)
 
 class PhotoController(BaseController):
 
+	def _find_adj_photos(self, s, aid, pid):
+		photos_q = s.query(Photo).filter(Photo.album_id == aid)
+
+		cur_album = s.query(Album).filter(Album.id == aid).all()[0]
+
+		if cur_album.sort_by == utils.SORT_BY_DATE:
+			photos_q = photos_q.order_by(Photo.created)
+		elif cur_album.sort_by == utils.SORT_BY_DATE_DESC:
+			photos_q = photos_q.order_by(Photo.created.desc())
+
+		photos = photos_q.all()
+
+		photo_ids = map(lambda x: x.id, photos)
+		print photo_ids, pid
+		cur_idx = photo_ids.index(long(pid))
+
+		if cur_idx == 0:
+			prev = None
+		else:
+			prev = photos[cur_idx - 1]
+
+		if cur_idx == len(photo_ids) - 1:
+			next = None
+		else:
+			next = photos[cur_idx + 1]
+
+		return (prev, next)
+
+
 	def index(self, aid, pid):
 
 		if 'user' in session:
 			c.admin = True
 
 		c.u = utils
-
 		s = meta.Session
 
 		photo_q = s.query(Photo)
@@ -36,31 +64,7 @@ class PhotoController(BaseController):
 		else:
 			c.photo = photos[0]
 
-		photos_q = s.query(Photo).filter(Photo.album_id == aid)
-
-		cur_album = s.query(Album).filter(Album.id == aid).all()[0]
-		c.cur_album = cur_album
-
-		if cur_album.sort_by == utils.SORT_BY_DATE:
-			photos_q = photos_q.order_by(Photo.created)
-		elif cur_album.sort_by == utils.SORT_BY_DATE_DESC:
-			photos_q = photos_q.order_by(Photo.created.desc())
-
-		photos = photos_q.all()
-
-		photo_ids = map(lambda x: x.id, photos)
-
-		cur_idx = photo_ids.index(c.photo.id)
-
-		if cur_idx == 0:
-			c.prev = None
-		else:
-			c.prev = photos[cur_idx - 1]
-
-		if cur_idx == len(photo_ids) - 1:
-			c.next = None
-		else:
-			c.next = photos[cur_idx + 1]
+		(c.prev, c.next) = self._find_adj_photos(s, aid, pid)
 
 		return render('/photo.mako')
 
