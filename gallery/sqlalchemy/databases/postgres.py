@@ -1,29 +1,99 @@
 # postgres.py
-# Copyright (C) 2005, 2006, 2007, 2008 Michael Bayer mike_mp@zzzcomputing.com
+# Copyright (C) 2005, 2006, 2007, 2008, 2009 Michael Bayer mike_mp@zzzcomputing.com
 #
 # This module is part of SQLAlchemy and is released under
 # the MIT License: http://www.opensource.org/licenses/mit-license.php
 
 """Support for the PostgreSQL database.
 
-PostgreSQL supports partial indexes. To create them pass a posgres_where
+Driver
+------
+
+The psycopg2 driver is supported, available at http://pypi.python.org/pypi/psycopg2/ .
+The dialect has several behaviors  which are specifically tailored towards compatibility 
+with this module.
+
+Note that psycopg1 is **not** supported.
+
+Connecting
+----------
+
+URLs are of the form `postgres://user:password@host:port/dbname[?key=value&key=value...]`.
+
+PostgreSQL-specific keyword arguments which are accepted by :func:`~sqlalchemy.create_engine()` are:
+
+* *server_side_cursors* - Enable the usage of "server side cursors" for SQL statements which support
+  this feature.  What this essentially means from a psycopg2 point of view is that the cursor is 
+  created using a name, e.g. `connection.cursor('some name')`, which has the effect that result rows
+  are not immediately pre-fetched and buffered after statement execution, but are instead left 
+  on the server and only retrieved as needed.    SQLAlchemy's :class:`~sqlalchemy.engine.base.ResultProxy`
+  uses special row-buffering behavior when this feature is enabled, such that groups of 100 rows 
+  at a time are fetched over the wire to reduce conversational overhead.
+
+Sequences/SERIAL
+----------------
+
+PostgreSQL supports sequences, and SQLAlchemy uses these as the default means of creating
+new primary key values for integer-based primary key columns.   When creating tables, 
+SQLAlchemy will issue the ``SERIAL`` datatype for integer-based primary key columns, 
+which generates a sequence corresponding to the column and associated with it based on
+a naming convention.
+
+To specify a specific named sequence to be used for primary key generation, use the
+:func:`~sqlalchemy.schema.Sequence` construct::
+
+    Table('sometable', metadata, 
+            Column('id', Integer, Sequence('some_id_seq'), primary_key=True)
+        )
+
+Currently, when SQLAlchemy issues a single insert statement, to fulfill the contract of
+having the "last insert identifier" available, the sequence is executed independently
+beforehand and the new value is retrieved, to be used in the subsequent insert.  Note
+that when an :func:`~sqlalchemy.sql.expression.insert()` construct is executed using 
+"executemany" semantics, the sequence is not pre-executed and normal PG SERIAL behavior
+is used.
+
+PostgreSQL 8.3 supports an ``INSERT...RETURNING`` syntax which SQLAlchemy supports 
+as well.  A future release of SQLA will use this feature by default in lieu of 
+sequence pre-execution in order to retrieve new primary key values, when available.
+
+INSERT/UPDATE...RETURNING
+-------------------------
+
+The dialect supports PG 8.3's ``INSERT..RETURNING`` and ``UPDATE..RETURNING`` syntaxes, 
+but must be explicitly enabled on a per-statement basis::
+
+    # INSERT..RETURNING
+    result = table.insert(postgres_returning=[table.c.col1, table.c.col2]).\\
+        values(name='foo')
+    print result.fetchall()
+    
+    # UPDATE..RETURNING
+    result = table.update(postgres_returning=[table.c.col1, table.c.col2]).\\
+        where(table.c.name=='foo').values(name='bar')
+    print result.fetchall()
+
+Indexes
+-------
+
+PostgreSQL supports partial indexes. To create them pass a postgres_where
 option to the Index constructor::
 
   Index('my_index', my_table.c.id, postgres_where=tbl.c.value > 10)
 
-PostgreSQL 8.2+ supports returning a result set from inserts and updates.
-To use this pass the column/expression list to the postgres_returning
-parameter when creating the queries::
+Transactions
+------------
 
-  raises = tbl.update(empl.c.sales > 100, values=dict(salary=empl.c.salary * 1.1),
-    postgres_returning=[empl.c.id, empl.c.salary]).execute().fetchall()
+The PostgreSQL dialect fully supports SAVEPOINT and two-phase commit operations.
+
+
 """
 
 import decimal, random, re, string
 
 from sqlalchemy import sql, schema, exc, util
 from sqlalchemy.engine import base, default
-from sqlalchemy.sql import compiler, expression
+from sqlalchemy.sql import compiler, expression, util as sql_util
 from sqlalchemy.sql import operators as sql_operators
 from sqlalchemy import types as sqltypes
 
@@ -96,7 +166,11 @@ class PGTime(sqltypes.Time):
 class PGInterval(sqltypes.TypeEngine):
     def get_col_spec(self):
         return "INTERVAL"
-
+    
+    @property
+    def _type_affinity(self):
+        return sqltypes.Interval
+        
 class PGText(sqltypes.Text):
     def get_col_spec(self):
         return "TEXT"
@@ -123,6 +197,18 @@ class PGBoolean(sqltypes.Boolean):
     def get_col_spec(self):
         return "BOOLEAN"
 
+class PGBit(sqltypes.TypeEngine):
+    def get_col_spec(self):
+        return "BIT"
+        
+class PGUuid(sqltypes.TypeEngine):
+    def get_col_spec(self):
+        return "UUID"
+
+class PGDoublePrecision(sqltypes.Float):
+    def get_col_spec(self):
+        return "DOUBLE PRECISION"
+    
 class PGArray(sqltypes.MutableType, sqltypes.Concatenable, sqltypes.TypeEngine):
     def __init__(self, item_type, mutable=True):
         if isinstance(item_type, type):
@@ -189,6 +275,7 @@ colspecs = {
     sqltypes.Smallinteger : PGSmallInteger,
     sqltypes.Numeric : PGNumeric,
     sqltypes.Float : PGFloat,
+    PGDoublePrecision : PGDoublePrecision,
     sqltypes.DateTime : PGDateTime,
     sqltypes.Date : PGDate,
     sqltypes.Time : PGTime,
@@ -205,14 +292,18 @@ ischema_names = {
     'smallint' : PGSmallInteger,
     'character varying' : PGString,
     'character' : PGChar,
+    '"char"' : PGChar,
+    'name': PGChar,
     'text' : PGText,
     'numeric' : PGNumeric,
     'float' : PGFloat,
     'real' : PGFloat,
     'inet': PGInet,
     'cidr': PGCidr,
+    'uuid':PGUuid,
+    'bit':PGBit,
     'macaddr': PGMacAddr,
-    'double precision' : PGFloat,
+    'double precision' : PGDoublePrecision,
     'timestamp' : PGDateTime,
     'timestamp with time zone' : PGDateTime,
     'timestamp without time zone' : PGDateTime,
@@ -223,6 +314,8 @@ ischema_names = {
     'bytea' : PGBinary,
     'boolean' : PGBoolean,
     'interval':PGInterval,
+    'interval year to month':PGInterval,
+    'interval day to second':PGInterval,
 }
 
 # TODO: filter out 'FOR UPDATE' statements
@@ -235,7 +328,8 @@ class PGExecutionContext(default.DefaultExecutionContext):
         # TODO: coverage for server side cursors + select.for_update()
         is_server_side = \
             self.dialect.server_side_cursors and \
-            ((self.compiled and isinstance(self.compiled.statement, expression.Selectable) and not self.compiled.statement.for_update) \
+            ((self.compiled and isinstance(self.compiled.statement, expression.Selectable) 
+                and not getattr(self.compiled.statement, 'for_update', False)) \
             or \
             (
                 (not self.compiled or isinstance(self.compiled.statement, expression._TextClause)) 
@@ -269,7 +363,7 @@ class PGDialect(default.DefaultDialect):
     default_paramstyle = 'pyformat'
     supports_default_values = True
     supports_empty_insert = False
-
+    
     def __init__(self, server_side_cursors=False, **kwargs):
         default.DefaultDialect.__init__(self, **kwargs)
         self.server_side_cursors = server_side_cursors
@@ -285,9 +379,6 @@ class PGDialect(default.DefaultDialect):
             opts['port'] = int(opts['port'])
         opts.update(url.query)
         return ([], opts)
-
-    def create_execution_context(self, *args, **kwargs):
-        return PGExecutionContext(self, *args, **kwargs)
 
     def type_descriptor(self, typeobj):
         return sqltypes.adapt_type(typeobj, colspecs)
@@ -331,7 +422,7 @@ class PGDialect(default.DefaultDialect):
 
     def last_inserted_ids(self):
         if self.context.last_inserted_ids is None:
-            raise exc.InvalidRequestError("no INSERT executed, or can't use cursor.lastrowid without Postgres OIDs enabled")
+            raise exc.InvalidRequestError("no INSERT executed, or can't use cursor.lastrowid without PostgreSQL OIDs enabled")
         else:
             return self.context.last_inserted_ids
 
@@ -341,11 +432,32 @@ class PGDialect(default.DefaultDialect):
             cursor = connection.execute("""select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=current_schema() and lower(relname)=%(name)s""", {'name':table_name.lower().encode(self.encoding)});
         else:
             cursor = connection.execute("""select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and lower(relname)=%(name)s""", {'name':table_name.lower().encode(self.encoding), 'schema':schema});
-        return bool( not not cursor.rowcount )
+        try:
+            return bool(cursor.fetchone())
+        finally:
+            cursor.close()
 
-    def has_sequence(self, connection, sequence_name):
-        cursor = connection.execute('''SELECT relname FROM pg_class WHERE relkind = 'S' AND relnamespace IN ( SELECT oid FROM pg_namespace WHERE nspname NOT LIKE 'pg_%%' AND nspname != 'information_schema' AND relname = %(seqname)s);''', {'seqname': sequence_name.encode(self.encoding)})
-        return bool(not not cursor.rowcount)
+    def has_sequence(self, connection, sequence_name, schema=None):
+        if schema is None:
+            cursor = connection.execute(
+                        sql.text("SELECT relname FROM pg_class c join pg_namespace n on "
+                            "n.oid=c.relnamespace where relkind='S' and n.nspname=current_schema() and lower(relname)=:name",
+                            bindparams=[sql.bindparam('name', unicode(sequence_name.lower()), type_=sqltypes.Unicode)] 
+                        )
+                    )
+        else:
+            cursor = connection.execute(
+                        sql.text("SELECT relname FROM pg_class c join pg_namespace n on "
+                            "n.oid=c.relnamespace where relkind='S' and n.nspname=:schema and lower(relname)=:name",
+                            bindparams=[sql.bindparam('name', unicode(sequence_name.lower()), type_=sqltypes.Unicode),
+                                sql.bindparam('schema', unicode(schema), type_=sqltypes.Unicode)] 
+                        )
+                    )
+        
+        try:
+            return bool(cursor.fetchone())
+        finally:
+            cursor.close()
 
     def is_disconnect(self, e):
         if isinstance(e, self.dbapi.OperationalError):
@@ -437,10 +549,10 @@ class PGDialect(default.DefaultDialect):
                 else:
                     numericprec, numericscale = charlen.split(',')
                 charlen = False
-            if attype == 'double precision':
-                numericprec, numericscale = (53, False)
+            elif attype == 'double precision':
+                numericprec, numericscale = (True, False)
                 charlen = False
-            if attype == 'integer':
+            elif attype == 'integer':
                 numericprec, numericscale = (32, 0)
                 charlen = False
 
@@ -457,6 +569,7 @@ class PGDialect(default.DefaultDialect):
             elif attype == 'timestamp without time zone':
                 kwargs['timezone'] = False
 
+            coltype = None
             if attype in ischema_names:
                 coltype = ischema_names[attype]
             else:
@@ -470,8 +583,6 @@ class PGDialect(default.DefaultDialect):
                             # It can, however, override the default value, but can't set it to null.
                             default = domain['default']
                         coltype = ischema_names[domain['attype']]
-                else:
-                    coltype = None
 
             if coltype:
                 coltype = coltype(*args, **kwargs)
@@ -509,10 +620,11 @@ class PGDialect(default.DefaultDialect):
         c = connection.execute(t, table=table_oid)
         for row in c.fetchall():
             pk = row[0]
-            col = table.c[pk]
-            table.primary_key.add(col)
-            if col.default is None:
-                col.autoincrement = False
+            if pk in table.c:
+                col = table.c[pk]
+                table.primary_key.add(col)
+                if col.default is None:
+                    col.autoincrement = False
 
         # Foreign keys
         FK_SQL = """
@@ -549,7 +661,46 @@ class PGDialect(default.DefaultDialect):
                 for column in referred_columns:
                     refspec.append(".".join([referred_table, column]))
 
-            table.append_constraint(schema.ForeignKeyConstraint(constrained_columns, refspec, conname))
+            table.append_constraint(schema.ForeignKeyConstraint(constrained_columns, refspec, conname, link_to_name=True))
+
+        # Indexes 
+        IDX_SQL = """
+          SELECT c.relname, i.indisunique, i.indexprs, i.indpred,
+            a.attname
+          FROM pg_index i, pg_class c, pg_attribute a
+          WHERE i.indrelid = :table AND i.indexrelid = c.oid
+            AND a.attrelid = i.indexrelid AND i.indisprimary = 'f'
+          ORDER BY c.relname, a.attnum
+        """
+        t = sql.text(IDX_SQL, typemap={'attname':sqltypes.Unicode})
+        c = connection.execute(t, table=table_oid)
+        indexes = {}
+        sv_idx_name = None
+        for row in c.fetchall():
+            idx_name, unique, expr, prd, col = row
+
+            if expr:
+                if not idx_name == sv_idx_name:
+                    util.warn(
+                      "Skipped unsupported reflection of expression-based index %s"
+                      % idx_name)
+                sv_idx_name = idx_name
+                continue
+            if prd and not idx_name == sv_idx_name:
+                util.warn(
+                   "Predicate of partial index %s ignored during reflection"
+                   % idx_name)
+                sv_idx_name = idx_name
+
+            if not indexes.has_key(idx_name):
+                indexes[idx_name] = [unique, []]
+            indexes[idx_name][1].append(col)
+
+        for name, (unique, columns) in indexes.items():
+            schema.Index(name, *[table.columns[c] for c in columns], 
+                         **dict(unique=unique))
+ 
+
 
     def _load_domains(self, connection):
         ## Load data types for domains:
@@ -587,7 +738,6 @@ class PGDialect(default.DefaultDialect):
         return domains
 
 
-
 class PGCompiler(compiler.DefaultCompiler):
     operators = compiler.DefaultCompiler.operators.copy()
     operators.update(
@@ -602,7 +752,7 @@ class PGCompiler(compiler.DefaultCompiler):
     functions = compiler.DefaultCompiler.functions.copy()
     functions.update (
         {
-            'TIMESTAMP':lambda x:'TIMESTAMP %s' % x,
+            'TIMESTAMP':util.deprecated(message="Use a literal string 'timestamp <value>' instead")(lambda x:'TIMESTAMP %s' % x),
         }
     )
 
@@ -611,6 +761,11 @@ class PGCompiler(compiler.DefaultCompiler):
             return None
         else:
             return "nextval('%s')" % self.preparer.format_sequence(seq)
+
+    def post_process_text(self, text):
+        if '%%' in text:
+            util.warn("The SQLAlchemy psycopg2 dialect now automatically escapes '%' in text() expressions to '%%'.")
+        return text.replace('%', '%%')
 
     def limit_clause(self, select):
         text = ""
@@ -668,6 +823,20 @@ class PGCompiler(compiler.DefaultCompiler):
         else:
             return text
 
+    def visit_extract(self, extract, **kwargs):
+        field = self.extract_map.get(extract.field, extract.field)
+        affinity = sql_util.determine_date_affinity(extract.expr)
+        
+        casts = {sqltypes.Date:'date', sqltypes.DateTime:'timestamp', sqltypes.Interval:'interval', sqltypes.Time:'time'}
+        cast = casts.get(affinity, None)
+        if isinstance(extract.expr, sql.ColumnElement) and cast is not None:
+            expr = extract.expr.op('::')(sql.literal_column(cast))
+        else:
+            expr = extract.expr
+        return "EXTRACT(%s FROM %s)" % (
+            field, self.process(expr))
+
+
 class PGSchemaGenerator(compiler.SchemaGenerator):
     def get_column_specification(self, column, **kwargs):
         colspec = self.preparer.format_column(column)
@@ -687,7 +856,7 @@ class PGSchemaGenerator(compiler.SchemaGenerator):
         return colspec
 
     def visit_sequence(self, sequence):
-        if not sequence.optional and (not self.checkfirst or not self.dialect.has_sequence(self.connection, sequence.name)):
+        if not sequence.optional and (not self.checkfirst or not self.dialect.has_sequence(self.connection, sequence.name, schema=sequence.schema)):
             self.append("CREATE SEQUENCE %s" % self.preparer.format_sequence(sequence))
             self.execute()
 
@@ -711,7 +880,7 @@ class PGSchemaGenerator(compiler.SchemaGenerator):
 
 class PGSchemaDropper(compiler.SchemaDropper):
     def visit_sequence(self, sequence):
-        if not sequence.optional and (not self.checkfirst or self.dialect.has_sequence(self.connection, sequence.name)):
+        if not sequence.optional and (not self.checkfirst or self.dialect.has_sequence(self.connection, sequence.name, schema=sequence.schema)):
             self.append("DROP SEQUENCE %s" % self.preparer.format_sequence(sequence))
             self.execute()
 
@@ -757,3 +926,4 @@ dialect.schemagenerator = PGSchemaGenerator
 dialect.schemadropper = PGSchemaDropper
 dialect.preparer = PGIdentifierPreparer
 dialect.defaultrunner = PGDefaultRunner
+dialect.execution_ctx_cls = PGExecutionContext

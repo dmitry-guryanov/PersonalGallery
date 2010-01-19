@@ -1,5 +1,5 @@
 # informix.py
-# Copyright (C) 2005,2006, 2007, 2008 Michael Bayer mike_mp@zzzcomputing.com
+# Copyright (C) 2005,2006, 2007, 2008, 2009 Michael Bayer mike_mp@zzzcomputing.com
 #
 # coding: gbk
 #
@@ -160,7 +160,7 @@ ischema_names = {
     1   : InfoSmallInteger, # SMALLINT
     2   : InfoInteger,      # INT
     3   : InfoNumeric,      # Float
-    3   : InfoNumeric,      # SmallFloat
+    4   : InfoNumeric,      # SmallFloat
     5   : InfoNumeric,      # DECIMAL
     6   : InfoInteger,      # Serial
     7   : InfoDate,         # DATE
@@ -239,9 +239,6 @@ class InfoDialect(default.DefaultDialect):
 
         return ([dsn], opt)
 
-    def create_execution_context(self , *args, **kwargs):
-        return InfoExecutionContext(self, *args, **kwargs)
-
     def table_names(self, connection, schema):
         s = "select tabname from systables"
         return [row[0] for row in connection.execute(s)]
@@ -256,11 +253,11 @@ class InfoDialect(default.DefaultDialect):
         if not rows :
             raise exc.NoSuchTableError(table.name)
         else:
-            if table.owner is not None:
-                if table.owner.lower() in [r[0] for r in rows]:
-                    owner = table.owner.lower()
+            if table.schema is not None:
+                if table.schema.lower() in [r[0] for r in rows]:
+                    owner = table.schema.lower()
                 else:
-                    raise AssertionError("Specified owner %s does not own table %s"%(table.owner, table.name))
+                    raise AssertionError("Specified owner %s does not own table %s"%(table.schema, table.name))
             else:
                 if len(rows)==1:
                     owner = rows[0][0]
@@ -341,7 +338,7 @@ class InfoDialect(default.DefaultDialect):
                 fk[1].append(refspec)
 
         for name, value in fks.iteritems():
-            table.append_constraint(schema.ForeignKeyConstraint(value[0], value[1] , None ))
+            table.append_constraint(schema.ForeignKeyConstraint(value[0], value[1] , None, link_to_name=True ))
 
         # PK
         c = connection.execute("""select t1.constrname as cons_name , t1.constrtype as cons_type ,
@@ -493,3 +490,4 @@ dialect.statement_compiler = InfoCompiler
 dialect.schemagenerator = InfoSchemaGenerator
 dialect.schemadropper = InfoSchemaDropper
 dialect.preparer = InfoIdentifierPreparer
+dialect.execution_ctx_cls = InfoExecutionContext

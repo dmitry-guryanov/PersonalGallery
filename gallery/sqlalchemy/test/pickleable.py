@@ -1,5 +1,9 @@
-"""since the cPickle module as of py2.4 uses erroneous relative imports, define the various
-picklable classes here so we can test PickleType stuff without issue."""
+"""
+
+some objects used for pickle tests, declared in their own module so that they
+are easily pickleable.
+
+"""
 
 
 class Foo(object):
