@@ -44,6 +44,7 @@ class Album(Base):
 	preview = Column(Unicode)
 	descr = Column(Unicode)
 	hidden = Column(Boolean)
+	sort_by = Column(Integer)
 
 	albums = relation("Album")
 
