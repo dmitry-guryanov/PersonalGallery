@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import logging
 import os
 import shutil
@@ -14,6 +15,14 @@ log = logging.getLogger(__name__)
 
 permanent_store = config.get('permanent_store')
 web_static_path = config.get('web_static_path')
+
+
+SORT_BY_DATE		= 1
+SORT_BY_DATE_DESC	= 2
+
+sorting_names = {
+	SORT_BY_DATE: u"по возрастанию времени создания",
+	SORT_BY_DATE_DESC: u"по убыванию даты создания"}
 
 
 preview_size = 150
@@ -69,4 +78,20 @@ def _get_image_info(path):
 
 def get_photo_info(photo):
 	return _get_image_info(get_photo_path(photo))
+
+
+mult_words = {
+	"photo": [u"фотографий", u"фотография", u"фотографии"],
+	"album": [u"альбомов", u"альбом", u"альбома"]
+}
+
+def get_mult_word(word, n):
+	if n >= 10 and n < 20:
+		return mult_words[word][0]
+	elif n % 10 == 1:
+		return mult_words[word][1]
+	elif n % 10 >= 2 and n % 10 < 5:
+		return mult_words[word][2]
+	else:
+		return mult_words[word][0]
 
