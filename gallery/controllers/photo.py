@@ -30,7 +30,6 @@ class PhotoController(BaseController):
 		photos = photos_q.all()
 
 		photo_ids = map(lambda x: x.id, photos)
-		print photo_ids, pid
 		cur_idx = photo_ids.index(long(pid))
 
 		if cur_idx == 0:

@@ -50,16 +50,30 @@ class AlbumController(BaseController):
 		albums = albums_q.all()
 		c.albums = albums
 
-		for a in c.albums:
-			x = len(a.photos)
-			y = len(a.albums)
-
 		photos_q = s.query(Photo).filter(Photo.album_id == aid)
 		
 		if cur_album.sort_by == utils.SORT_BY_DATE:
 			photos_q = photos_q.order_by(Photo.created)
 		elif cur_album.sort_by == utils.SORT_BY_DATE_DESC:
 			photos_q = photos_q.order_by(Photo.created.desc())
+
+		# get photo counts
+		photo_counts = s.execute("SELECT albums.id AS aid, COUNT(*) FROM albums JOIN "
+					"photos ON album_id=albums.id "
+					"WHERE albums.parent_id=%d GROUP BY photos.album_id;" % int(aid)).fetchall()
+		photo_counts = dict(photo_counts)
+
+		# get album counts
+		album_counts = s.execute("SELECT albums1.id AS aid, COUNT(*) AS count "
+						"FROM albums albums1 JOIN albums albums2 ON "
+						"albums2.parent_id=albums1.id "
+						"WHERE albums1.parent_id=%d and (albums2.hidden=0 or %d) "
+						"GROUP BY albums2.parent_id;" % (int(aid), int('user' in session))).fetchall()
+		album_counts = dict(album_counts)
+
+		c.counts = {}
+		for a in albums:
+			c.counts[a.id] = (album_counts.get(a.id, 0), photo_counts.get(a.id, 0))
 
 		photos = photos_q.all()
 		c.photos = photos

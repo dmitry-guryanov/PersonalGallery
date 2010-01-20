@@ -1,5 +1,3 @@
-import gallery.config.environment
-
 import sqlalchemy as sa
 from sqlalchemy import orm, Column, ForeignKey
 from sqlalchemy.orm import relation, backref
@@ -30,8 +28,6 @@ class Photo(Base):
 	height = Column(Integer)
 	hidden = Column(Boolean)
 
-	album = relation("Album", backref = backref("photos", order_by = id))
-
 class Album(Base):
 	__tablename__ = "albums"
 
@@ -45,8 +41,6 @@ class Album(Base):
 	descr = Column(Unicode)
 	hidden = Column(Boolean)
 	sort_by = Column(Integer)
-
-	albums = relation("Album")
 
 def init_model(engine):
 	"""Call me before using any of the tables or classes in the model."""

@@ -20,11 +20,11 @@
 			</a>
 			</div>
 			<span class="meta">
-% if len(a.photos) > 0:
-				${len(a.photos)} ${c.u.get_mult_word("photo", len(a.photos))}
+% if c.counts[a.id][1] > 0:
+				${c.counts[a.id][1]} ${c.u.get_mult_word("photo", c.counts[a.id][1])}
 % endif
-% if len(a.albums) > 0:
-				${len(a.albums)} ${c.u.get_mult_word("album", len(a.albums))}
+% if c.counts[a.id][0] > 0:
+				${c.counts[a.id][0]} ${c.u.get_mult_word("album", c.counts[a.id][0])}
 % endif
 
 			</span>
