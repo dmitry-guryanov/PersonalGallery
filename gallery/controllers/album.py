@@ -35,7 +35,7 @@ class AlbumController(BaseController):
 		if not albums:
 			msg = "<h3>Album '%s' is not found </h3>" % aid
 			return msg + h.link_to("back to album",
-				h.url(controller = "/album",
+				h.url_for(controller = "/album",
 						action = "show_first_page", aid = 0))
 
 		cur_album = s.query(Album).filter(Album.id == aid).all()[0]
