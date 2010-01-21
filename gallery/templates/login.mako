@@ -10,7 +10,7 @@
 <div class="prefs-box">
 <div align="center">
 <h4>Please anter your login and password</h4>
-${h.form(url.current(action='submit'), method='post')}
+${h.secure_form(url.current(action='submit'), method='post')}
 Username: ${h.text('username')}<br/>
 Password: ${h.password('password')}<br/>
 				${h.submit('enter', 'Login')}

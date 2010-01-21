@@ -3,6 +3,7 @@ import md5
 
 from pylons import request, response, session, tmpl_context as c
 from pylons.controllers.util import abort, redirect_to
+from pylons.decorators.secure import authenticate_form
 
 from gallery.lib.base import BaseController, render
 
@@ -18,6 +19,7 @@ class LoginController(BaseController):
 		"""
 		return render('/login.mako')
 
+	@authenticate_form
 	def submit(self):
 		"""
 		Verify username and password
