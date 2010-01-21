@@ -18,8 +18,8 @@ ${h.secure_form(url.current(action='photo_add_submit'), multipart=True)}
      style = "'display: none'"
 %>
 	<div id="filediv-${i}" style=${style}>
-Upload file:      ${h.file_field('new_photo-%d' % i)}
-Caption:          ${h.text_field('description-%d' % i)} <br />
+Upload file:      ${h.file('new_photo-%d' % i)}
+Caption:          ${h.text('description-%d' % i)} <br />
 	</div>
 
 % endfor
