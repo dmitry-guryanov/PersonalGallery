@@ -333,9 +333,9 @@ class AdminController(BaseController):
 		if msg:
 			msg = "<pre>" + msg + "</pre>"
 			return msg + link_to("back to album",
-				url(controller = "/album",
+				url(controller = "album",
 						action = "show_first_page", aid = parent_id))
 		else:
-			redirect_to(controller = "/album",
+			redirect_to(controller = "album",
 						action = "show_first_page", aid = parent_id)
 
