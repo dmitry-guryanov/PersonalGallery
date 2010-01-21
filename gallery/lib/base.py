@@ -1,17 +1,11 @@
 """The base Controller API
 
-Provides the BaseController class for subclassing, and other objects
-utilized by Controllers.
+Provides the BaseController class for subclassing.
 """
-from pylons import c, cache, config, g, request, response, session
 from pylons.controllers import WSGIController
-from pylons.controllers.util import abort, etag_cache, redirect_to
-from pylons.decorators import jsonify, validate
-from pylons.i18n import _, ungettext, N_
-from pylons.templating import render
+from pylons.templating import render_mako as render
+from pylons import session
 
-import gallery.lib.helpers as h
-import gallery.model as model
 from gallery.model import meta
 
 class BaseController(WSGIController):
@@ -37,6 +31,3 @@ class BaseController(WSGIController):
         finally:
             meta.Session.remove()
 
-# Include the '_' function in the public names
-__all__ = [__name for __name in locals().keys() if not __name.startswith('_') \
-           or __name == '_']

@@ -1,7 +1,10 @@
 import logging
 import md5
 
-from gallery.lib.base import *
+from pylons import request, response, session, tmpl_context as c
+from pylons.controllers.util import abort, redirect_to
+
+from gallery.lib.base import BaseController, render
 
 log = logging.getLogger(__name__)
 
@@ -21,7 +24,7 @@ class LoginController(BaseController):
 		"""
 
 		if request.params.get("Cancel"):
-			h.redirect_to(controller="/album")
+			redirect_to(controller="/album")
 
 		# Both fields filled?
 		form_username = str(request.params.get('username')).lower()
@@ -38,7 +41,7 @@ class LoginController(BaseController):
 		session.save()
 
 
-		h.redirect_to(controller="/album")
+		redirect_to(controller="/album")
 
 	def logout(self):
 		"""
@@ -47,5 +50,5 @@ class LoginController(BaseController):
 		if 'user' in session:
 			del session['user']
 			session.save()
-		h.redirect_to(controller="/album")
+		redirect_to(controller="/album")
 

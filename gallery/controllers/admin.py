@@ -7,7 +7,12 @@ import time
 import mimetypes
 import datetime
 
-from gallery.lib.base import *
+from pylons import request, response, session, tmpl_context as c
+from pylons.controllers.util import abort, redirect_to
+
+from gallery.lib.base import BaseController, render
+from pylons import url
+from gallery.lib.helpers import link_to
 from gallery.model import meta, Photo, Album
 import sqlalchemy as sa
 
@@ -190,7 +195,7 @@ class AdminController(BaseController):
 
 				os.unlink(tmpname)
 
-			h.redirect_to(controller = "/album",
+			redirect_to(controller = "/album",
 						action = "show_first_page", aid = aid)
 			
 	def photo_del_submit(self, aid, pid):
@@ -205,11 +210,11 @@ class AdminController(BaseController):
 
 		if msg:
 			msg = "<pre>" + msg + "</pre>"
-			return msg + h.link_to("back to album",
-				h.url(controller = "/album",
+			return msg + link_to("back to album",
+				url(controller = "/album",
 						action = "show_first_page", aid = aid))
 		else:
-			h.redirect_to(controller = "/album",
+			redirect_to(controller = "/album",
 						action = "show_first_page", aid = aid)
 
 	def photo_edit(self, aid, pid):
@@ -220,7 +225,7 @@ class AdminController(BaseController):
 
 	def photo_edit_submit(self, aid, pid):
 		if request.params.get("Cancel"):
-			h.redirect_to(controller="/album",
+			redirect_to(controller="/album",
 						action = "show_first_page", aid = aid)
 
 		s = meta.Session
@@ -248,7 +253,7 @@ class AdminController(BaseController):
 
 		s.commit()
 
-		h.redirect_to(controller="/album",
+		redirect_to(controller="/album",
 					action = "show_first_page", aid = aid)
 
 	def album_add(self, aid):
@@ -270,7 +275,7 @@ class AdminController(BaseController):
 
 	def album_edit_submit(self, aid):
 		if request.params.get("Cancel"):
-			h.redirect_to(controller="/album")
+			redirect_to(controller="/album")
 
 		s = meta.Session
 
@@ -308,7 +313,7 @@ class AdminController(BaseController):
 
 		s.commit()
 
-		h.redirect_to(controller = "/album",
+		redirect_to(controller = "/album",
 				action = "show_first_page", aid = aid)
 
 	def album_del(self, aid):
@@ -325,10 +330,10 @@ class AdminController(BaseController):
 
 		if msg:
 			msg = "<pre>" + msg + "</pre>"
-			return msg + h.link_to("back to album",
-				h.url(controller = "/album",
+			return msg + link_to("back to album",
+				url(controller = "/album",
 						action = "show_first_page", aid = parent_id))
 		else:
-			h.redirect_to(controller = "/album",
+			redirect_to(controller = "/album",
 						action = "show_first_page", aid = parent_id)
 

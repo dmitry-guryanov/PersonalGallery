@@ -1,6 +1,11 @@
 import logging
 
-from gallery.lib.base import *
+from pylons import request, response, session, tmpl_context as c
+from pylons.controllers.util import abort, redirect_to
+
+from gallery.lib.base import BaseController, render
+from pylons import url
+from gallery.lib.helpers import link_to
 from gallery.model import meta, Photo, Album
 import sqlalchemy as sa
 
@@ -34,8 +39,8 @@ class AlbumController(BaseController):
 		albums = s.query(Album).filter(Album.id == aid).all()
 		if not albums:
 			msg = "<h3>Album '%s' is not found </h3>" % aid
-			return msg + h.link_to("back to album",
-				h.url_for(controller = "/album",
+			return msg + link_to("back to album",
+				url(controller = "album",
 						action = "show_first_page", aid = 0))
 
 		cur_album = s.query(Album).filter(Album.id == aid).all()[0]
