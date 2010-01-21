@@ -3,7 +3,7 @@ Server info for ${request.host}
 </h2>
 
 <p>
-The URL you called: ${h.url_for()}
+The URL you called: ${url.current()}
 </p>
 
 <p>

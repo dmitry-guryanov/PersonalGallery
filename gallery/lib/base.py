@@ -18,7 +18,7 @@ class BaseController(WSGIController):
             # after a successful login
             session['path_before_login'] = request.path_info
             session.save()
-            return redirect_to(h.url_for(controller='login'))
+            return redirect_to(url(controller='login'))
 
     def __call__(self, environ, start_response):
         """Invoke the Controller"""
