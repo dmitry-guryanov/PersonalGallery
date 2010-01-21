@@ -203,18 +203,20 @@ class AdminController(BaseController):
 		s = meta.Session
 
 		photo_q = s.query(Photo)
-		photos = photo_q.filter_by(album_id=aid, id=pid).all()
-		photo_obj = photos[0]
+		photo_obj = photo_q.filter_by(album_id=aid, id=pid).first()
+		if c.photo is None:
+			c.name = pid
+			return render('/photo_not_found.mako')
 
 		msg = del_photo(photo_obj)
 
 		if msg:
 			msg = "<pre>" + msg + "</pre>"
 			return msg + link_to("back to album",
-				url(controller = "/album",
+				url(controller = "album",
 						action = "show_first_page", aid = aid))
 		else:
-			redirect_to(controller = "/album",
+			redirect_to(controller = "album",
 						action = "show_first_page", aid = aid)
 
 	def photo_edit(self, aid, pid):
@@ -267,9 +269,9 @@ class AdminController(BaseController):
 
 		s = meta.Session
 
-		albums_q = s.query(Album).filter(Album.id == aid)
-		albums = albums_q.all()
-		c.album = albums[0]
+		c.album = s.query(Album).filter(Album.id == aid).first()
+		if not c.album:
+			return "Album %s is not found" % aid
 
 		return render('/album_edit.mako')
 
@@ -288,9 +290,9 @@ class AdminController(BaseController):
 			os.mkdir(get_album_path(album))
 			os.mkdir(get_album_preview_path(album))
 		else:
-			albums_q = s.query(Album).filter(Album.id == aid)
-			albums = albums_q.all()
-			album = albums[0]
+			album = s.query(Album).filter(Album.id == aid).first()
+			if not album:
+				return "Album %s is not found" % aid
 
 		album.name = request.params.get("name")
 		album.display_name = request.params.get("title")
@@ -320,9 +322,9 @@ class AdminController(BaseController):
 		
 		s = meta.Session
 
-		albums_q = s.query(Album).filter(Album.id == aid)
-		albums = albums_q.all()
-		album = albums[0]
+		album = s.query(Album).filter(Album.id == aid).first()
+		if not album:
+			return "Album %s is not found" % aid
 
 		parent_id = album.parent_id
 
