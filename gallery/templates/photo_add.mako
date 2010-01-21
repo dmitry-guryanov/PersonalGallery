@@ -23,7 +23,7 @@ Caption:          ${h.text_field('description-%d' % i)} <br />
 	</div>
 
 % endfor
-                  ${h.submit('Submit')}
+                  ${h.submit('submit0', 'Submit')}
 ${h.end_form()}
 
 <script type="text/javascript">

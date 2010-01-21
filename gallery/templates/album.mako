@@ -47,8 +47,8 @@
 			</a>
 % if c.admin:
 			<br/>
-			${h.link_to("del", h.url_for(controller = "admin", action = "photo_del_submit", pid = p.id))}
-			${h.link_to("edit", h.url_for(controller = "admin", action = "photo_edit", pid = p.id))}
+			${h.link_to("del", h.url_for(controller = "admin", action = "photo_del_submit", aid = c.album, pid = p.id))}
+			${h.link_to("edit", h.url_for(controller = "admin", action = "photo_edit", aid = c.album, pid = p.id))}
 % endif
 		</div>
 % endfor
