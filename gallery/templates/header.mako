@@ -13,6 +13,7 @@
 </div>
 <!-- ######  /navibar ###### -->
 % if c.admin:
+	${h.auth_token_hidden_field()}
 	<div>
 	<div class="admin_navibar">
 	${h.link_to("edit album", url.current(controller="admin", action="album_edit"))}

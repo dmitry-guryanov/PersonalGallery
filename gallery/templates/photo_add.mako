@@ -10,7 +10,7 @@
 <h3>Add photos to album</h3>
 <div class="prefs-box">
 <h4>Select one or more images or zip archives</h4>
-${h.form(url.current(action='photo_add_submit'), multipart=True)}
+${h.secure_form(url.current(action='photo_add_submit'), multipart=True)}
 % for i in range(20):
 <%   if i < 2:
      style = "'display: block'"

@@ -12,7 +12,7 @@
 <div class="main_content">
 <div class="prefs-box">
 
-${h.form(url.current(action='photo_edit_submit'), method='post', multipart=True)}
+${h.secure_form(url.current(action='photo_edit_submit'), method='post', multipart=True)}
 
 <h4>Name</h4>
 ${h.text_field('name', value = c.photo.name, size = 40)}<br/>

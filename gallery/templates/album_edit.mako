@@ -16,7 +16,7 @@
 <div class="main_content">
 <div class="prefs-box">
 
-${h.form(url.current(action='album_edit_submit'), method='post', multipart=True)}
+${h.secure_form(url.current(action='album_edit_submit'), method='post', multipart=True)}
 
 % if c.new_album:
 ${h.hidden_field('new_album', value = 1)}

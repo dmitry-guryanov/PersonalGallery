@@ -9,6 +9,7 @@ import datetime
 
 from pylons import request, response, session, tmpl_context as c
 from pylons.controllers.util import abort, redirect_to
+from pylons.decorators.secure import authenticate_form
 
 from gallery.lib.base import BaseController, render
 from pylons import url
@@ -167,6 +168,7 @@ class AdminController(BaseController):
 	def photo_add(self, aid):
 			return render("/photo_add.mako")
 
+	@authenticate_form
 	def photo_add_submit(self, aid):
 
 			for i in range(20):
@@ -225,6 +227,7 @@ class AdminController(BaseController):
 		
 		return render('/photo_edit.mako')
 
+	@authenticate_form
 	def photo_edit_submit(self, aid, pid):
 		if request.params.get("Cancel"):
 			redirect_to(controller="/album",
@@ -275,6 +278,7 @@ class AdminController(BaseController):
 
 		return render('/album_edit.mako')
 
+	@authenticate_form
 	def album_edit_submit(self, aid):
 		if request.params.get("Cancel"):
 			redirect_to(controller="/album")
