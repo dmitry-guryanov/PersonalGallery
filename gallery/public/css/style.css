@@ -1,0 +1,157 @@
+
+body {
+	background-color: #2A2A2A;
+#	margin: 0px;
+	font-family: Arial;
+	color: #CCC;
+}
+
+a, a:visited {
+#	font-weight: bold;
+	text-decoration: underline;
+	color: #888;
+	margin: 0px 5px;
+}
+
+a:hover {
+	text-decoration: underline;
+	color: #cc2233;
+}
+
+.main-header a {
+	text-decoration: none;
+
+}
+
+input {
+#	margin: 3px;
+}
+
+h4 {
+#	margin: 12px 2px 0px;
+}
+
+p {
+#	margin: 4px;
+}
+
+input {
+	background-color: #555;
+	color: white;
+}
+
+.centered {
+	text-align: center;
+}
+
+.main-header {
+	font-size: 18pt;
+	display: block;
+	padding: 10px 10px 0px 20px;
+}
+
+.main-content {
+	background-color: #2A2A2A;
+}
+
+.admin_navibar {
+	width:60%;
+	text-align: right;
+	margin: auto;
+}
+
+.navibar {
+	width:60%;
+	margin: auto;
+	margin-bottom: 7px;
+	text-align: center;
+}
+
+.navibar-item {
+	margin: 10px;
+	display: inline;
+#	font-weight: bold;
+}
+
+.navibar a {
+	text-decoration: underline;
+	font-size: 12pt;
+	color: #777;
+	margin: 0px 20px 0px 20px;
+}
+
+.navibar a:hover {
+	text-decoration: underline;
+	color: #cc2233;
+}
+
+.gallery-photo {
+	border-style: solid;
+	border-width: 16px;
+	border-color: #FFF;
+	margin-left: auto;
+	margin-right: auto;
+	display: block;
+}
+
+div.photo {
+	border-color: #3A3A3A;
+	border-style: solid;
+	border-width: 10px;
+	background-color: #3A3A3A;
+}
+
+
+
+.gallery-thumbs {
+#	border: 1px solid #3F3F3F;
+	background-color: #3A3A3A;
+	width: 800px;
+	padding: 0px;
+	margin: auto;
+}
+
+.gallery-album {
+	float: left;
+	display: block;
+	width: 49%;
+#	border: 1px solid #2A2A2A;
+}
+
+.album-link {
+	display: block;
+	margin-top: 20px;
+	font-weight: normal;
+	font-size: 16px;
+}
+
+.meta {
+	font-size: 9pt;
+	color: #777;
+}
+
+.gallery-thumb {
+	margin: 17px;
+	float: left;
+	text-align: center;
+}
+
+.gallery-thumb img {
+	border-style: solid;
+	border-color: #555;
+	border-width: 1px;
+}
+
+.prefs-page {
+	margin: 20px;
+	
+}
+
+.prefs-box {
+	border-style: solid;
+	border-width: 1px;
+	border-color: #3F3F3F;
+	background-color: #3A3A3A;
+	padding: 10px 16px;
+	margin: 10px;
+}
