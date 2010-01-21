@@ -10,12 +10,12 @@
 % for a in c.albums:
 		<div class="gallery-album">
 			<div class="gallery-thumb">
-				<a class="gallery-thumb-link" href='${h.url_for(controller="/album", action="show_first_page", aid=a.id)}'>
+				<a class="gallery-thumb-link" href='${url(controller="album", action="show_first_page", aid=a.id)}'>
 						<img style="position: relative" alt="${a.display_name}" src="${c.u.get_web_album_thumb(a)}"/>
 				</a>
 			</div>
 			<div class="album-link">
-			<a href='${h.url_for(controller="/album", action="show_first_page", aid=a.id)}'>
+			<a href='${url(controller="album", action="show_first_page", aid=a.id)}'>
 				${a.display_name}
 			</a>
 			</div>
@@ -42,13 +42,13 @@
 	<div class="gallery-thumbs">
 % for p in c.photos:
 		<div class="gallery-thumb">
-			<a href='${h.url_for(controller="/photo", aid=p.album_id, pid=p.id)}'>
+			<a href='${url(controller="photo", aid=p.album_id, pid=p.id)}'>
 				<img alt="${p.display_name}" src="${c.u.get_web_preview_path(p)}"/>
 			</a>
 % if c.admin:
 			<br/>
-			${h.link_to("del", h.url_for(controller = "admin", action = "photo_del_submit", aid = c.album, pid = p.id))}
-			${h.link_to("edit", h.url_for(controller = "admin", action = "photo_edit", aid = c.album, pid = p.id))}
+			${h.link_to("del", url(controller = "admin", action = "photo_del_submit", aid = c.album, pid = p.id))}
+			${h.link_to("edit", url(controller = "admin", action = "photo_edit", aid = c.album, pid = p.id))}
 % endif
 		</div>
 % endfor

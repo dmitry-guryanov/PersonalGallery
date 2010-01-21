@@ -4,11 +4,11 @@
 <%def name="header()">
 </%def>
 
-${h.link_to(u"к альбому", h.url_for(controller="/album", action="show_first_page", aid=c.photo.album_id))}
+${h.link_to(u"к альбому", url(controller="album", action="show_first_page", aid=c.photo.album_id))}
 
 <div class="photo">
 % if c.prev:
-	<a href='${h.url_for(controller="photo", aid=c.prev.album_id, pid=c.prev.id)}'
+	<a href='${url.current(pid=c.prev.id)}'
 		id="prevArrow"
 		style="position: absolute;
 	            margin: 15px 0 0 35%;
@@ -20,7 +20,7 @@ ${h.link_to(u"к альбому", h.url_for(controller="/album", action="show_fi
 % endif
 
 % if c.next:
-	<a href='${h.url_for(controller="photo", aid=c.next.album_id, pid=c.next.id)}'
+	<a href='${url.current(pid=c.next.id)}'
 		id="nextArrow"
 		style="position: absolute;
 	            margin: 15px 0 0 60%;
@@ -40,7 +40,7 @@ ${h.link_to(u"к альбому", h.url_for(controller="/album", action="show_fi
 
 % if c.prev:
 <area shape="rect" coords="0,0,${c.photo.width / 3},${c.photo.height}"
-href='${h.url_for(controller="photo", aid=c.prev.album_id, pid=c.prev.id)}'
+href='${url.current(pid=c.prev.id)}'
 alt="IMG_0161"
 onmouseover="document.getElementById('prevArrow').style.visibility='visible'"
 onmouseout="document.getElementById('prevArrow').style.visibility='hidden'"/>
@@ -48,7 +48,7 @@ onmouseout="document.getElementById('prevArrow').style.visibility='hidden'"/>
 
 % if c.next:
 <area shape="rect" coords="${c.photo.width * 2 / 3},0,${c.photo.width},${c.photo.height}"
-href='${h.url_for(controller="photo", aid=c.next.album_id, pid=c.next.id)}'
+href='${url.current(pid=c.next.id)}'
 alt="IMG_0161"
 onmouseover="document.getElementById('nextArrow').style.visibility='visible'"
 onmouseout="document.getElementById('nextArrow').style.visibility='hidden'"/>
