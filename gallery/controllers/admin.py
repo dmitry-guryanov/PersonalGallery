@@ -271,7 +271,7 @@ class AdminController(BaseController):
 
 		c.album = s.query(Album).filter(Album.id == aid).first()
 		if not c.album:
-			return "Album %s is not found" % aid
+			abort(404)
 
 		return render('/album_edit.mako')
 
@@ -292,7 +292,7 @@ class AdminController(BaseController):
 		else:
 			album = s.query(Album).filter(Album.id == aid).first()
 			if not album:
-				return "Album %s is not found" % aid
+				abort(404)
 
 		album.name = request.params.get("name")
 		album.display_name = request.params.get("title")
@@ -324,7 +324,7 @@ class AdminController(BaseController):
 
 		album = s.query(Album).filter(Album.id == aid).first()
 		if not album:
-			return "Album %s is not found" % aid
+			abort(404)
 
 		parent_id = album.parent_id
 

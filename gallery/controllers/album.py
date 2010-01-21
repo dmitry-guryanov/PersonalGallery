@@ -38,7 +38,7 @@ class AlbumController(BaseController):
 
 		c.cur_album = s.query(Album).filter(Album.id == aid).first()
 		if not c.cur_album:
-			return "Album %s is not found" % aid
+			abort(404)
 
 		albums_q = s.query(Album).filter(Album.parent_id == aid)
 

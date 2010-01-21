@@ -60,7 +60,7 @@ class PhotoController(BaseController):
 		c.photo = photo_q.filter_by(album_id=aid, id=pid).first()
 
 		if c.photo is None:
-			return "Photo %s in album %s is not found" % (pid, aid)
+			abort(404)
 
 		(c.prev, c.next) = self._find_adj_photos(s, aid, pid)
 
