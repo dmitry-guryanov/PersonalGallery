@@ -8,6 +8,8 @@ debug = true
 email_to = you@yourdomain.com
 smtp_server = localhost
 error_email_from = paste@localhost
+permanent_store = %(here)s/gallery/public/gallery-static
+web_static_path = /gallery-static
 
 [server:main]
 use = egg:Paste#http
@@ -31,13 +33,12 @@ app_instance_uuid = ${app_instance_uuid}
 #beaker.session.data_dir = %(here)s/data/sessions
 
 # SQLAlchemy database URL
-sqlalchemy.url = sqlite:///%(here)s/quickwiki.db
+sqlalchemy.url = sqlite:///%(here)s/gallery.db
 
 # WARNING: *THE LINE BELOW MUST BE UNCOMMENTED ON A PRODUCTION ENVIRONMENT*
 # Debug mode will enable the interactive debugging tool, allowing ANYONE to
 # execute malicious code after an exception is raised.
 set debug = false
-
 
 # Logging configuration
 [loggers]
