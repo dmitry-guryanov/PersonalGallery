@@ -2,7 +2,7 @@
 import logging
 
 from gallery import model
-from galery.config.environment import load_environment
+from gallery.config.environment import load_environment
 from gallery.model import meta
 
 log = logging.getLogger(__name__)
