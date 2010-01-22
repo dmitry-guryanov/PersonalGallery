@@ -6,6 +6,7 @@ from sqlalchemy.types import *
 
 
 from gallery.model import meta
+from meta import Base
 
 def resync():
 	"""Renews SQLAlchemy session with current thread"""
@@ -15,7 +16,6 @@ def flush():
 	"""Flushes all changes to database"""
 	sac.session.flush()
 
-Base = declarative_base()
 class Photo(Base):
 	__tablename__ = "photos"
 
@@ -44,7 +44,8 @@ class Album(Base):
 
 def init_model(engine):
 	"""Call me before using any of the tables or classes in the model."""
+	sm = orm.sessionmaker(bind=engine)
 
-	meta.Session.configure(bind=engine)
 	meta.engine = engine
+	meta.Session = orm.scoped_session(sm)
 
