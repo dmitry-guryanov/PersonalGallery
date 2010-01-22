@@ -35,7 +35,6 @@
 % endfor
 		<div style="clear: both"></div>
 	</div>
-</div>
 % endif
 
 % if c.photos:
@@ -57,4 +56,4 @@
 % elif not c.albums:
 	<h2>There are no photos in this album</h2>
 % endif
-</div>
+

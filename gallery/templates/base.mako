@@ -9,17 +9,21 @@
 </head>
 
 <body>
-	<div class="header">
+	<div class="header">	<!-- HEADER -->
 		${self.header()}
-	</div>
-	<div class="main-content">
+	</div>	<!-- HEADER -->
+
+
+	<div class="main-content">	<!-- MAIN-CONTENT -->
 
 	${self.body()}
 
-	<div class="footer">
+	</div>	<!-- MAIN-CONTENT -->
+
+
+	<div class="footer">	<!-- FOOTER -->
 		${self.footer()}
-	</div>
-	</div>
+	</div>	<!-- FOOTER -->
 </body>
 
 <%def name="footer()">
