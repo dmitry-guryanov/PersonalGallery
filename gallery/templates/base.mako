@@ -5,7 +5,7 @@
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<title>Dmitry Guryanov's gallery</title>
-	${h.stylesheet_link('/css/style.css')}
+	${h.stylesheet_link('/gallery-static/css/style.css')}
 </head>
 
 <body>
