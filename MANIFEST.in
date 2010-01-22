@@ -1,2 +1,3 @@
+include gallery/config/deployment.ini_tmpl
 recursive-include gallery/public *
 recursive-include gallery/templates *
