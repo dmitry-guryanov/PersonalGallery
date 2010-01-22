@@ -55,6 +55,6 @@
 		<div style="clear: both"></div>
 	</div>
 % elif not c.albums:
-	<h2>There is not photos in this album</h2>
+	<h2>There are no photos in this album</h2>
 % endif
 </div>
