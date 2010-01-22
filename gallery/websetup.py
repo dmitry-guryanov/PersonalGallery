@@ -1,14 +1,23 @@
 """Setup the gallery application"""
 import logging
 
-from paste.deploy import appconfig
-from pylons import config
-
-from gallery.config.environment import load_environment
+from gallery import model
+from galery.config.environment import load_environment
+from gallery.model import meta
 
 log = logging.getLogger(__name__)
 
-def setup_config(command, filename, section, vars):
+def setup_app(command, conf, vars):
     """Place any commands to setup gallery here"""
-    conf = appconfig('config:' + filename)
     load_environment(conf.global_conf, conf.local_conf)
+
+    # Create the tables if they don't already exist
+    log.info("Creating tables...")
+    meta.metadata.create_all(bind=meta.engine)
+    log.info("Successfully set up.")
+
+    log.info("Adding front page data...")
+    album = model.Album(id = 0, parent_id = 0, name = "root")
+    meta.Session.add(album)
+    meta.Session.commit()
+    log.info("Successfully set up.")
