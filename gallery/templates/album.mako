@@ -1,5 +1,5 @@
 ## -*- coding: utf-8 -*-
-<%inherit file="base.html"/>
+<%inherit file="base.mako"/>
 <%def name="header()">
 </%def>
 
