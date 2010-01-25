@@ -1,16 +1,16 @@
-This file is for you to describe the gallery application. Typically
+This file is for you to describe the PersonalGallery application. Typically
 you would include information such as the information below:
 
 Installation and Setup
 ======================
 
-Install ``gallery`` using easy_install::
+Install ``PersonalGallery`` using easy_install::
 
-    easy_install gallery
+    easy_install PersonalGallery
 
 Make a config file as follows::
 
-    paster make-config gallery config.ini
+    paster make-config PersonalGallery config.ini
 
 Tweak the config file as appropriate and then setup the application::
 

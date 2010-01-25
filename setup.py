@@ -6,7 +6,7 @@ except ImportError:
     from setuptools import setup, find_packages
 
 setup(
-    name='gallery',
+    name='PersonalGallery',
     version="0.1",
     description='',
     author='',
