@@ -18,10 +18,10 @@ setup(
     include_package_data=True,
     test_suite='nose.collector',
     package_data={'gallery': ['i18n/*/LC_MESSAGES/*.mo']},
-    #message_extractors = {'gallery': [
-    #        ('**.py', 'python', None),
-    #        ('templates/**.mako', 'mako', None),
-    #        ('public/**', 'ignore', None)]},
+    message_extractors = {'gallery': [
+            ('**.py', 'python', None),
+            ('templates/**.mako', 'mako', None),
+            ('controllers/**', 'ignore', None)]},
 	zip_safe=False,
 	paster_plugins=['PasteScript', 'Pylons'],
 
