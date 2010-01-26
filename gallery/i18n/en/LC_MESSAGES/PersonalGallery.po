@@ -1,0 +1,48 @@
+# English translations for PersonalGallery.
+# Copyright (C) 2010 ORGANIZATION
+# This file is distributed under the same license as the PersonalGallery
+# project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2010.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PersonalGallery 0.1\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2010-01-26 09:22+0300\n"
+"PO-Revision-Date: 2010-01-26 09:36+0300\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 0.9.4\n"
+
+#: gallery/templates/login.mako:9
+msgid "Log in to your account"
+msgstr "Log in to your account"
+
+#: gallery/templates/login.mako:12
+msgid "Please anter your login and password"
+msgstr "Please anter your login and password"
+
+#: gallery/templates/login.mako:15
+msgid "Username"
+msgstr "Username"
+
+#: gallery/templates/login.mako:16
+msgid "Password"
+msgstr "Password"
+
+#: gallery/templates/login.mako:17
+msgid "Login"
+msgstr "Login"
+
+#: gallery/templates/login.mako:18
+msgid "Cancel"
+msgstr "Cancel"
+
+#: gallery/templates/photo.mako:7
+msgid "up to album"
+msgstr "up to album"
+
