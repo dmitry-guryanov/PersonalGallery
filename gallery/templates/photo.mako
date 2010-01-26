@@ -4,7 +4,7 @@
 <%def name="header()">
 </%def>
 
-${h.link_to(u"к альбому", url(controller="album", action="show_first_page", aid=c.photo.album_id))}
+${h.link_to(_(u"up to album"), url(controller="album", action="show_first_page", aid=c.photo.album_id))}
 
 <div class="photo">
 % if c.prev:
