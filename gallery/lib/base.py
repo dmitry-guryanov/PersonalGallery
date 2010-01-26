@@ -18,6 +18,14 @@ class BaseController(WSGIController):
             # after a successful login
             session['path_before_login'] = request.path_info
             session.save()
+
+            if lang not in session:
+                session['lang'] = config.get('lang')
+		session.save()
+            if 'lang' in session:
+                set_lang(session['lang'])
+            print session["lang"]
+
             return redirect_to(url(controller='login'))
 
     def __call__(self, environ, start_response):
