@@ -11,7 +11,7 @@
 		<div class="gallery-album">
 			<div class="gallery-thumb">
 				<a class="gallery-thumb-link" href='${url(controller="album", action="show_first_page", aid=a.id)}'>
-						<img style="position: relative" alt="${a.display_name}" src="${c.u.get_web_album_thumb(a)}"/>
+						<img style="position: relative" alt="${a.display_name}" src="${a.get_web_thumb()}"/>
 				</a>
 			</div>
 			<div class="album-link">
@@ -42,7 +42,7 @@
 % for p in c.photos:
 		<div class="gallery-thumb">
 			<a href='${url(controller="photo", aid=p.album_id, pid=p.id)}'>
-				<img alt="${p.display_name}" src="${c.u.get_web_preview_path(p)}"/>
+				<img alt="${p.display_name}" src="${p.get_web_preview_path()}"/>
 			</a>
 % if c.admin:
 			<br/>

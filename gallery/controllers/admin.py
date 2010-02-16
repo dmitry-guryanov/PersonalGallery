@@ -19,6 +19,7 @@ import sqlalchemy as sa
 
 from pylons import config
 
+from gallery.lib import utils
 from gallery.lib.utils import *
 
 log = logging.getLogger(__name__)
@@ -50,11 +51,11 @@ def add_photo(aid, name, file, photo = None, only_file = False, rewrite = False)
 	s = meta.Session
 
 	# save file
-	photo_path = get_photo_path(ph)
+	photo_path = ph.get_path()
 	if os.access(photo_path, os.F_OK):
 		if rewrite:
 			os.unlink(photo_path)
-			os.unlink(get_preview_path(ph))
+			os.unlink(ph.get_preview_path())
 		else:
 			ph.name, photo_path = resolve_dup_name(photo_path)
 
@@ -62,7 +63,7 @@ def add_photo(aid, name, file, photo = None, only_file = False, rewrite = False)
 
 	# make preview
 	inf = get_photo_info(ph)
-	preview_file = get_preview_path(ph)
+	preview_file = ph.get_preview_path()
 
 	if inf.width > inf.height:
 		crop_cmd = "%dx%d+%d+0" % (inf.height, inf.height, (inf.width - inf.height) / 2)
@@ -115,12 +116,12 @@ def del_photo(photo):
 
 	msg = ""
 	try:
-		os.unlink(get_photo_path(photo))
+		os.unlink(photo.get_path())
 	except OSError, e:
 		msg += str(e) + "\n"
 
 	try:
-		os.unlink(get_preview_path(photo))
+		os.unlink(photo.get_preview_path())
 	except OSError, e:
 		msg += str(e) + "\n"
 
@@ -262,11 +263,13 @@ class AdminController(BaseController):
 					action = "show_first_page", aid = aid)
 
 	def album_add(self, aid):
+		c.u = utils
 		c.new_album = True
 		c.album = Album()
 		return render('/album_edit.mako')
 
 	def album_edit(self, aid):
+		c.u = utils
 		c.aid = aid
 		c.new_album = False
 
@@ -292,7 +295,7 @@ class AdminController(BaseController):
 			s.commit()
 
 			os.mkdir(get_album_path(album))
-			os.mkdir(get_album_preview_path(album))
+			os.mkdir(album.get_preview_path())
 		else:
 			album = s.query(Album).filter(Album.id == aid).first()
 			if not album:
