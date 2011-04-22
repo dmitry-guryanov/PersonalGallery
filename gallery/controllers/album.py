@@ -17,7 +17,7 @@ log = logging.getLogger(__name__)
 class AlbumController(BaseController):
 
 	def index(self):
-		return self.show_first_page(0)
+		return self.show_first_page(1)
 
 	def show_first_page(self, aid):
 		return self.show_page(aid, 0)

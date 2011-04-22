@@ -70,7 +70,7 @@ def add_photo(aid, name, file, photo = None, only_file = False, rewrite = False)
 	else:
 		crop_cmd = "%dx%d+0+%d" % (inf.width, inf.width, (inf.height - inf.width) / 8)
 
-	cmd = "convert %s -crop %s -resize %d %s" % (photo_path, crop_cmd,
+	cmd = "convert %s -strip -crop %s -resize %d %s" % (photo_path, crop_cmd,
 								preview_size, preview_file)
 	os.system(cmd)
 
@@ -148,7 +148,7 @@ def del_album(album):
 	s.delete(album)
 
 	try:
-		shutil.rmtree(get_album_path(album))
+		shutil.rmtree(album.get_path())
 	except OSError, e:
 		msg += str(e) + "\n"
 
@@ -198,7 +198,7 @@ class AdminController(BaseController):
 
 				os.unlink(tmpname)
 
-			redirect_to(controller = "/album",
+			redirect_to(controller = "album",
 						action = "show_first_page", aid = aid)
 			
 	def photo_del_submit(self, aid, pid):
@@ -231,7 +231,7 @@ class AdminController(BaseController):
 	@authenticate_form
 	def photo_edit_submit(self, aid, pid):
 		if request.params.get("Cancel"):
-			redirect_to(controller="/album",
+			redirect_to(controller="album",
 						action = "show_first_page", aid = aid)
 
 		s = meta.Session
@@ -259,14 +259,14 @@ class AdminController(BaseController):
 
 		s.commit()
 
-		redirect_to(controller="/album",
+		redirect_to(controller="album",
 					action = "show_first_page", aid = aid)
 
 	def album_add(self, aid):
 		c.u = utils
 		c.new_album = True
 		c.album = Album()
-		return render('/album_edit.mako')
+		return render('album_edit.mako')
 
 	def album_edit(self, aid):
 		c.u = utils
@@ -279,12 +279,12 @@ class AdminController(BaseController):
 		if not c.album:
 			abort(404)
 
-		return render('/album_edit.mako')
+		return render('album_edit.mako')
 
 	@authenticate_form
 	def album_edit_submit(self, aid):
 		if request.params.get("Cancel"):
-			redirect_to(controller="/album")
+			redirect_to(controller="album")
 
 		s = meta.Session
 
@@ -294,7 +294,7 @@ class AdminController(BaseController):
 			s.save(album)
 			s.commit()
 
-			os.mkdir(get_album_path(album))
+			os.mkdir(album.get_path())
 			os.mkdir(album.get_preview_path())
 		else:
 			album = s.query(Album).filter(Album.id == aid).first()
@@ -322,7 +322,7 @@ class AdminController(BaseController):
 
 		s.commit()
 
-		redirect_to(controller = "/album",
+		redirect_to(controller = "album",
 				action = "show_first_page", aid = aid)
 
 	def album_del(self, aid):

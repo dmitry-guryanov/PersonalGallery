@@ -26,7 +26,7 @@ class LoginController(BaseController):
 		"""
 
 		if request.params.get("Cancel"):
-			redirect_to(controller="/album")
+			redirect_to(controller="album", action = "index")
 
 		# Both fields filled?
 		form_username = str(request.params.get('username')).lower()
@@ -43,7 +43,7 @@ class LoginController(BaseController):
 		session.save()
 
 
-		redirect_to(controller="/album")
+		redirect_to(controller="album", action = "index")
 
 	def logout(self):
 		"""
