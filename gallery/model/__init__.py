@@ -27,8 +27,8 @@ class Photo(Base):
 	__tablename__ = "photos"
 
 	id = Column(Integer, primary_key=True)
-	name = Column(Unicode)
-	display_name = Column(Unicode)
+	name = Column(Unicode(256))
+	display_name = Column(Unicode(256))
 	album_id = Column(Integer, ForeignKey('albums.id'))
 	created = Column(DateTime)
 	width = Column(Integer)
@@ -56,13 +56,13 @@ class Album(Base):
 	__tablename__ = "albums"
 
 	id = Column(Integer, primary_key = True)
-	name = Column(Unicode)
-	display_name = Column(Unicode)
+	name = Column(Unicode(256))
+	display_name = Column(Unicode(256))
 	parent_id = Column(Integer, ForeignKey('albums.id'))
 	created = Column(DateTime, default = sa.func.now())
 	pos = Column(Integer)
-	preview = Column(Unicode)
-	descr = Column(Unicode)
+	preview = Column(Unicode(256))
+	descr = Column(Unicode(4096))
 	hidden = Column(Boolean)
 	sort_by = Column(Integer)
 
