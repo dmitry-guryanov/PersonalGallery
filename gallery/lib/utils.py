@@ -47,7 +47,7 @@ def _get_image_info(path):
 	return img
 
 def get_photo_info(photo):
-	return _get_image_info(get_photo_path(photo))
+	return _get_image_info(photo.get_path())
 
 
 mult_words = {
