@@ -41,7 +41,7 @@
 	<div class="gallery-thumbs">
 % for p in c.photos:
 		<div class="gallery-thumb">
-			<a href='${url(controller="photo", aid=p.album_id, pid=p.id)}'>
+			<a href='${url(controller="photo", action="index", aid=p.album_id, pid=p.id)}'>
 				<img alt="${p.display_name}" src="${p.get_web_preview_path()}"/>
 			</a>
 % if c.admin:

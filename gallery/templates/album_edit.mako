@@ -44,9 +44,17 @@ ${h.checkbox('hide_album', id='hide_album', checked = c.album.hidden)} <label fo
 </div>
 
 <div>
+<h4>Sort by</h4>
+<p>s</p>
+${h.select('xx', "1", c.u.sorting_names.items(), id='sort_by')} <label for="sort_by">Hidden</label>
+</div>
+
+
+<div>
 <h4>Thumbnail for the album</h4>
 <p>The file uploaded will be resized to thumbnail size and shown on album page</p>
 ${h.file('album_thumbnail', size = 40)}<br/>
+
 
 				${h.submit('enter', 'Login')}
 				${h.submit('cancel', 'Cancel')}

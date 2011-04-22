@@ -1,4 +1,4 @@
-<div class="main-header">${h.link_to("Dmitry Guryanov\'s gallery", url(controller='album'))}</div>
+<div class="main-header">${h.link_to("Dmitry Guryanov\'s gallery", url(controller='album', action='index'))}</div>
 
 <!-- ######  navibar ###### -->
 <div>
