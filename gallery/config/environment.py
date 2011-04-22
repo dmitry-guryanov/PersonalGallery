@@ -28,8 +28,7 @@ def load_environment(global_conf, app_conf):
 					templates=[os.path.join(root, 'templates')])
 
 	# Initialize config with the basic options
-	config.init_app(global_conf, app_conf, package='gallery',
-						template_engine='mako', paths=paths)
+	config.init_app(global_conf, app_conf, package='gallery', paths=paths)
 
 
 	config['routes.map'] = make_map()
