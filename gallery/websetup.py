@@ -20,3 +20,5 @@ def setup_app(command, conf, vars):
     meta.Session.add(album)
     meta.Session.commit()
     log.info("Successfully set up.")
+
+    #FIXME: create needed directories
