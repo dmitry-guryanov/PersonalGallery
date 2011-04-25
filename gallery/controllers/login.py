@@ -1,13 +1,10 @@
-import logging
 import md5
 
-from pylons import url, request, response, session, tmpl_context as c
+from pylons import url, request, session, tmpl_context as c
 from pylons.controllers.util import abort, redirect
 from pylons.decorators.secure import authenticate_form
 
 from gallery.lib.base import BaseController, render
-
-log = logging.getLogger(__name__)
 
 username = "dimak"
 password = "qweqwe"
@@ -25,7 +22,7 @@ class LoginController(BaseController):
 		Verify username and password
 		"""
 
-		if request.params.get("Cancel"):
+		if request.params.get("cancel"):
 			redirect(url(controller="album", action = "index"))
 
 		# Both fields filled?
@@ -51,5 +48,5 @@ class LoginController(BaseController):
 		if 'user' in session:
 			del session['user']
 			session.save()
-		redirect(controller="album")
+		redirect(url(controller="album"))
 
