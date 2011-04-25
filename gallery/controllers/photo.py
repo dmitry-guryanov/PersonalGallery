@@ -1,6 +1,4 @@
-import logging
-
-from pylons import request, response, session, tmpl_context as c
+from pylons import tmpl_context as c
 from pylons.controllers.util import abort
 from pylons.decorators.secure import authenticate_form
 
