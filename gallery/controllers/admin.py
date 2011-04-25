@@ -1,4 +1,3 @@
-import logging
 import os
 import shutil
 import tempfile
@@ -7,22 +6,16 @@ import time
 import mimetypes
 import datetime
 
-from pylons import url, request, response, session, tmpl_context as c
+from pylons import url, request, tmpl_context as c
 from pylons.controllers.util import abort, redirect
 from pylons.decorators.secure import authenticate_form
 from webhelpers.html.tags import link_to
 
 from gallery.lib.base import BaseController, render
-from pylons import url
 from gallery.model import meta, Photo, Album
-import sqlalchemy as sa
-
-from pylons import config
 
 from gallery.lib import utils
 from gallery.lib.utils import *
-
-log = logging.getLogger(__name__)
 
 def resolve_dup_name(path):
 	dirname, filename = os.path.split(path)
