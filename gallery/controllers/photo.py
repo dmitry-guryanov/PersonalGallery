@@ -5,18 +5,8 @@ from pylons.controllers.util import abort
 from pylons.decorators.secure import authenticate_form
 
 from gallery.lib.base import BaseController, render
-
 from gallery.model import meta, Photo, Album
-import sqlalchemy as sa
-
-import sys
-
-import types
-
 from gallery.lib import utils
-
-log = logging.getLogger(__name__)
-
 
 
 class PhotoController(BaseController):
@@ -50,7 +40,6 @@ class PhotoController(BaseController):
 
 
 	def index(self, aid, pid):
-		c.u = utils
 		s = meta.Session
 
 		photo_q = s.query(Photo)
