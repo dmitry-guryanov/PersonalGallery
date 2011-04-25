@@ -1,18 +1,11 @@
-import logging
-
-from pylons import request, response, session, tmpl_context as c
+from pylons import tmpl_context as c
 from pylons.controllers.util import abort
 from pylons import config
 
 from gallery.lib.base import BaseController, render
-from pylons import url
 from gallery.model import meta, Photo, Album
-import sqlalchemy as sa
-
 
 from gallery.lib import utils
-
-log = logging.getLogger(__name__)
 
 class AlbumController(BaseController):
 
@@ -60,7 +53,7 @@ class AlbumController(BaseController):
 						"FROM albums albums1 JOIN albums albums2 ON "
 						"albums2.parent_id=albums1.id "
 						"WHERE albums1.parent_id=%d and (albums2.hidden=0 or %d) "
-						"GROUP BY albums2.parent_id;" % (int(aid), int('user' in session))).fetchall()
+						"GROUP BY albums2.parent_id;" % (int(aid), int(c.admin))).fetchall()
 		album_counts = dict(album_counts)
 
 		c.counts = {}
