@@ -2,6 +2,7 @@ import logging
 
 from pylons import request, response, session, tmpl_context as c
 from pylons.controllers.util import abort
+from pylons import config
 
 from gallery.lib.base import BaseController, render
 from pylons import url
@@ -16,24 +17,17 @@ log = logging.getLogger(__name__)
 class AlbumController(BaseController):
 
 	def index(self):
-		return self.show_first_page(0)
+		return self.show_first_page(config["root_album_id"])
 
 	def show_first_page(self, aid):
 		return self.show_page(aid, 0)
 
 	def show_page(self, aid, page):
-
-		if 'user' in session:
-			c.admin = True
-
 		c.album = aid
 		c.page = page
 		c.u = utils
 
 		s = meta.Session
-
-		# top albums
-		c.top_albums = s.query(Album).filter(Album.parent_id == 0).filter(Album.id != 0).all()
 
 		c.cur_album = s.query(Album).filter(Album.id == aid).first()
 		if not c.cur_album:

@@ -50,10 +50,6 @@ class PhotoController(BaseController):
 
 
 	def index(self, aid, pid):
-
-		if 'user' in session:
-			c.admin = True
-
 		c.u = utils
 		s = meta.Session
 
