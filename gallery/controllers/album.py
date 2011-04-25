@@ -1,11 +1,10 @@
 import logging
 
 from pylons import request, response, session, tmpl_context as c
-from pylons.controllers.util import abort, redirect_to
+from pylons.controllers.util import abort
 
 from gallery.lib.base import BaseController, render
 from pylons import url
-from gallery.lib.helpers import link_to
 from gallery.model import meta, Photo, Album
 import sqlalchemy as sa
 

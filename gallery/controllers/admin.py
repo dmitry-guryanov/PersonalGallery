@@ -7,13 +7,13 @@ import time
 import mimetypes
 import datetime
 
-from pylons import request, response, session, tmpl_context as c
-from pylons.controllers.util import abort, redirect_to
+from pylons import url, request, response, session, tmpl_context as c
+from pylons.controllers.util import abort, redirect
 from pylons.decorators.secure import authenticate_form
+from webhelpers.html.tags import link_to
 
 from gallery.lib.base import BaseController, render
 from pylons import url
-from gallery.lib.helpers import link_to
 from gallery.model import meta, Photo, Album
 import sqlalchemy as sa
 
@@ -88,7 +88,7 @@ def add_photo(aid, name, file, photo = None, only_file = False, rewrite = False)
 			ph.created = datetime.datetime.now()
 		
 		if not photo:
-			s.save(ph)
+			s.add(ph)
 		s.commit()
 
 def add_archive(aid, file, arc_type):
@@ -198,8 +198,8 @@ class AdminController(BaseController):
 
 				os.unlink(tmpname)
 
-			redirect_to(controller = "album",
-						action = "show_first_page", aid = aid)
+			redirect(url(controller = "album",
+						action = "show_first_page", aid = aid))
 			
 	def photo_del_submit(self, aid, pid):
 
@@ -207,7 +207,7 @@ class AdminController(BaseController):
 
 		photo_q = s.query(Photo)
 		photo_obj = photo_q.filter_by(album_id=aid, id=pid).first()
-		if c.photo is None:
+		if photo_obj is None:
 			c.name = pid
 			return render('/photo_not_found.mako')
 
@@ -219,8 +219,8 @@ class AdminController(BaseController):
 				url(controller = "album",
 						action = "show_first_page", aid = aid))
 		else:
-			redirect_to(controller = "album",
-						action = "show_first_page", aid = aid)
+			redirect(url(controller = "album",
+						action = "show_first_page", aid = aid))
 
 	def photo_edit(self, aid, pid):
 		s = meta.Session
@@ -231,8 +231,8 @@ class AdminController(BaseController):
 	@authenticate_form
 	def photo_edit_submit(self, aid, pid):
 		if request.params.get("Cancel"):
-			redirect_to(controller="album",
-						action = "show_first_page", aid = aid)
+			redirect(url(controller="album",
+						action = "show_first_page", aid = aid))
 
 		s = meta.Session
 
@@ -259,8 +259,8 @@ class AdminController(BaseController):
 
 		s.commit()
 
-		redirect_to(controller="album",
-					action = "show_first_page", aid = aid)
+		redirect(url(controller="album",
+					action = "show_first_page", aid = aid))
 
 	def album_add(self, aid):
 		c.u = utils
@@ -284,14 +284,14 @@ class AdminController(BaseController):
 	@authenticate_form
 	def album_edit_submit(self, aid):
 		if request.params.get("Cancel"):
-			redirect_to(controller="album")
+			redirect(url(controller="album"))
 
 		s = meta.Session
 
 		if request.params.get("new_album"):
 			album = Album()
 			album.parent_id = aid
-			s.save(album)
+			s.add(album)
 			s.commit()
 
 			os.mkdir(album.get_path())
@@ -322,8 +322,8 @@ class AdminController(BaseController):
 
 		s.commit()
 
-		redirect_to(controller = "album",
-				action = "show_first_page", aid = aid)
+		redirect(url(controller = "album",
+				action = "show_first_page", aid = aid))
 
 	def album_del(self, aid):
 		
@@ -343,6 +343,6 @@ class AdminController(BaseController):
 				url(controller = "album",
 						action = "show_first_page", aid = parent_id))
 		else:
-			redirect_to(controller = "album",
-						action = "show_first_page", aid = parent_id)
+			redirect(url(controller = "album",
+						action = "show_first_page", aid = parent_id))
 

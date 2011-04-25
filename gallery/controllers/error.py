@@ -5,7 +5,6 @@ from paste.urlparser import StaticURLParser
 from pylons.middleware import error_document_template, media_path
 
 from pylons import request, response, session, tmpl_context as c
-from pylons.controllers.util import abort, redirect_to
 
 from gallery.lib.base import BaseController, render
 

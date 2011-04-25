@@ -1,25 +1,22 @@
 """Pylons environment configuration"""
 import os
-import sys
-
-root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.insert(0, root)
-
-from sqlalchemy import engine_from_config
-from gallery.model import init_model
 
 from mako.lookup import TemplateLookup
-from pylons import config
+from pylons.configuration import PylonsConfig
 from pylons.error import handle_mako_error
+from sqlalchemy import engine_from_config
 
 import gallery.lib.app_globals as app_globals
 import gallery.lib.helpers
 from gallery.config.routing import make_map
+from gallery.model import init_model
 
 def load_environment(global_conf, app_conf):
  	"""Configure the Pylons environment via the ``pylons.config``
 	object
 	"""
+	config = PylonsConfig()
+
 	# Pylons paths
 	root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 	paths = dict(root=root,
@@ -30,9 +27,8 @@ def load_environment(global_conf, app_conf):
 	# Initialize config with the basic options
 	config.init_app(global_conf, app_conf, package='gallery', paths=paths)
 
-
-	config['routes.map'] = make_map()
-	config['pylons.app_globals'] = app_globals.Globals()
+	config['routes.map'] = make_map(config)
+	config['pylons.app_globals'] = app_globals.Globals(config)
 	config['pylons.h'] = gallery.lib.helpers
 
 	# Create the Mako TemplateLookup, with the default auto-escaping
@@ -43,7 +39,11 @@ def load_environment(global_conf, app_conf):
 		input_encoding='utf-8', default_filters=['escape'],
 		imports=['from webhelpers.html import escape'])
 
+	# Setup the SQLAlchemy database engine
+	engine = engine_from_config(config, 'sqlalchemy.')
+	init_model(engine, config)
+
 	# CONFIGURATION OPTIONS HERE (note: all config options will override
 	# any Pylons config options)
-	engine = engine_from_config(config, 'sqlalchemy.')
-	init_model(engine)
+
+	return config
