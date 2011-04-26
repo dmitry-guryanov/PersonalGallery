@@ -178,7 +178,9 @@ class Album(Base):
 			return "%s/i/default-preview.jpg" % \
 					config["web_static_path"]
 
-def init_model(engine, config):
+def init_model(engine, conf):
 	"""Call me before using any of the tables or classes in the model."""
+	global config
+	config = conf
 	Session.configure(bind=engine)
 
