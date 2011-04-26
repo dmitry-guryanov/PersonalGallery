@@ -134,7 +134,6 @@ class Album(Base):
 	parent_id = Column(Integer, ForeignKey('albums.id'))
 	created = Column(DateTime, default = sa.func.now())
 	pos = Column(Integer)
-	preview = Column(Unicode(256))
 	preview_id = Column(Integer, ForeignKey('photos.id', name = "qweqwe", use_alter = True))
 	descr = Column(Unicode(4096))
 	hidden = Column(Boolean)
@@ -147,7 +146,7 @@ class Album(Base):
 	albums = relationship("Album", order_by="Album.created",
 					backref = backref("parent", remote_side = [id]),
 					cascade = "delete")
-	ppreview = relationship("Photo",
+	preview = relationship("Photo",
 					backref=backref("displayed_album", uselist=False),
 					foreign_keys = [preview_id],
 					primaryjoin = preview_id==Photo.id)
@@ -169,8 +168,10 @@ class Album(Base):
 		return os.path.join(permanent_store, str(self.id), "previews")
 
 	def get_web_thumb(self):
-		return "%s/%s/previews/%s" % (web_static_path,
-				self.id, "000-album-preview-preview.jpg")
+		if self.preview:
+			return self.preview.get_web_preview_path()
+		else:
+			return "%s/i/default-preview.jpg" % web_static_path
 
 def init_model(engine, config):
 	"""Call me before using any of the tables or classes in the model."""

@@ -1,3 +1,5 @@
+from logging import info
+
 from pylons import tmpl_context as c
 from gallery.model import meta, Photo, Album
 

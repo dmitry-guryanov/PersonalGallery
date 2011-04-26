@@ -50,6 +50,4 @@ class AlbumController(BaseController):
 		for a in c.cur_album.albums:
 			c.counts[a.id] = (album_counts.get(a.id, 0), photo_counts.get(a.id, 0))
 
-		s.close()
-
 		return render("/album.mako")

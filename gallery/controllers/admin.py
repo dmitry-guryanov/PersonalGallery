@@ -198,9 +198,13 @@ class AdminController(BaseController):
 			tmpobj.close()
 			new_thumb.file.close()
 
-#			add_photo(album.id, "000-album-preview.jpg", tmpname,
-#							photo = None, only_file = True, rewrite = True)
+			# add preview
+			preview = Photo(name, album.id, tmpname)
 			os.unlink(tmpname)
+			s.add(preview)
+			s.commit()
+
+			album.preview_id = preview.id
 
 		s.commit()
 
