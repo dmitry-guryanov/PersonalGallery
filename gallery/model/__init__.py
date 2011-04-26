@@ -147,9 +147,11 @@ class Album(Base):
 					backref = backref("parent", remote_side = [id]),
 					cascade = "delete")
 	preview = relationship("Photo",
-					backref=backref("displayed_album", uselist=False),
+					backref=backref("displayed_album",
+							uselist=False, passive_deletes = True),
 					foreign_keys = [preview_id],
-					primaryjoin = preview_id==Photo.id)
+					primaryjoin = preview_id==Photo.id,
+					passive_deletes = True)
 
 	def after_insert(self):
 		os.mkdir(self.get_path())
