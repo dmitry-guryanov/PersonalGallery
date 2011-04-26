@@ -283,13 +283,10 @@ class AdminController(BaseController):
 		s = meta.Session
 
 		if request.params.get("new_album"):
-			album = Album()
-			album.parent_id = aid
+			album = Album(parent_id = aid)
 			s.add(album)
 			s.commit()
 
-			os.mkdir(album.get_path())
-			os.mkdir(album.get_preview_path())
 		else:
 			album = s.query(Album).filter(Album.id == aid).first()
 			if not album:

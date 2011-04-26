@@ -5,6 +5,7 @@ from logging import info
 import sqlalchemy as sa
 from sqlalchemy import orm, Column, ForeignKey
 from sqlalchemy.orm import relationship, backref
+from sqlalchemy.orm.interfaces import MapperExtension
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm.interfaces import MapperExtension
 from sqlalchemy.types import *
@@ -43,8 +44,13 @@ class Photo(Base):
 		return "%s/%s/previews/%s" % (web_static_path,
 					str(self.album_id), pr_name)
 
+class AlbumExtension(MapperExtension):
+	def after_insert(self, mapper, connection, instance):
+		instance.after_insert()
+
 class Album(Base):
 	__tablename__ = "albums"
+	__mapper_args__ = {"extension": AlbumExtension()}
 
 	id = Column(Integer, primary_key = True)
 	name = Column(Unicode(256))
@@ -59,7 +65,11 @@ class Album(Base):
 
 	photos = relationship("Photo", order_by="Photo.created", backref = "album")
 	parent = relationship("Album", order_by="Album.created", backref = "albums", remote_side = [id])
-	
+
+	def after_insert(self):
+		os.mkdir(self.get_path())
+		os.mkdir(self.get_preview_path())
+
 	def get_path(self):
 		return os.path.join(permanent_store, str(self.id))
 
