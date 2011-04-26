@@ -218,11 +218,9 @@ class AdminController(BaseController):
 		if not album:
 			abort(404)
 
-		parent_id = album.parent_id
-
 		s.delete(album)
 		s.commit()
 
 		redirect(url(controller = "album",
-					action = "show_first_page", aid = parent_id))
+					action = "show_first_page", aid = album.parent_id))
 
