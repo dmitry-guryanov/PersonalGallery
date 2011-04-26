@@ -53,7 +53,7 @@
 % endfor
 		<div style="clear: both"></div>
 	</div>
-% elif not c.albums:
+% elif not c.cur_album.albums:
 	<h2>There are no photos in this album</h2>
 % endif
 
