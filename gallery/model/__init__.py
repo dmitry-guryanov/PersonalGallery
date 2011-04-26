@@ -49,56 +49,56 @@ class Photo(Base):
 	hidden = Column(Boolean)
 
 	def __init__(self, name, album_id, tmp_file):
-			self.name = unicode(name)
-			self.album_id = album_id
+		self.name = unicode(name)
+		self.album_id = album_id
 
-			# save file
-			photo_path = self.get_path()
-			if os.access(photo_path, os.F_OK):
-				if 0:
-					os.unlink(photo_path)
-					os.unlink(self.get_preview_path())
-				else:
-					self.name, photo_path = resolve_dup_name(photo_path)
-
-			shutil.copyfile(tmp_file, photo_path)
-
-			# make preview
-			inf = get_photo_info(self)
-			preview_file = self.get_preview_path()
-
-			if inf.width > inf.height:
-				crop_cmd = "%dx%d+%d+0" % (inf.height, inf.height, (inf.width - inf.height) / 2)
+		# save file
+		photo_path = self.get_path()
+		if os.access(photo_path, os.F_OK):
+			if 0:
+				os.unlink(photo_path)
+				os.unlink(self.get_preview_path())
 			else:
-				crop_cmd = "%dx%d+0+%d" % (inf.width, inf.width, (inf.height - inf.width) / 8)
+				self.name, photo_path = resolve_dup_name(photo_path)
 
-			cmd = "convert %s -strip -crop %s -resize %d %s" % (photo_path, crop_cmd,
-										preview_size, preview_file)
-			os.system(cmd)
+		shutil.copyfile(tmp_file, photo_path)
 
-			if 1: # not only_file:
-				self.width = inf.width
-				self.height = inf.height
-				if inf.exif.has_key("Create Date"):
-					str_date = inf.exif["Create Date"]
-					if re.match("\d+:\d+:\d+ \d+:\d+:\d+.\d+", str_date):
-						str_date = str_date[:-3]
-					cr_time = time.strptime(str_date, "%Y:%m:%d %H:%M:%S")
-					cr_ts = time.mktime(cr_time)
-					self.created = datetime.datetime.fromtimestamp(cr_ts)
-				else:
-					self.created = datetime.datetime.now()
+		# make preview
+		inf = get_photo_info(self)
+		preview_file = self.get_preview_path()
+
+		if inf.width > inf.height:
+			crop_cmd = "%dx%d+%d+0" % (inf.height, inf.height, (inf.width - inf.height) / 2)
+		else:
+			crop_cmd = "%dx%d+0+%d" % (inf.width, inf.width, (inf.height - inf.width) / 8)
+
+		cmd = "convert %s -strip -crop %s -resize %d %s" % (photo_path, crop_cmd,
+									preview_size, preview_file)
+		os.system(cmd)
+
+		if 1: # not only_file:
+			self.width = inf.width
+			self.height = inf.height
+			if inf.exif.has_key("Create Date"):
+				str_date = inf.exif["Create Date"]
+				if re.match("\d+:\d+:\d+ \d+:\d+:\d+.\d+", str_date):
+					str_date = str_date[:-3]
+				cr_time = time.strptime(str_date, "%Y:%m:%d %H:%M:%S")
+				cr_ts = time.mktime(cr_time)
+				self.created = datetime.datetime.fromtimestamp(cr_ts)
+			else:
+				self.created = datetime.datetime.now()
 
 	def before_delete(self):
-			try:
-				os.unlink(self.get_path())
-			except OSError, e:
-				warn(e)
+		try:
+			os.unlink(self.get_path())
+		except OSError, e:
+			warn(e)
 
-			try:
-				os.unlink(self.get_preview_path())
-			except OSError, e:
-				warn(e)
+		try:
+			os.unlink(self.get_preview_path())
+		except OSError, e:
+			warn(e)
 
 	def get_path(self):
 		return os.path.join(permanent_store,
