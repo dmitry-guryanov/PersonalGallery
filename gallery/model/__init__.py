@@ -12,12 +12,10 @@ from sqlalchemy.orm.interfaces import MapperExtension
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm.interfaces import MapperExtension
 from sqlalchemy.types import *
+from pylons import config
 
 from gallery.model.meta import Session, Base
 from gallery.lib.utils import get_photo_info, preview_size
-
-permanent_store = None
-web_static_path = None
 
 def resolve_dup_name(path):
 	dirname, filename = os.path.split(path)
@@ -101,20 +99,20 @@ class Photo(Base):
 			warn(e)
 
 	def get_path(self):
-		return os.path.join(permanent_store,
+		return os.path.join(config["permanent_store"],
 					str(self.album_id), self.name)
 
 	def get_preview_path(self):
 		pr_name = re.sub("([^\.]+)\..+", r"\1-preview.jpg", self.name)
-		return os.path.join(permanent_store, str(self.album_id),
+		return os.path.join(config["permanent_store"], str(self.album_id),
 					"previews", pr_name)
 	def get_web_path(self):
-		return "%s/%s/%s" % (web_static_path,
+		return "%s/%s/%s" % (config["web_static_path"],
 					str(self.album_id), self.name)
 
 	def get_web_preview_path(self):
 		pr_name = re.sub("([^\.]+)\..+", r"\1-preview.jpg", self.name)
-		return "%s/%s/previews/%s" % (web_static_path,
+		return "%s/%s/previews/%s" % (config["web_static_path"],
 					str(self.album_id), pr_name)
 
 class AlbumExtension(MapperExtension):
@@ -164,24 +162,18 @@ class Album(Base):
 			warn(e)
 
 	def get_path(self):
-		return os.path.join(permanent_store, str(self.id))
+		return os.path.join(config["permanent_store"], str(self.id))
 
 	def get_preview_path(self):
-		return os.path.join(permanent_store, str(self.id), "previews")
+		return os.path.join(config["permanent_store"], str(self.id), "previews")
 
 	def get_web_thumb(self):
 		if self.preview:
 			return self.preview.get_web_preview_path()
 		else:
-			return "%s/i/default-preview.jpg" % web_static_path
+			return "%s/i/default-preview.jpg" % config["web_static_path"]
 
 def init_model(engine, config):
 	"""Call me before using any of the tables or classes in the model."""
-	global permanent_store
-	global web_static_path
-
 	Session.configure(bind=engine)
-
-	permanent_store = config.get('permanent_store')
-	web_static_path = config.get('web_static_path')
 
