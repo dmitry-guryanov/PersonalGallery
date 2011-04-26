@@ -5,8 +5,7 @@ import shutil
 from commands import *
 import re
 
-from gallery.lib.base import *
-from gallery.model import meta, Photo, Album
+#from gallery.lib.base import *
 import sqlalchemy as sa
 
 from pylons import config
