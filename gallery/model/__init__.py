@@ -1,9 +1,9 @@
 import os
 import re
-from logging import info
+from logging import info, warn
 
 import shutil
-import datetime
+import datetime, time
 
 import sqlalchemy as sa
 from sqlalchemy import orm, Column, ForeignKey
@@ -32,12 +32,12 @@ def resolve_dup_name(path):
 		i += 1
 
 class PhotoExtension(MapperExtension):
-	def after_insert(self, mapper, connection, instance):
-		instance.after_insert()
+	def before_delete(self, mapper, connection, instance):
+		instance.before_delete()
 
 class Photo(Base):
 	__tablename__ = "photos"
-#	__mapper_args__ = {"extension": PhotoExtension()}
+	__mapper_args__ = {"extension": PhotoExtension()}
 
 	id = Column(Integer, primary_key=True)
 	name = Column(Unicode(256))
@@ -47,9 +47,6 @@ class Photo(Base):
 	width = Column(Integer)
 	height = Column(Integer)
 	hidden = Column(Boolean)
-
-	def after_insert(self):
-		pass
 
 	def __init__(self, name, album_id, tmp_file):
 			self.name = unicode(name)
@@ -91,7 +88,18 @@ class Photo(Base):
 					self.created = datetime.datetime.fromtimestamp(cr_ts)
 				else:
 					self.created = datetime.datetime.now()
-				
+
+	def before_delete(self):
+			try:
+				os.unlink(self.get_path())
+			except OSError, e:
+				warn(e)
+
+			try:
+				os.unlink(self.get_preview_path())
+			except OSError, e:
+				warn(e)
+
 	def get_path(self):
 		return os.path.join(permanent_store,
 					str(self.album_id), self.name)
@@ -113,6 +121,9 @@ class AlbumExtension(MapperExtension):
 	def after_insert(self, mapper, connection, instance):
 		instance.after_insert()
 
+	def before_delete(self, mapper, connection, instance):
+		instance.before_delete()
+
 class Album(Base):
 	__tablename__ = "albums"
 	__mapper_args__ = {"extension": AlbumExtension()}
@@ -131,9 +142,11 @@ class Album(Base):
 
 	photos = relationship("Photo", order_by="Photo.created",
 					backref = "album",
-					primaryjoin = Photo.album_id==id)
-	parent = relationship("Album", order_by="Album.created",
-					backref = "albums", remote_side = [id])
+					primaryjoin = Photo.album_id==id,
+					cascade = "delete")
+	albums = relationship("Album", order_by="Album.created",
+					backref = backref("parent", remote_side = [id]),
+					cascade = "delete")
 	ppreview = relationship("Photo",
 					backref=backref("displayed_album", uselist=False),
 					foreign_keys = [preview_id],
@@ -142,6 +155,12 @@ class Album(Base):
 	def after_insert(self):
 		os.mkdir(self.get_path())
 		os.mkdir(self.get_preview_path())
+
+	def before_delete(self):
+		try:
+			shutil.rmtree(self.get_path())
+		except OSError, e:
+			warn(e)
 
 	def get_path(self):
 		return os.path.join(permanent_store, str(self.id))

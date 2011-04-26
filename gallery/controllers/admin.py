@@ -41,51 +41,6 @@ def add_archive(aid, file, arc_type):
 	
 	shutil.rmtree(tmpdir)
 
-def del_photo(photo):
-	s = meta.Session
-
-	msg = ""
-	try:
-		os.unlink(photo.get_path())
-	except OSError, e:
-		msg += str(e) + "\n"
-
-	try:
-		os.unlink(photo.get_preview_path())
-	except OSError, e:
-		msg += str(e) + "\n"
-
-	s.delete(photo)
-	s.commit()
-	return msg
-
-def del_album(album):
-
-	s = meta.Session
-
-	child_albums = s.query(Album).filter(Album.parent_id == album.id).all()
-
-	msg = ""
-
-	for a in child_albums:
-		msg += del_album(a)
-
-	photos = s.query(Photo).filter(Photo.album_id == album.id).all()
-
-	for p in photos:
-		msg += del_photo(p)
-
-	s.delete(album)
-
-	try:
-		shutil.rmtree(album.get_path())
-	except OSError, e:
-		msg += str(e) + "\n"
-
-	s.commit()
-
-	return msg
-
 class AdminController(BaseController):
 
 	requires_auth = True
@@ -144,16 +99,11 @@ class AdminController(BaseController):
 			c.name = pid
 			return render('/photo_not_found.mako')
 
-		msg = del_photo(photo_obj)
+		s.delete(photo_obj)
+		s.commit()
 
-		if msg:
-			msg = "<pre>" + msg + "</pre>"
-			return msg + link_to("back to album",
-				url(controller = "album",
-						action = "show_first_page", aid = aid))
-		else:
-			redirect(url(controller = "album",
-						action = "show_first_page", aid = aid))
+		redirect(url(controller = "album",
+					action = "show_first_page", aid = aid))
 
 	def photo_edit(self, aid, pid):
 		s = meta.Session
@@ -267,14 +217,9 @@ class AdminController(BaseController):
 
 		parent_id = album.parent_id
 
-		msg = del_album(album)
+		s.delete(album)
+		s.commit()
 
-		if msg:
-			msg = "<pre>" + msg + "</pre>"
-			return msg + link_to("back to album",
-				url(controller = "album",
-						action = "show_first_page", aid = parent_id))
-		else:
-			redirect(url(controller = "album",
-						action = "show_first_page", aid = parent_id))
+		redirect(url(controller = "album",
+					action = "show_first_page", aid = parent_id))
 
