@@ -1,3 +1,5 @@
+from logging import info
+
 from pylons import tmpl_context as c
 from pylons.controllers.util import abort
 from pylons import config
@@ -26,21 +28,9 @@ class AlbumController(BaseController):
 		if not c.cur_album:
 			abort(404)
 
-		albums_q = s.query(Album).filter(Album.parent_id == aid)
-
-		# hide albums only for guests
-		if not c.admin:
-			albums_q = albums_q.filter(Album.hidden != 1)
-
-		albums = albums_q.all()
-		c.albums = albums
-
-		photos_q = s.query(Photo).filter(Photo.album_id == aid)
-		
-		if c.cur_album.sort_by == utils.SORT_BY_DATE:
-			photos_q = photos_q.order_by(Photo.created)
-		elif c.cur_album.sort_by == utils.SORT_BY_DATE_DESC:
-			photos_q = photos_q.order_by(Photo.created.desc())
+		c.photos = c.cur_album.photos
+		if c.cur_album.sort_by == utils.SORT_BY_DATE_DESC:
+			c.photos.reverse()
 
 		# get photo counts
 		photo_counts = s.execute("SELECT albums.id AS aid, COUNT(*) FROM albums JOIN "
@@ -57,11 +47,8 @@ class AlbumController(BaseController):
 		album_counts = dict(album_counts)
 
 		c.counts = {}
-		for a in albums:
+		for a in c.cur_album.albums:
 			c.counts[a.id] = (album_counts.get(a.id, 0), photo_counts.get(a.id, 0))
-
-		photos = photos_q.all()
-		c.photos = photos
 
 		s.close()
 

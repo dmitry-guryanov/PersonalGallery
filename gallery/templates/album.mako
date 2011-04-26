@@ -5,9 +5,9 @@
 
 <%include file="header.mako"/>
 
-% if c.albums:
+% if c.cur_album.albums:
 	<div class="gallery-thumbs">
-% for a in c.albums:
+% for a in c.cur_album.albums:
 		<div class="gallery-album">
 			<div class="gallery-thumb">
 				<a class="gallery-thumb-link" href='${url(controller="album", action="show_first_page", aid=a.id)}'>

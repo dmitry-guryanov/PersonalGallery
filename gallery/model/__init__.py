@@ -1,10 +1,12 @@
 import os
 import re
+from logging import info
 
 import sqlalchemy as sa
 from sqlalchemy import orm, Column, ForeignKey
-from sqlalchemy.orm import relation, backref
+from sqlalchemy.orm import relationship, backref
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm.interfaces import MapperExtension
 from sqlalchemy.types import *
 
 from gallery.model.meta import Session, Base
@@ -55,6 +57,9 @@ class Album(Base):
 	hidden = Column(Boolean)
 	sort_by = Column(Integer)
 
+	photos = relationship("Photo", order_by="Photo.created", backref = "album")
+	parent = relationship("Album", order_by="Album.created", backref = "albums", remote_side = [id])
+	
 	def get_path(self):
 		return os.path.join(permanent_store, str(self.id))
 
