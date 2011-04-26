@@ -6,8 +6,8 @@ from logging import info
 
 from pylons.controllers import WSGIController
 from pylons.templating import render_mako as render
-from pylons import session, tmpl_context
-from pylons import config
+from pylons import session, tmpl_context, config, url, request
+from pylons.controllers.util import redirect
 
 from gallery.model import meta
 from gallery.lib.header import setup_header

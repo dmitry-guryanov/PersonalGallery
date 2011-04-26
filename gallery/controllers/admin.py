@@ -212,7 +212,6 @@ class AdminController(BaseController):
 				action = "show_first_page", aid = aid))
 
 	def album_del(self, aid):
-		
 		s = meta.Session
 
 		album = s.query(Album).filter(Album.id == aid).first()
