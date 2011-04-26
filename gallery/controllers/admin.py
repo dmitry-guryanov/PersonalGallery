@@ -13,7 +13,8 @@ from pylons.decorators.secure import authenticate_form
 from webhelpers.html.tags import link_to
 
 from gallery.lib.base import BaseController, render
-from gallery.model import meta, Photo, Album
+from gallery.model import Photo, Album
+from gallery.model.meta import Session as s
 
 from gallery.lib import utils
 from gallery.lib.utils import *
@@ -24,8 +25,6 @@ def add_archive(aid, file, arc_type):
 	"""
 
 	print "extracting archive ..."
-	s = meta.Session
-
 	tmpdir = tempfile.mkdtemp()
 
 	os.system("unzip %s -d %s" % (file, tmpdir))
@@ -75,7 +74,6 @@ class AdminController(BaseController):
 
 				if tp == "image/jpeg":
 					photo = Photo(name, aid, tmpname)
-					s = meta.Session
 					s.add(photo)
 					s.commit()
 				elif tp == "application/zip":
@@ -90,9 +88,6 @@ class AdminController(BaseController):
 						action = "show_first_page", aid = aid))
 			
 	def photo_del_submit(self, aid, pid):
-
-		s = meta.Session
-
 		photo_q = s.query(Photo)
 		photo_obj = photo_q.filter_by(album_id=aid, id=pid).first()
 		if photo_obj is None:
@@ -106,7 +101,6 @@ class AdminController(BaseController):
 					action = "show_first_page", aid = aid))
 
 	def photo_edit(self, aid, pid):
-		s = meta.Session
 		c.photo = s.query(Photo).filter_by(album_id=aid, id=pid)[0]
 		
 		return render('/photo_edit.mako')
@@ -116,8 +110,6 @@ class AdminController(BaseController):
 		if request.params.get("Cancel"):
 			redirect(url(controller="album",
 						action = "show_first_page", aid = aid))
-
-		s = meta.Session
 
 		photo = s.query(Photo).filter_by(album_id=aid, id=pid)[0]
 
@@ -157,8 +149,6 @@ class AdminController(BaseController):
 		c.aid = aid
 		c.new_album = False
 
-		s = meta.Session
-
 		c.album = s.query(Album).filter(Album.id == aid).first()
 		if not c.album:
 			abort(404)
@@ -169,8 +159,6 @@ class AdminController(BaseController):
 	def album_edit_submit(self, aid):
 		if request.params.get("Cancel"):
 			redirect(url(controller="album"))
-
-		s = meta.Session
 
 		if request.params.get("new_album"):
 			album = Album(parent_id = aid)
@@ -212,8 +200,6 @@ class AdminController(BaseController):
 				action = "show_first_page", aid = aid))
 
 	def album_del(self, aid):
-		s = meta.Session
-
 		album = s.query(Album).filter(Album.id == aid).first()
 		if not album:
 			abort(404)

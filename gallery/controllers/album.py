@@ -5,7 +5,8 @@ from pylons.controllers.util import abort
 from pylons import config
 
 from gallery.lib.base import BaseController, render
-from gallery.model import meta, Photo, Album
+from gallery.model import Photo, Album
+from gallery.model.meta import Session as s
 
 from gallery.lib import utils
 
@@ -21,8 +22,6 @@ class AlbumController(BaseController):
 		c.album = aid
 		c.page = page
 		c.u = utils
-
-		s = meta.Session
 
 		c.cur_album = s.query(Album).filter(Album.id == aid).first()
 		if not c.cur_album:

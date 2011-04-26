@@ -3,7 +3,8 @@ from pylons.controllers.util import abort
 from pylons.decorators.secure import authenticate_form
 
 from gallery.lib.base import BaseController, render
-from gallery.model import meta, Photo, Album
+from gallery.model import Photo, Album
+from gallery.model.meta import Session as s
 from gallery.lib import utils
 
 
@@ -38,8 +39,6 @@ class PhotoController(BaseController):
 
 
 	def index(self, aid, pid):
-		s = meta.Session
-
 		photo_q = s.query(Photo)
 		c.photo = photo_q.filter_by(album_id=aid, id=pid).first()
 
