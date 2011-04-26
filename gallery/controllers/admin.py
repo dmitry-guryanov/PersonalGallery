@@ -5,6 +5,7 @@ import types
 import time
 import mimetypes
 import datetime
+from logging import info
 
 from pylons import url, request, tmpl_context as c
 from pylons.controllers.util import abort, redirect
@@ -297,7 +298,8 @@ class AdminController(BaseController):
 		album.name = request.params.get("name")
 		album.display_name = request.params.get("title")
 		album.descr = request.params.get("description")
-		album.hidden = int(request.params.get("hide_album", 0)) * 65535
+		album.hidden = bool(request.params.get("hide_album", 0))
+		album.sort_by = int(request.params.get("sort_by", 1))
 
 		new_thumb = request.params.get('album_thumbnail')
 		print new_thumb, repr(new_thumb)

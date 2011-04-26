@@ -45,8 +45,7 @@ ${h.checkbox('hide_album', id='hide_album', checked = c.album.hidden)} <label fo
 
 <div>
 <h4>Sort by</h4>
-<p>s</p>
-${h.select('xx', "1", c.u.sorting_names.items(), id='sort_by')} <label for="sort_by">Hidden</label>
+${h.select('sort_by', c.album.sort_by, c.u.sorting_names.items(), id='sort_by')}
 </div>
 
 
