@@ -1,5 +1,6 @@
 """Setup the PersonalGallery application"""
 import logging
+import os
 
 from gallery import model
 from gallery.config.environment import load_environment
@@ -15,10 +16,12 @@ def setup_app(command, conf, vars):
     Base.metadata.create_all(bind = Session.bind)
     log.info("Successfully set up.")
 
+    if not os.path.exists(conf.global_conf["permanent_store"]):
+        os.mkdir(conf.global_conf["permanent_store"])
+
     log.info("Adding front page data...")
     album = model.Album(id = 0, name = "root")
     Session.add(album)
     Session.commit()
     log.info("Successfully set up.")
 
-    #FIXME: create needed directories
