@@ -66,12 +66,14 @@ class Photo(Base):
 		preview_file = self.get_preview_path()
 
 		if inf.width > inf.height:
-			crop_cmd = "%dx%d+%d+0" % (inf.height, inf.height, (inf.width - inf.height) / 2)
+			crop_cmd = "%dx%d+%d+0" % (inf.height, inf.height,
+						(inf.width - inf.height) / 2)
 		else:
-			crop_cmd = "%dx%d+0+%d" % (inf.width, inf.width, (inf.height - inf.width) / 8)
+			crop_cmd = "%dx%d+0+%d" % (inf.width, inf.width,
+						(inf.height - inf.width) / 8)
 
-		cmd = "convert %s -strip -crop %s -resize %d %s" % (photo_path, crop_cmd,
-									preview_size, preview_file)
+		cmd = "convert %s -strip -crop %s -resize %d %s" % \
+			(photo_path, crop_cmd, preview_size, preview_file)
 		os.system(cmd)
 
 		if 1: # not only_file:
@@ -104,8 +106,8 @@ class Photo(Base):
 
 	def get_preview_path(self):
 		pr_name = re.sub("([^\.]+)\..+", r"\1-preview.jpg", self.name)
-		return os.path.join(config["permanent_store"], str(self.album_id),
-					"previews", pr_name)
+		return os.path.join(config["permanent_store"],
+				str(self.album_id), "previews", pr_name)
 	def get_web_path(self):
 		return "%s/%s/%s" % (config["web_static_path"],
 					str(self.album_id), self.name)
@@ -132,24 +134,25 @@ class Album(Base):
 	parent_id = Column(Integer, ForeignKey('albums.id'))
 	created = Column(DateTime, default = sa.func.now())
 	pos = Column(Integer)
-	preview_id = Column(Integer, ForeignKey('photos.id', name = "qweqwe", use_alter = True))
+	preview_id = Column(Integer,
+		ForeignKey('photos.id', name = "qweqwe", use_alter = True))
 	descr = Column(Unicode(4096))
 	hidden = Column(Boolean)
 	sort_by = Column(Integer)
 
 	photos = relationship("Photo", order_by="Photo.created",
-					backref = "album",
-					primaryjoin = Photo.album_id==id,
-					cascade = "delete")
+				backref = "album",
+				primaryjoin = Photo.album_id==id,
+				cascade = "delete")
 	albums = relationship("Album", order_by="Album.created",
-					backref = backref("parent", remote_side = [id]),
-					cascade = "delete")
+				backref = backref("parent", remote_side = [id]),
+				cascade = "delete")
 	preview = relationship("Photo",
-					backref=backref("displayed_album",
-							uselist=False, passive_deletes = True),
-					foreign_keys = [preview_id],
-					primaryjoin = preview_id==Photo.id,
-					passive_deletes = True)
+				backref=backref("displayed_album",
+					uselist=False, passive_deletes = True),
+				foreign_keys = [preview_id],
+				primaryjoin = preview_id==Photo.id,
+				passive_deletes = True)
 
 	def after_insert(self):
 		os.mkdir(self.get_path())
@@ -165,13 +168,15 @@ class Album(Base):
 		return os.path.join(config["permanent_store"], str(self.id))
 
 	def get_preview_path(self):
-		return os.path.join(config["permanent_store"], str(self.id), "previews")
+		return os.path.join(config["permanent_store"],
+					str(self.id), "previews")
 
 	def get_web_thumb(self):
 		if self.preview:
 			return self.preview.get_web_preview_path()
 		else:
-			return "%s/i/default-preview.jpg" % config["web_static_path"]
+			return "%s/i/default-preview.jpg" % \
+					config["web_static_path"]
 
 def init_model(engine, config):
 	"""Call me before using any of the tables or classes in the model."""
