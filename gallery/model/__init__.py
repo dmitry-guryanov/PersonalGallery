@@ -59,12 +59,20 @@ class Album(Base):
 	created = Column(DateTime, default = sa.func.now())
 	pos = Column(Integer)
 	preview = Column(Unicode(256))
+	preview_id = Column(Integer, ForeignKey('photos.id', name = "qweqwe", use_alter = True))
 	descr = Column(Unicode(4096))
 	hidden = Column(Boolean)
 	sort_by = Column(Integer)
 
-	photos = relationship("Photo", order_by="Photo.created", backref = "album")
-	parent = relationship("Album", order_by="Album.created", backref = "albums", remote_side = [id])
+	photos = relationship("Photo", order_by="Photo.created",
+					backref = "album",
+					primaryjoin = Photo.album_id==id)
+	parent = relationship("Album", order_by="Album.created",
+					backref = "albums", remote_side = [id])
+	ppreview = relationship("Photo",
+					backref=backref("displayed_album", uselist=False),
+					foreign_keys = [preview_id],
+					primaryjoin = preview_id==Photo.id)
 
 	def after_insert(self):
 		os.mkdir(self.get_path())
