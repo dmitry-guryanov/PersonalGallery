@@ -53,11 +53,7 @@ class Photo(Base):
 		# save file
 		photo_path = self.get_path()
 		if os.access(photo_path, os.F_OK):
-			if 0:
-				os.unlink(photo_path)
-				os.unlink(self.get_preview_path())
-			else:
-				self.name, photo_path = resolve_dup_name(photo_path)
+			self.name, photo_path = resolve_dup_name(photo_path)
 
 		f = open(photo_path, "w")
 		f.write(image_data)
@@ -78,18 +74,17 @@ class Photo(Base):
 			(photo_path, crop_cmd, preview_size, preview_file)
 		os.system(cmd)
 
-		if 1: # not only_file:
-			self.width = inf.width
-			self.height = inf.height
-			if inf.exif.has_key("Create Date"):
-				str_date = inf.exif["Create Date"]
-				if re.match("\d+:\d+:\d+ \d+:\d+:\d+.\d+", str_date):
-					str_date = str_date[:-3]
-				cr_time = time.strptime(str_date, "%Y:%m:%d %H:%M:%S")
-				cr_ts = time.mktime(cr_time)
-				self.created = datetime.datetime.fromtimestamp(cr_ts)
-			else:
-				self.created = datetime.datetime.now()
+		self.width = inf.width
+		self.height = inf.height
+		if inf.exif.has_key("Create Date"):
+			str_date = inf.exif["Create Date"]
+			if re.match("\d+:\d+:\d+ \d+:\d+:\d+.\d+", str_date):
+				str_date = str_date[:-3]
+			cr_time = time.strptime(str_date, "%Y:%m:%d %H:%M:%S")
+			cr_ts = time.mktime(cr_time)
+			self.created = datetime.datetime.fromtimestamp(cr_ts)
+		else:
+			self.created = datetime.datetime.now()
 
 	def before_delete(self):
 		try:
