@@ -5,6 +5,7 @@ import types
 import time
 import mimetypes
 import datetime
+import zipfile
 from logging import info
 
 from pylons import url, request, tmpl_context as c
@@ -25,20 +26,12 @@ def add_archive(aid, file, arc_type):
 	"""
 
 	print "extracting archive ..."
-	tmpdir = tempfile.mkdtemp()
-
-	os.system("unzip %s -d %s" % (file, tmpdir))
-
-	for root, dirs, files in os.walk(tmpdir):
-		for f in files:
-			fpath = os.path.join(root, f)
-			tp = mimetypes.guess_type(fpath)[0]
-			if tp == "image/jpeg":
-				photo = Photo(f, aid, fpath)
-				s.add(photo)
-				s.commit()
-	
-	shutil.rmtree(tmpdir)
+	z = zipfile.ZipFile(file)
+	for fname in z.namelist():
+		if mimetypes.guess_type(fname)[0] == "image/jpeg":
+			photo = Photo(os.path.basename(fname), aid, z.read(fname))
+			s.add(photo)
+			s.commit()
 
 class AdminController(BaseController):
 
@@ -62,27 +55,20 @@ class AdminController(BaseController):
 					continue
 
 				name = new_photo.filename.lstrip(os.sep)
-				(tmpfd, tmpname) = tempfile.mkstemp(suffix=name)
-				tmpobj = os.fdopen(tmpfd, "w")
-				shutil.copyfileobj(new_photo.file, tmpobj)
-				tmpobj.close()
-				new_photo.file.close()
 
 				mimetypes.init()
 
-				tp = mimetypes.guess_type(tmpname)[0]
+				tp = mimetypes.guess_type(name)[0]
 
 				if tp == "image/jpeg":
-					photo = Photo(name, aid, tmpname)
+					photo = Photo(name, aid, new_photo.file.read())
+					new_photo.file.close()
 					s.add(photo)
 					s.commit()
 				elif tp == "application/zip":
-					add_archive(aid, tmpname, arc_type = "zip")
+					add_archive(aid, new_photo.file, arc_type = "zip")
 				else:
-					os.unlink(tmpname)
 					return "Unsupported type"
-
-				os.unlink(tmpname)
 
 			redirect(url(controller = "album",
 						action = "show_first_page", aid = aid))

@@ -46,7 +46,7 @@ class Photo(Base):
 	height = Column(Integer)
 	hidden = Column(Boolean)
 
-	def __init__(self, name, album_id, tmp_file):
+	def __init__(self, name, album_id, image_data):
 		self.name = unicode(name)
 		self.album_id = album_id
 
@@ -59,7 +59,9 @@ class Photo(Base):
 			else:
 				self.name, photo_path = resolve_dup_name(photo_path)
 
-		shutil.copyfile(tmp_file, photo_path)
+		f = open(photo_path, "w")
+		f.write(image_data)
+		f.close()
 
 		# make preview
 		inf = get_photo_info(self)
