@@ -99,25 +99,8 @@ class AdminController(BaseController):
 
 		photo = s.query(Photo).filter_by(album_id=aid, id=pid)[0]
 
-		photo.name = request.params.get("name")
 		photo.display_name = request.params.get("title")
-		photo.hidden = int(request.params.get("hide_album", 0)) * 65535
-
-		new_photo = request.params.get('photo_file')
-
-		if type(new_photo) is types.InstanceType:
-			name = new_photo.filename.lstrip(os.sep)
-			(tmpfd, tmpname) = tempfile.mkstemp(suffix=name)
-			tmpobj = os.fdopen(tmpfd, "w")
-			shutil.copyfileobj(new_photo.file, tmpobj)
-			tmpobj.close()
-			new_photo.file.close()
-
-#			add_photo(aid, name, tmpname, photo = photo,
-#							only_file = False, rewrite = True)
-#			photo.name = name
-
-			os.unlink(tmpname)
+		photo.hidden = bool(request.params.get("hide_photo", 0))
 
 		s.commit()
 
