@@ -19,16 +19,15 @@ class AlbumController(BaseController):
 		return self.show_page(aid, 0)
 
 	def show_page(self, aid, page):
-		c.album = aid
 		c.page = page
 		c.u = utils
 
-		c.cur_album = s.query(Album).filter(Album.id == aid).first()
-		if not c.cur_album:
+		c.album = s.query(Album).filter(Album.id == aid).first()
+		if not c.album:
 			abort(404)
 
-		c.photos = c.cur_album.photos
-		if c.cur_album.sort_by == utils.SORT_BY_DATE_DESC:
+		c.photos = c.album.photos
+		if c.album.sort_by == utils.SORT_BY_DATE_DESC:
 			c.photos.reverse()
 
 		# get photo counts
@@ -46,7 +45,7 @@ class AlbumController(BaseController):
 		album_counts = dict(album_counts)
 
 		c.counts = {}
-		for a in c.cur_album.albums:
+		for a in c.album.albums:
 			c.counts[a.id] = (album_counts.get(a.id, 0), photo_counts.get(a.id, 0))
 
 		return render("/album.mako")

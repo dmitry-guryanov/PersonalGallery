@@ -5,9 +5,9 @@
 
 <%include file="header.mako"/>
 
-% if c.cur_album.albums:
+% if c.album.albums:
 	<div class="gallery-thumbs">
-% for a in c.cur_album.albums:
+% for a in c.album.albums:
 		<div class="gallery-album">
 			<div class="gallery-thumb">
 				<a class="gallery-thumb-link" href='${url(controller="album", action="show_first_page", aid=a.id)}'>
@@ -46,14 +46,14 @@
 			</a>
 % if c.admin:
 			<br/>
-			${h.link_to("del", url(controller = "admin", action = "photo_del_submit", aid = c.album, pid = p.id))}
-			${h.link_to("edit", url(controller = "admin", action = "photo_edit", aid = c.album, pid = p.id))}
+			${h.link_to("del", url(controller = "admin", action = "photo_del_submit", aid = c.album.id, pid = p.id))}
+			${h.link_to("edit", url(controller = "admin", action = "photo_edit", aid = c.album.id, pid = p.id))}
 % endif
 		</div>
 % endfor
 		<div style="clear: both"></div>
 	</div>
-% elif not c.cur_album.albums:
+% elif not c.album.albums:
 	<h2>There are no photos in this album</h2>
 % endif
 
