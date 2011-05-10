@@ -44,7 +44,7 @@ class Photo(Base):
 	created = Column(DateTime)
 	width = Column(Integer)
 	height = Column(Integer)
-	hidden = Column(Boolean)
+	hidden = Column(Boolean, default = False)
 
 	def __init__(self, name, album_id, image_data):
 		self.name = unicode(name)
@@ -134,16 +134,18 @@ class Album(Base):
 	preview_id = Column(Integer,
 		ForeignKey('photos.id', name = "qweqwe", use_alter = True))
 	descr = Column(Unicode(4096))
-	hidden = Column(Boolean)
+	hidden = Column(Boolean, default = False)
 	sort_by = Column(Integer)
 
 	photos = relationship("Photo", order_by="Photo.created",
 				backref = "album",
 				primaryjoin = Photo.album_id==id,
 				cascade = "delete")
+
 	albums = relationship("Album", order_by="Album.created",
 				backref = backref("parent", remote_side = [id]),
 				cascade = "delete")
+
 	preview = relationship("Photo",
 				backref=backref("displayed_album",
 					uselist=False, passive_deletes = True),
