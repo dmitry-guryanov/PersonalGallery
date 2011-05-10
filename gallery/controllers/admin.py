@@ -46,32 +46,34 @@ class AdminController(BaseController):
 	def photo_add(self, aid):
 			return render("/photo_add.mako")
 
+	def photo_add_single(self, aid, new_photo):
+		name = new_photo.filename.lstrip(os.sep)
+
+		tp = mimetypes.guess_type(name)[0]
+
+		if tp == "image/jpeg":
+			photo = Photo(name, aid, new_photo.file.read())
+			new_photo.file.close()
+			s.add(photo)
+			s.commit()
+		elif tp == "application/zip":
+			add_archive(aid, new_photo.file, arc_type = "zip")
+		else:
+			return "Unsupported type"
+		return None
+
 	@authenticate_form
 	def photo_add_submit(self, aid):
+		for i in range(20):
+			new_photo = request.params.get('new_photo-%d' % i)
+			if type(new_photo) is not types.InstanceType:
+				continue
+			s = self.photo_add_single(aid, new_photo)
+			if s:
+				return s
 
-			for i in range(20):
-				new_photo = request.params.get('new_photo-%d' % i)
-				if type(new_photo) is not types.InstanceType:
-					continue
-
-				name = new_photo.filename.lstrip(os.sep)
-
-				mimetypes.init()
-
-				tp = mimetypes.guess_type(name)[0]
-
-				if tp == "image/jpeg":
-					photo = Photo(name, aid, new_photo.file.read())
-					new_photo.file.close()
-					s.add(photo)
-					s.commit()
-				elif tp == "application/zip":
-					add_archive(aid, new_photo.file, arc_type = "zip")
-				else:
-					return "Unsupported type"
-
-			redirect(url(controller = "album",
-						action = "show_first_page", aid = aid))
+		redirect(url(controller = "album",
+					action = "show_first_page", aid = aid))
 			
 	def photo_del_submit(self, aid, pid):
 		photo_q = s.query(Photo)
