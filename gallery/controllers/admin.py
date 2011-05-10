@@ -156,6 +156,7 @@ class AdminController(BaseController):
 			name = new_thumb.filename.lstrip(os.sep)
 			preview = Photo(name, aid, new_thumb.file.read())
 			new_thumb.file.close()
+			preview.hidden = True
 			s.add(preview)
 			s.commit()
 
