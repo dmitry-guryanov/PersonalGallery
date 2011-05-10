@@ -150,20 +150,18 @@ class AdminController(BaseController):
 		new_thumb = request.params.get('album_thumbnail')
 		print new_thumb, repr(new_thumb)
 		if type(new_thumb) is types.InstanceType:
-			name = new_thumb.filename.lstrip(os.sep)
-			(tmpfd, tmpname) = tempfile.mkstemp(suffix=name)
-			tmpobj = os.fdopen(tmpfd, "w")
-			shutil.copyfileobj(new_thumb.file, tmpobj)
-			tmpobj.close()
-			new_thumb.file.close()
+			old_preview = album.preview
 
 			# add preview
-			preview = Photo(name, album.id, tmpname)
-			os.unlink(tmpname)
+			name = new_thumb.filename.lstrip(os.sep)
+			preview = Photo(name, aid, new_thumb.file.read())
+			new_thumb.file.close()
 			s.add(preview)
 			s.commit()
 
 			album.preview_id = preview.id
+			if old_preview:
+				s.delete(old_preview)
 
 		s.commit()
 
