@@ -26,9 +26,23 @@ class AlbumController(BaseController):
 		if not c.album:
 			abort(404)
 
-		c.photos = c.album.photos
-		if c.album.sort_by == utils.SORT_BY_DATE_DESC:
-			c.photos.reverse()
+		# Query albums
+		albums_q = s.query(Album).filter(Album.parent_id == aid)
+		# hide albums only for guests
+		if not c.admin:
+			albums_q = albums_q.filter(Album.hidden == False)
+		c.albums = albums_q.all()
+
+		# Query photos
+		photos_q = s.query(Photo).filter(Photo.album_id == aid)
+		# hide photos only for guests
+		if not c.admin:
+			photos_q = photos_q.filter(Photo.hidden == False)
+		if c.album.sort_by == utils.SORT_BY_DATE:
+			photos_q = photos_q.order_by(Photo.created)
+		elif c.album.sort_by == utils.SORT_BY_DATE_DESC:
+			photos_q = photos_q.order_by(Photo.created.desc())
+		c.photos = photos_q.all()
 
 		# get photo counts
 		photo_counts = s.execute("SELECT albums.id AS aid, COUNT(*) FROM albums JOIN "
