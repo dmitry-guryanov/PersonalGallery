@@ -1,17 +1,31 @@
-<div class="main-header">${h.link_to("Dmitry Guryanov\'s gallery", url(controller='album', action='index'))}</div>
+
+<!--
+<div id="header">
+<div id="menu">
+	<ul>
+	<li id="logo"><a href="${url(controller='album', action='index')}">фотограф Дмитрий Гурьянов</a></li>
+
+	% for a in c.top_albums:
+		<li>${h.link_to(a.display_name, url(controller="album", action = "show_first_page", aid=a.id))}</li>
+	% endfor
+	</ul>
+</div>
+</div>
+-->
+
+
+<div id="header2">
+<table id="menu2" cellspacing="0"><tr>
+	<td id="logo2"><a href="${url(controller='album', action='index')}">фотограф Дмитрий Гурьянов</a></td>
 
 <!-- ######  navibar ###### -->
-<div>
-	<div class="navibar">
 	% for a in c.top_albums:
-		<div class="navibar-item">
-			${h.link_to(a.display_name,
-					url(controller="album", action = "show_first_page", aid=a.id))}
-		</div>
+		<td>${h.link_to(a.display_name, url(controller="album", action = "show_first_page", aid=a.id))}</td>
 	% endfor
-	</div>
-</div>
 <!-- ######  /navibar ###### -->
+	<td id="search2"></td>
+</tr></table>
+</div>
 % if c.admin:
 	${h.auth_token_hidden_field()}
 	<div>

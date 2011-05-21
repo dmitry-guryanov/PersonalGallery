@@ -9,12 +9,12 @@
 </head>
 
 <body>
-	<div class="header">	<!-- HEADER -->
+	<!-- HEADER -->
 		${self.header()}
-	</div>	<!-- HEADER -->
+	<!-- HEADER -->
 
 
-	<div class="main-content">	<!-- MAIN-CONTENT -->
+	<div id="page">	<!-- MAIN-CONTENT -->
 
 	${self.body()}
 
