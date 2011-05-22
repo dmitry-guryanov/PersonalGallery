@@ -9,7 +9,7 @@
 <script type="text/javascript">
 
 side_margin = 40;
-top_margin = 10;
+top_margin = 30;
 bottom_margin = 56;
 
 function get_scale(pw, ph, w, h) {
@@ -30,6 +30,12 @@ function onresize(event) {
 
 	width = window.innerWidth - 2 * side_margin;
 	height = window.innerHeight - top_margin - bottom_margin;
+
+	if(width < 600)
+		width = 600;
+	if(height < 400)
+		height = 400;
+
 	scale = get_scale(width, height, size.width, size.height);
 
 	photo_width = scale * size.width;
@@ -58,8 +64,8 @@ function onresize(event) {
 	document.getElementById("next-rect").coords = coords;
 % endif
 
-	document.getElementById("photo-header").style.top = (window.innerHeight - 46) + "px";
-	document.getElementById("photo-menu").style.left = (window.innerWidth / 2 - 160) + "px";
+	document.getElementById("photo-header").style.top = (height + top_margin + 10) + "px";
+	document.getElementById("photo-menu").style.left = (width / 2 + side_margin - 160) + "px";
 }
 
 window.onresize = onresize;
@@ -80,9 +86,11 @@ window.onresize = onresize;
 	</div>
 	<div id="photo-menu">
 	% for tag in ["first", "prev", "next", "last"]:
+	<div>
 	% if getattr(c, tag):
-		<div><a href='${url.current(pid=getattr(c, tag).id)}'><img src="/gallery-static/i/${tag}.png"/></a></div>
+		<a href='${url.current(pid=getattr(c, tag).id)}'><img src="/gallery-static/i/${tag}.png"/></a>
 	%endif
+	</div>
 	%endfor
 	</div>
 </div>
