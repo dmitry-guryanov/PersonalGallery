@@ -91,4 +91,4 @@ class AlbumController(BaseController):
 		counts = {}
 		for a in c.album.albums:
 			counts[a.id] = (album_counts.get(a.id, 0), photo_counts.get(a.id, 0))
-
+		return counts
