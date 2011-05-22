@@ -4,8 +4,7 @@
 <%include file="header.mako"/>
 </%def>
 
-<div class="pager">${c.page.pager()}</div>
-
+<div class="pager">${c.albums.pager()}</div>
 % if c.albums:
 	<div class="gallery-albums"><div class="gallery-albums2">
 <% i = 0 %>
@@ -29,9 +28,10 @@
 	</div></div>
 % endif
 
+<div class="pager">${c.photos.pager()}</div>
 % if c.photos:
 	<div class="gallery-thumbs"><div class="gallery-thumbs2">
-% for p in c.page:
+% for p in c.photos:
 			<a href='${url(controller="photo", action="index", aid=p.album_id, pid=p.id)}'>
 				<img src="${p.get_web_preview_path()}"/>
 			</a>

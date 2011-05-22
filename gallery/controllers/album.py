@@ -31,14 +31,34 @@ class AlbumController(BaseController):
 		if not c.album:
 			abort(404)
 
-		# Query albums
+		c.albums = self._get_albums(aid, page)
+		c.photos = self._get_photos(aid, page)
+
+		c.counts = self._get_counts(c.album)
+
+		if show_photos:
+			return render("/photo-all.mako")
+		else:
+				return render("/album.mako")
+
+	def _get_albums(self, aid, page):
+		"""
+		Return Page for albums
+		"""
 		albums_q = s.query(Album).filter(Album.parent_id == aid)
 		# hide albums only for guests
 		if not c.admin:
 			albums_q = albums_q.filter(Album.hidden == False)
-		c.albums = albums_q.all()
 
-		# Query photos
+		def _get_page_url(page, partial=None):
+			return url(controller = "album", action = "show_page", aid = aid, page = page)
+					
+		return Page(albums_q, page = page, items_per_page = 8, url = _get_page_url)
+
+	def _get_photos(self, aid, page):
+		"""
+		Return Page for photos
+		"""
 		photos_q = s.query(Photo).filter(Photo.album_id == aid)
 		# hide photos only for guests
 		if not c.admin:
@@ -51,13 +71,13 @@ class AlbumController(BaseController):
 		def _get_page_url(page, partial=None):
 			return url(controller = "album", action = "show_page", aid = aid, page = page)
 					
-		c.page = Page(photos_q, page = page, items_per_page = 20, url = _get_page_url)
-		c.photos = photos_q.all()
+		return Page(photos_q, page = page, items_per_page = 20, url = _get_page_url)
 
+	def _get_counts(self, album):
 		# get photo counts
 		photo_counts = s.execute("SELECT albums.id AS aid, COUNT(*) FROM albums JOIN "
 					"photos ON album_id=albums.id "
-					"WHERE albums.parent_id=%d GROUP BY photos.album_id;" % int(aid)).fetchall()
+					"WHERE albums.parent_id=%d GROUP BY photos.album_id;" % int(album.id)).fetchall()
 		photo_counts = dict(photo_counts)
 
 		# get album counts
@@ -65,14 +85,10 @@ class AlbumController(BaseController):
 						"FROM albums albums1 JOIN albums albums2 ON "
 						"albums2.parent_id=albums1.id "
 						"WHERE albums1.parent_id=%d and (albums2.hidden=0 or %d) "
-						"GROUP BY albums2.parent_id;" % (int(aid), int(c.admin))).fetchall()
+						"GROUP BY albums2.parent_id;" % (int(album.id), int(c.admin))).fetchall()
 		album_counts = dict(album_counts)
 
-		c.counts = {}
+		counts = {}
 		for a in c.album.albums:
-			c.counts[a.id] = (album_counts.get(a.id, 0), photo_counts.get(a.id, 0))
+			counts[a.id] = (album_counts.get(a.id, 0), photo_counts.get(a.id, 0))
 
-		if show_photos:
-			return render("/photo-all.mako")
-		else:
-				return render("/album.mako")
