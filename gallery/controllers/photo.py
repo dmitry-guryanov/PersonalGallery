@@ -27,15 +27,19 @@ class PhotoController(BaseController):
 
 		if cur_idx == 0:
 			prev = None
+			first = None
 		else:
 			prev = photos[cur_idx - 1]
+			first = photos[0]
 
 		if cur_idx == len(photo_ids) - 1:
 			next = None
+			last = None
 		else:
 			next = photos[cur_idx + 1]
+			last = photos[len(photo_ids) - 1]
 
-		return (prev, next)
+		return (cur_idx + 1, len(photos), first, prev, next, last)
 
 
 	def index(self, aid, pid):
@@ -45,7 +49,7 @@ class PhotoController(BaseController):
 		if c.photo is None:
 			abort(404)
 
-		(c.prev, c.next) = self._find_adj_photos(s, aid, pid)
+		(c.idx, c.all, c.first, c.prev, c.next, c.last) = self._find_adj_photos(s, aid, pid)
 
 		return render('/photo.mako')
 
