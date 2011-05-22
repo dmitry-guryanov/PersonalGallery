@@ -1,10 +1,17 @@
 
 <div id="header">
 <table id="menu" cellspacing="0"><tr>
-	<td id="logo"><a href="${url(controller='album', action='index')}">фотограф Дмитрий Гурьянов</a></td>
-	% for a in c.top_albums:
-	<td>${h.link_to(a.display_name, url(controller="album", action = "show_first_page", aid=a.id))}</td>
-	% endfor
+	<td id="logo"><a href="${url(controller='album', action='index')}">Фотограф Дмитрий Гурьянов</a></td>
+	<td>
+<%
+links = []
+for a in c.top_albums:
+	links.append(h.link_to(a.display_name,
+			url(controller="album", action = "show_first_page", aid=a.id)))
+s = "&nbsp;|&nbsp;".join(links)
+%>
+	${s | n}
+	</td>
 	<td id="search"></td>
 </tr></table>
 </div>
