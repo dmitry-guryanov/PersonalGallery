@@ -50,25 +50,27 @@ a:hover {
 	text-decoration: underline;
 }
 
-/* Header */
+/* HEADER */
 
 #header {
-	clear: both;
-	margin: 10px 0px 10px 0px;
-	background: url(images/img01.jpg) no-repeat left top;
+	margin: 10px 0px 40px 0px;
 }
 
-/* Logo */
+/* Menu */
+
+#menu {
+	width: 100%;
+	height: 60px;
+}
 
 #menu #logo a, #menu #logo a:hover {
 	background: none;
-	padding-top: 15px;
-	padding-left: 60px;
+	padding: 5px 30px 0 50px;
 	letter-spacing: -1px;
 	font-size: 2.0em;
 	font-weight: normal;
-	color: #FFF;
-	height: 40px;
+	color: #999;
+	width: 400px;
 }
 
 #menu #logo p {
@@ -79,125 +81,17 @@ a:hover {
 	color: #FFFFFF;
 } 
 
-/* Menu */
 
-#menu {
-	margin: 0px auto;
-	padding: 0px;
-	height: auto;
-}
-
-#menu ul {
-	width: 100%;
-	margin: 0;
-	padding: 0px;
-	list-style: none;
-	line-height: normal;
-	background: #000000;
-	display: inline-block;
-	margin-bottom:1px;
-	height: auto;
-}
-
-#menu li {
-	background: #000000;
-	float: left;
-	border-right: 1px solid #1A1A18;
-	border-bottom: 1px solid #1A1A18;
-	height: 60px;
-}
-
-#menu a {
-	display: block;
-	height: 30px;
-	padding: 30px 40px 0px 40px;
-	text-decoration: none;
-	text-align: center;
-	font-family: Verdana, sans-serif;
-	font-size: 14px;
-	font-weight: bold;
-	color: #F00820;
-	border: none;
-}
-
-#header #menu span {
-	font-size: 20px;
-}
-
-#menu a:hover, #menu .current_page_item a {
-	background: url(/gallery-static/images/img02.jpg) repeat-x left top;
-	text-decoration: none;
-	color: #FFFFFF;
-}
-
-#menu .current_page_item a {
-}
-
-/* Logo */
-
-#menu #logo a, #menu #logo a:hover {
-	background: none;
-	padding-top: 15px;
-	padding-left: 60px;
-	letter-spacing: -1px;
-	font-size: 2.0em;
-	font-weight: normal;
-	color: #FFF;
-	height: 40px;
-}
-
-
-/* --------------------------------------- */
-#header2 {
-	clear: both;
-	margin: 10px 0px 40px 0px;
-}
-
-#menu2 #logo2 a, #menu2 #logo2 a:hover {
-	background: none;
-	padding-top: 5px;
-	padding-left: 50px;
-	padding-right: 30px;
-	letter-spacing: -1px;
-	font-size: 2.0em;
-	font-weight: normal;
-	color: #FFF;
-	width: 400px;
-}
-
-#menu2 #logo2 p {
-	margin: 0;
-	padding: 0px 0 0 160px;
-	font: normal 14px Georgia, "Times New Roman", Times, serif;
-	font-style: italic;
-	color: #FFFFFF;
-} 
-
-/* Menu */
-
-#menu2 {
-	margin: 0px auto;
-	padding: 0px;
-}
-
-table#menu2{
-	width: 100%;
-	height: 60px;
-	border: 0;
-	padding: 0px;
-}
-
-#menu2 td#logo2 {
+#menu td#logo {
 	width: 30%;
 }
 
-#menu2 td#search2 {
+#menu td#search {
 	width: 20%;
 }
 
-#menu2 td {
+#menu td {
 	width: 10%;
-	margin: 0px;
 	padding: 0px;
 	background: #000;
 	border-left: 0;
@@ -205,12 +99,11 @@ table#menu2{
 	text-align: center;
 }
 
-#menu2 a {
+#menu a {
 	display: block;
 	height: 30px;
 	padding: 30px 10px 0px 10px;
 	text-decoration: none;
-	text-align: center;
 	font-family: Verdana, sans-serif;
 	font-size: 14px;
 	font-weight: bold;
@@ -218,12 +111,11 @@ table#menu2{
 	border: none;
 }
 
-#menu2 a:hover, #menu2 .current_page_item a {
+#menu a:hover, #menu .current_page_item a {
 	background: url(/gallery-static/images/img02.jpg) repeat-x left top;
 	text-decoration: none;
 	color: #FFFFFF;
 }
-/*----------------------------------- */
 
 
 /* MY ---------------------------------------- */
