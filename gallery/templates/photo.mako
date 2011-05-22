@@ -31,14 +31,11 @@ function onresize(event) {
 	width = window.innerWidth - 2 * side_margin;
 	height = window.innerHeight - top_margin - bottom_margin;
 	scale = get_scale(width, height, size.width, size.height);
-	/* document.getElementById("demo").innerHTML=window.innerWidth + "x" + window.innerHeight + " " + scale; */
 
 	photo_width = scale * size.width;
 	photo.style.width = photo_width + "px";
 	photo_height = scale * size.height;
 	photo.style.height = photo_height + "px";
-
-	/* document.getElementById("demo2").innerHTML=width + "x" + height + " " + photo_width + "x" + photo_height */
 
 	/* center image */
 	if(width > photo_width)
@@ -62,6 +59,7 @@ function onresize(event) {
 % endif
 
 	document.getElementById("photo-header").style.top = (window.innerHeight - 46) + "px";
+	document.getElementById("photo-menu").style.left = (window.innerWidth / 2 - 160) + "px";
 }
 
 window.onresize = onresize;
@@ -69,10 +67,6 @@ window.onresize = onresize;
 </head>
 
 <body onload="onresize();">
-
-<!--
-<div id="demo"> </div>
-<div id="demo2"> </div> -->
 
 <div id="photo-close">
 	<a href="${url(controller='album', action='show_first_page', aid=c.photo.album_id)}"><img src="/gallery-static/i/close.png"></a>
@@ -84,34 +78,22 @@ window.onresize = onresize;
 	</div>
 	<div id="photo-menu">
 	% for tag in ["first", "prev", "next", "last"]:
-		<div>
-		% if getattr(c, tag):
-			<a href='${url.current(pid=getattr(c, tag).id)}'><img src="/gallery-static/i/${tag}.png"/></a>
-		%endif
-		</div>
+	% if getattr(c, tag):
+		<div><a href='${url.current(pid=getattr(c, tag).id)}'><img src="/gallery-static/i/${tag}.png"/></a></div>
+	%endif
 	%endfor
 	</div>
-
 </div>
-
-<div class="photo"><div class="photo2">
 
 <img id="mainphoto" alt="" src='${c.photo.get_web_path()}' usemap="#prevnext" width="${c.photo.width}" height="${c.photo.height}"/>
 <img id="mainphotosize" style="display:none;" width="${c.photo.width}" height="${c.photo.height}" onload="onresize();"/>
 
-</div></div>
-
 <map id="prevnext" name="prevnext">
 % if c.prev:
-<area id="prev-rect" shape="rect" coords="0,0,${c.photo.width / 3},${c.photo.height}"
-href='${url.current(pid=c.prev.id)}'
-alt="IMG_0161"/>
+<area id="prev-rect" shape="rect" href='${url.current(pid=c.prev.id)}'/>
 % endif
-
 % if c.next:
-<area id="next-rect" shape="rect" coords="${c.photo.width * 2 / 3},0,${c.photo.width},${c.photo.height}"
-href='${url.current(pid=c.next.id)}'
-alt="IMG_0161"/>
+<area id="next-rect" shape="rect" href='${url.current(pid=c.next.id)}'/>
 % endif
 </map>
 

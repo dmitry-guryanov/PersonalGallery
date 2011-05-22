@@ -57,7 +57,7 @@ a img {
 /* HEADER */
 
 #header {
-	margin: 10px 0px 40px 0px;
+	margin: 0px 0px 40px 0px;
 }
 
 /* Menu */
@@ -193,8 +193,15 @@ a img {
 	left: 10px;
 }
 
+#photo-copyright {
+	float: right;
+	font-weight: normal;
+	font-size: 12px;
+}
+
 #photo-menu {
 	display: inline-block;
+	position: absolute;
 	min-width: 330px;
 }
 
@@ -212,16 +219,9 @@ a img {
 	float: right;
 }
 
-.photo {
-	text-align: center;
-}
-
-.photo2 {
-}
-
-.photo img  {
+#mainphoto {
 	border: 0;
-		position: absolute;
+	position: absolute;
 }
 
 /* Page */
