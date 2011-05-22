@@ -18,7 +18,7 @@ h1, h2, h3 {
 	margin: 0;
 	padding: 0;
 	font-weight: normal;
-	color: #000000;
+	color: ##878787;
 }
 
 h1 {
@@ -50,14 +50,17 @@ a:hover {
 	text-decoration: underline;
 }
 
+a:active  {
+}
+
 a img {
-	border: 0;
+	border:0;
 }
 
 /* HEADER */
 
 #header {
-	margin: 0px 0px 40px 0px;
+	margin: 0px 0px 10px 0px;
 }
 
 /* Menu */
@@ -76,7 +79,6 @@ a img {
 	font-size: 1.6em;
 	font-weight: normal;
 	color: #999;
-	width: 400px;
 }
 
 #menu #logo p {
@@ -90,6 +92,7 @@ a img {
 
 #menu td#logo {
 	width: 30%;
+	min-width: 350px;
 	padding-top: 5px;
 }
 
@@ -116,9 +119,17 @@ a img {
 	color: #FCC;
 }
 
+.pager {
+	float: right;
+	margin-right: 10px;
+	margin-top: 0px;
+	font-size: 16px;
+}
+
 /* ALBUMS page */
 
 .gallery-thumbs {
+	padding-top: 30px;
 	text-align: center;
 }
 
@@ -133,6 +144,7 @@ a img {
 }
 
 .gallery-albums {
+	margin-top: 30px;
 	text-align: center;
 }
 
@@ -227,195 +239,7 @@ a img {
 /* Page */
 
 #page {
-	margin: 0 auto;
-	padding: 0px 0px 0px 0px;
-}
-
-#page-bgtop {
-	padding: 20px 0px;
-}
-
-#page-bgbtm {
-}
-
-/* Content */
-
-#content {
-	float: right;
-	width: 580px;
-	padding: 30px 0px 0px 0px;
-}
-
-.post {
-	margin-bottom: 15px;
-}
-
-.post-bgtop {
-}
-
-.post-bgbtm {
-}
-
-.post .title {
-	height: 38px;
-	margin-bottom: 10px;
-	padding: 12px 0 0 0px;
-	letter-spacing: -.5px;
-	color: #82050B;
-}
-
-.post .title a {
-	color: #DDDDDD;
-	border: none;
-}
-
-.post .meta {
-	margin-bottom: 30px;
-	padding: 5px 0px 15px 0px;
-	text-align: left;
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 13px;
-	font-weight: bold;
-}
-
-.post .meta .date {
-	float: left;
-}
-
-.post .meta .posted {
-	float: right;
-}
-
-.post .meta a {
-}
-
-.post .entry {
-	padding: 0px 0px 20px 0px;
-	padding-bottom: 20px;
-	text-align: justify;
-}
-
-.links {
-	height: 30px;
-	background: url(images/img05.jpg) no-repeat left 20px;
-	padding: 30px 0px 0px 30px;
-	font-size: 12px;
-	font-weight: bold;
-	color: #1C1C1C;
-}
-
-/* Sidebar */
-
-#sidebar {
-	float: left;
-	width: 340px;
-	margin: 0px;
-	padding: 0px 0px 0px 0px;
-	color: #787878;
-}
-
-#sidebar ul {
-	margin: 0;
-	padding: 0;
-	list-style: none;
-}
-
-#sidebar li {
 	margin: 0;
 	padding: 0;
 }
 
-#sidebar li ul {
-	margin: 0px 0px;
-	padding-bottom: 30px;
-}
-
-#sidebar li li {
-	border-bottom: 1px solid #1E1E1E;
-	background: #121212;
-	margin: 0px 30px;
-	padding: 5px 0px;
-	border-left: none;
-}
-
-#sidebar li li a {
-	padding-left: 30px;
-	background: url(images/img03.jpg) no-repeat 15px 4px;
-}
-
-#sidebar li li span {
-	display: block;
-	margin-top: -20px;
-	padding: 0;
-	font-size: 11px;
-	font-style: italic;
-}
-
-#sidebar h2 {
-	height: 38px;
-	padding-left: 30px;
-	letter-spacing: -.5px;
-	font-size: 1.8em;
-	color: #FFFFFF;
-}
-
-#sidebar p {
-	margin: 0 0px;
-	padding: 0px 30px 20px 30px;
-	text-align: justify;
-}
-
-#sidebar a {
-	border: none;
-	color: #878787;
-}
-
-#sidebar a:hover {
-	text-decoration: underline;
-	color: #FFFFFF;
-}
-
-/* Calendar */
-
-#calendar {
-}
-
-#calendar_wrap {
-	padding: 20px;
-}
-
-#calendar table {
-	width: 100%;
-}
-
-#calendar tbody td {
-	text-align: center;
-}
-
-#calendar #next {
-	text-align: right;
-}
-
-/* Footer */
-
-#footer {
-	height: 50px;
-	margin: 0 auto;
-	padding: 0px 0 15px 0;
-	background: #000000;
-	font-family: Arial, Helvetica, sans-serif;
-}
-
-#footer p {
-	margin: 0;
-	padding-top: 20px;
-	line-height: normal;
-	font-size: 9px;
-	text-transform: uppercase;
-	text-align: center;
-	color: #A0A0A0;
-}
-
-#footer a {
-	color: #8A8A8A;
-}

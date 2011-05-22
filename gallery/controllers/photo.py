@@ -53,3 +53,6 @@ class PhotoController(BaseController):
 
 		return render('/photo.mako')
 
+	def showall(self, aid):
+		return "qweqwe"
+

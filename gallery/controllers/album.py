@@ -2,7 +2,9 @@ from logging import info
 
 from pylons import tmpl_context as c
 from pylons.controllers.util import abort
-from pylons import config
+from pylons import config, url
+
+from webhelpers.paginate import Page
 
 from gallery.lib.base import BaseController, render
 from gallery.model import Photo, Album
@@ -18,7 +20,10 @@ class AlbumController(BaseController):
 	def show_first_page(self, aid):
 		return self.show_page(aid, 0)
 
-	def show_page(self, aid, page):
+	def show_photos(self, aid):
+		return self.show_page(aid, 0, True)
+
+	def show_page(self, aid, page, show_photos = False):
 		c.page = page
 		c.u = utils
 
@@ -42,6 +47,11 @@ class AlbumController(BaseController):
 			photos_q = photos_q.order_by(Photo.created)
 		elif c.album.sort_by == utils.SORT_BY_DATE_DESC:
 			photos_q = photos_q.order_by(Photo.created.desc())
+
+		def _get_page_url(page, partial=None):
+			return url(controller = "album", action = "show_page", aid = aid, page = page)
+					
+		c.page = Page(photos_q, page = page, items_per_page = 20, url = _get_page_url)
 		c.photos = photos_q.all()
 
 		# get photo counts
@@ -62,4 +72,7 @@ class AlbumController(BaseController):
 		for a in c.album.albums:
 			c.counts[a.id] = (album_counts.get(a.id, 0), photo_counts.get(a.id, 0))
 
-		return render("/album.mako")
+		if show_photos:
+			return render("/photo-all.mako")
+		else:
+				return render("/album.mako")

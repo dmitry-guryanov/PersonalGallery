@@ -23,6 +23,7 @@ def make_map(config):
 
 	map.connect('/', controller='album', action='index')
 	map.connect('/album/{aid}', controller='album', action='show_first_page')
+	map.connect('/album/photos/{aid}', controller='album', action='show_photos')
 	map.connect('/album/{aid}/{page}', controller='album', action='show_page')
 	map.connect('/login', controller='login', action='index')
 	map.connect('/login/{action}', controller='login')
