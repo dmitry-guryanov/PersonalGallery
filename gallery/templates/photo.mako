@@ -36,6 +36,9 @@ function onresize(event) {
 	if(height < 400)
 		height = 400;
 
+	document.getElementById("photo-header").style.top = (height + top_margin + 10) + "px";
+	document.getElementById("photo-menu").style.left = (width / 2 + side_margin - 160) + "px";
+
 	scale = get_scale(width, height, size.width, size.height);
 
 	photo_width = scale * size.width;
@@ -54,6 +57,8 @@ function onresize(event) {
 	else
 		photo.style.top = top_margin + "px";
 
+	photo.style.display="block";
+
 	/* update image map */
 % if c.prev:
 	coords = "0,0," + photo_width / 3 + "," + photo_height;
@@ -64,8 +69,6 @@ function onresize(event) {
 	document.getElementById("next-rect").coords = coords;
 % endif
 
-	document.getElementById("photo-header").style.top = (height + top_margin + 10) + "px";
-	document.getElementById("photo-menu").style.left = (width / 2 + side_margin - 160) + "px";
 }
 
 window.onresize = onresize;
@@ -74,8 +77,8 @@ window.onresize = onresize;
 
 <body onload="onresize();">
 
-<a href="${url(controller='album', action = 'show_photos', aid = c.photo.album_id)}">показать все</a>
 
+<div id="photo-show-all"> <a href="${url(controller='album', action = 'show_photos', aid = c.photo.album_id)}">показать все</a></div>
 <div id="photo-close">
 	<a href="${url(controller='album', action='show_first_page', aid=c.photo.album_id)}"><img src="/gallery-static/i/close.png"></a>
 </div>
@@ -95,7 +98,7 @@ window.onresize = onresize;
 	</div>
 </div>
 
-<img id="mainphoto" alt="" src='${c.photo.get_web_path()}' usemap="#prevnext" width="${c.photo.width}" height="${c.photo.height}"/>
+<img id="mainphoto" alt="" style="display:none" src='${c.photo.get_web_path()}' usemap="#prevnext" width="${c.photo.width}" height="${c.photo.height}"/>
 <img id="mainphotosize" style="display:none;" width="${c.photo.width}" height="${c.photo.height}" onload="onresize();"/>
 
 <map id="prevnext" name="prevnext">
