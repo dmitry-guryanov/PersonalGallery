@@ -12,7 +12,6 @@ s = "&nbsp;|&nbsp;".join(links)
 %>
 	${s | n}
 	</td>
-	<td id="search"></td>
 </tr></table>
 </div>
 
