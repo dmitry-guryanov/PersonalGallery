@@ -20,26 +20,28 @@ class AlbumController(BaseController):
 	def show_first_page(self, aid):
 		return self.show_page(aid, 0)
 
-	def show_photos(self, aid):
-		return self.show_page(aid, 0, True)
-
-	def show_page(self, aid, page, show_photos = False):
-		c.page = page
+	def show_photos(self, aid, page = 0):
 		c.u = utils
+		c.album = s.query(Album).filter(Album.id == aid).first()
+		if not c.album:
+			abort(404)
 
+		c.photos = self._get_photos(aid, page, "show_photos", 10)
+
+		return render("/photo-all.mako")
+
+	def show_page(self, aid, page):
+		c.u = utils
 		c.album = s.query(Album).filter(Album.id == aid).first()
 		if not c.album:
 			abort(404)
 
 		c.albums = self._get_albums(aid, page)
-		c.photos = self._get_photos(aid, page)
+		c.photos = self._get_photos(aid, page, "show_page", 16)
 
 		c.counts = self._get_counts(c.album)
 
-		if show_photos:
-			return render("/photo-all.mako")
-		else:
-				return render("/album.mako")
+		return render("/album.mako")
 
 	def _get_albums(self, aid, page):
 		"""
@@ -51,11 +53,13 @@ class AlbumController(BaseController):
 			albums_q = albums_q.filter(Album.hidden == False)
 
 		def _get_page_url(page, partial=None):
-			return url(controller = "album", action = "show_page", aid = aid, page = page)
+			return url(controller = "album", action = "show_page",
+							aid = aid, page = page)
 					
-		return Page(albums_q, page = page, items_per_page = 8, url = _get_page_url)
+		return Page(albums_q, page = page,
+			items_per_page = 8, url = _get_page_url)
 
-	def _get_photos(self, aid, page):
+	def _get_photos(self, aid, page, act, items_per_page):
 		"""
 		Return Page for photos
 		"""
@@ -69,9 +73,11 @@ class AlbumController(BaseController):
 			photos_q = photos_q.order_by(Photo.created.desc())
 
 		def _get_page_url(page, partial=None):
-			return url(controller = "album", action = "show_page", aid = aid, page = page)
+			return url(controller = "album", action = act,
+						aid = aid, page = page)
 					
-		return Page(photos_q, page = page, items_per_page = 20, url = _get_page_url)
+		return Page(photos_q, page = page,
+			items_per_page = items_per_page, url = _get_page_url)
 
 	def _get_counts(self, album):
 		# get photo counts
