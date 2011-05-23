@@ -8,11 +8,12 @@ Released for free under a Creative Commons Attribution 2.5 License
 body {
 	margin: 0;
 	padding: 0;
-	background: #1A1A19;
+	background: #1A1A1A;
 	font-family: Verdana, Helvetica, sans-serif;
 /*	font-family: Georgia, "Times New Roman", Times, serif; */
 	font-size: 12px;
-	color: #878787;
+	color: #A7A7A7;
+	text-align: center;
 }
 
 h1, h2, h3 {
@@ -43,12 +44,12 @@ ul, ol {
 
 a {
 	text-decoration: underline;
-	color: #AAA;
+	color: #CCC;
 }
 
 a:hover {
 	text-decoration: underline;
-	color: #F44;
+	color: #F54;
 }
 
 a img {
@@ -59,6 +60,8 @@ a img {
 
 #header {
 	margin: 0px 0px 10px 0px;
+/*	background: url(/gallery-static/i/x2.gif) repeat left top; */
+	font-family: Georgia, "Times New Roman", Times, serif;
 }
 
 /* Menu */
@@ -67,6 +70,7 @@ a img {
 	width: 100%;
 	height: 60px;
 	font-size: 14px;
+	border-bottom: 1px solid #333;
 }
 
 #menu #logo a, #menu #logo a:hover {
@@ -87,8 +91,8 @@ a img {
 
 
 #menu td#logo {
-	width: 30%;
-	min-width: 350px;
+	width: 300;
+	min-width: 300px;
 	padding-top: 5px;
 }
 
@@ -98,7 +102,7 @@ a img {
 
 #menu td {
 	width: 10%;
-	background: #000;
+/*	background: #000; */
 	text-align: center;
 	padding-top: 20px;
 }
@@ -107,19 +111,30 @@ a img {
 	float: right;
 	margin-right: 10px;
 	margin-top: 0px;
-	font-size: 16px;
+	font-size: 14px;
+}
+
+.pager_link {
+	font-weight: bold;
 }
 
 /* ALBUMS page */
 
 .gallery-thumbs {
-	padding-top: 30px;
+	padding-top: 20px;
 	text-align: center;
+	margin-bottom: 15px;
 }
 
 .gallery-thumbs2 {
 	display: inline-block;
-	max-width: 800px;
+	max-width: 700px;
+}
+
+#album-photos-menu {
+	display: block;
+	text-align: left;
+	margin-bottom: 5px;
 }
 
 .gallery-thumbs img {
@@ -207,6 +222,11 @@ a img {
 	display: block;
 }
 
+#photo-show-all {
+	margin: 5px 0px 0px 10px;
+	display: inline-block;
+}
+
 #photo-close {
 	padding: 5px;
 	float: right;
@@ -220,7 +240,20 @@ a img {
 /* Page */
 
 #page {
-	margin: 0;
 	padding: 0;
 }
 
+#allpage {
+	display: inline-block;
+	width: 1000px;
+	padding: 0;
+	text-align: left;
+}
+
+#footer {
+	font-size: 8pt;	
+	margin-top: 30px;
+	padding: 20px 70px 20px 20px;
+	text-align: right;
+	border-top: 1px solid #333;
+}

@@ -9,6 +9,7 @@
 </head>
 
 <body>
+<div id="allpage">
 	<!-- HEADER -->
 		${self.header()}
 	<!-- HEADER -->
@@ -21,13 +22,15 @@
 	</div>	<!-- MAIN-CONTENT -->
 
 
+	<div style="clear: both;"/>
 	<div class="footer">	<!-- FOOTER -->
 		${self.footer()}
 	</div>	<!-- FOOTER -->
+</div>
 </body>
 
 <%def name="footer()">
-    <div style="font-size: 8pt; padding: 20px 70px 20px 20px; text-align: right">©Дмитрий Гурьянов, +7 915 218-83-54, ICQ: 227412816</div>
+    <div id="footer">©Дмитрий Гурьянов, +7 915 218-83-54, ICQ: 227412816</div>
 </%def>
 </html>
 
