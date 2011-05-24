@@ -13,8 +13,8 @@
 	<% i = c.photos.first_item %>
 % for p in c.photos:
 		<h3 style="text-align: left; padding-left: 10px;">${i}.</h3>
-		<div class="gallery-thumbs2">
-			<a href="${url(controller = 'photo', action = 'index', aid = c.album.id, pid = p.id)}"
+		<div class="photoall-photo">
+			<a href="${url(controller = 'photo', action = 'index', aid = c.album.id, pid = p.id)}">
 			<img alt="${p.display_name}" src="${p.get_web_path()}"/>
 			</a>
 		</div>
