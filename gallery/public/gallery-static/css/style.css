@@ -20,7 +20,7 @@ h1, h2, h3 {
 	margin: 0;
 	padding: 0;
 	font-weight: normal;
-	color: ##878787;
+	color: #878787;
 }
 
 h1 {
@@ -101,7 +101,7 @@ a img {
 
 
 #menu td#logo {
-	width: 300;
+	width: 300px;
 	min-width: 300px;
 	padding-top: 5px;
 	padding-bottom: 2px;
@@ -141,7 +141,8 @@ a img {
 
 .gallery-thumbs2 {
 	display: inline-block;
-	max-width: 700px;
+	width: 700px;
+	text-align: left;
 }
 
 #album-photos-menu {
