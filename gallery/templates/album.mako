@@ -96,6 +96,14 @@ function onresize(event) {
 % endif
 }
 
+function showPhoto(path, width, height) {
+	img1 = document.getElementById("mainphoto");
+	img1.src = path;
+	document.getElementById("origWidthEl").value = width;
+	document.getElementById("origHeightEl").value = height;
+	onresize(0);
+}
+
 if (document.images) {
 	% if c.pnav.prev:
 	img1 = new Image();
@@ -211,7 +219,9 @@ function highlight(tag, f) {
 	% for tag in ["first", "prev", "next", "last"]:
 		<div onmouseover="highlight('${tag}', true)" onmouseout="highlight('${tag}', false)">
 	% if getattr(c.pnav, tag):
-			<a href='${url.current(pid=getattr(c.pnav, tag).id)}'>
+	<% p = getattr(c.pnav, tag) %>
+			<a onClick="showPhoto('${p.get_web_path()}', ${p.width}, ${p.height})"
+					href='${url.current(pid=getattr(c.pnav, tag).id)}'>
 				<img id="nav-${tag}" src="/gallery-static/i/${tag}.png"/>
 			</a>
 	%endif
