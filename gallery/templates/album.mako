@@ -70,7 +70,10 @@ function onresize(event) {
 }
 
 window.onresize = onresize;
-window.onload = onresize;
+//window.onload = onresize;
+if (document.addEventListener) {
+    document.addEventListener("DOMContentLoaded", onresize, false);
+}
 </script>
 % endif
 </%def>
