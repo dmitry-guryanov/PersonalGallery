@@ -68,14 +68,18 @@ function onresize(event) {
 	coords = photo_width * 2 / 3 + ",0," + photo_width + "," + photo_height;
 	document.getElementById("next-rect").coords = coords;
 % endif
-
 }
 
+if (document.addEventListener) {
+    document.addEventListener("DOMContentLoaded", onresize, false);
+}
+
+window.onload = onresize;
 window.onresize = onresize;
 </script>
 </head>
 
-<body onload="onresize();">
+<body>
 
 
 <div id="photo-show-all"> <a href="${url(controller='album', action = 'show_photos', aid = c.photo.album_id)}">показать все</a></div>
@@ -98,8 +102,8 @@ window.onresize = onresize;
 	</div>
 </div>
 
-<img id="mainphoto" alt="" style="display:none" src='${c.photo.get_web_path()}' usemap="#prevnext" width="${c.photo.width}" height="${c.photo.height}"/>
 <img id="mainphotosize" style="display:none;" width="${c.photo.width}" height="${c.photo.height}" onload="onresize();"/>
+<img id="mainphoto" alt="" src='${c.photo.get_web_path()}' usemap="#prevnext" width="${c.photo.width}" height="${c.photo.height}"/>
 
 <map id="prevnext" name="prevnext">
 % if c.prev:
