@@ -85,6 +85,23 @@ class AlbumController(BaseController):
 
 		return render("/album.mako")
 
+	def get_photo_ajax(self, aid, pid):
+		pid = int(pid)
+		c.u = utils
+
+		c.album = s.query(Album).filter(Album.id == aid).first()
+		if not c.album:
+			abort(404)
+
+		all_ph, c.photos = self._get_photos(aid, 1, "show_page", 16)
+
+		try:
+			c.pnav = PhotosNav(all_ph, pid)
+		except PhotosNavError:
+			abort(404)
+
+		return render("/album-getphoto.mako")
+
 	def show_page(self, aid, page):
 		c.u = utils
 		c.album = s.query(Album).filter(Album.id == aid).first()
