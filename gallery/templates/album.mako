@@ -1,5 +1,6 @@
 ## -*- coding: utf-8 -*-
 <%inherit file="base.mako"/>
+<%namespace name="photonav" file="album-photonav.mako"/>
 
 
 <%def name="head()">
@@ -211,24 +212,7 @@ function highlight(tag, f) {
 	</a>
 </div>
 
-<div id="photo-header">
-	<div id="photo-counter">
-		${c.pnav.index + 1}/${c.pnav.count}
-	</div>
-	<div id="photo-menu">
-	% for tag in ["first", "prev", "next", "last"]:
-		<div onmouseover="highlight('${tag}', true)" onmouseout="highlight('${tag}', false)">
-	% if getattr(c.pnav, tag):
-	<% p = getattr(c.pnav, tag) %>
-			<a onClick="showPhoto('${p.get_web_path()}', ${p.width}, ${p.height})"
-					href='${url.current(pid=getattr(c.pnav, tag).id)}'>
-				<img id="nav-${tag}" src="/gallery-static/i/${tag}.png"/>
-			</a>
-	%endif
-		</div>
-	%endfor
-	</div>
-</div>
+${photonav.photoNavBar(nav = c.pnav)}
 
 <img id="mainphoto" style="display:none" src='${c.photo.get_web_path()}' usemap="#prevnext"/>
 <input id="origWidthEl" type="hidden" value="${c.photo.width}" />
@@ -236,13 +220,17 @@ function highlight(tag, f) {
 
 <map id="prevnext" name="prevnext">
 % if c.pnav.prev:
+<% p = c.pnav.prev %>
 <area onmouseover="highlight('prev', true)"
 	onmouseout="highlight('prev', false)"
+	onclick="showPhoto('${p.get_web_path()}', ${p.width}, ${p.height})"
 	id="prev-rect" shape="rect" href='${url.current(pid=c.pnav.prev.id)}'/>
 % endif
 % if c.pnav.next:
+<% p = c.pnav.next %>
 <area onmouseover="highlight('next', true)"
 	onmouseout="highlight('next', false)"
+	onclick="showPhoto('${p.get_web_path()}', ${p.width}, ${p.height})"
 	id="next-rect" shape="rect" href='${url.current(pid=c.pnav.next.id)}'/>
 % endif
 
