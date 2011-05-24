@@ -22,6 +22,7 @@ function get_scale(pw, ph, w, h) {
 		return 1;
 
 }
+
 function getWidth()
 {
 	if (window.innerWidth)
@@ -48,7 +49,6 @@ function getHeight()
 
 function onresize(event) {
 	photo = document.getElementById("mainphoto");
-	size = document.getElementById("mainphotosize");
 
 	width = getWidth() - 2 * side_margin;
 	height = getHeight() - top_margin - bottom_margin;
@@ -61,7 +61,9 @@ function onresize(event) {
 	if(height < 400)
 		height = 400;
 
-	document.getElementById("photo-menu").style.left = (width / 2 + side_margin - 160) + "px";
+	/* center photo navigation bar */
+	menu = document.getElementById("photo-menu");
+	menu.style.left = (width / 2 + side_margin - 160) + "px";
 
 	scale = get_scale(width - 2 * border, height - 2 * border, origWidth, origHeight);
 
@@ -72,12 +74,12 @@ function onresize(event) {
 
 	/* center image */
 	if(width > photo_width + 2 * border)
-		photo.style.left = side_margin -border + (width - photo_width) / 2 + "px";
+		photo.style.left = side_margin - border + (width - photo_width) / 2 + "px";
 	else
 		photo.style.left = side_margin + "px";
 	
 	if(height - 40 > photo_height + 2 * border)
-		photo.style.top = top_margin + (height -40 - photo_height) / 2 - border + "px";
+		photo.style.top = top_margin + (height - 40 - photo_height) / 2 - border + "px";
 	else
 		photo.style.top = top_margin + "px";
 
@@ -95,14 +97,14 @@ function onresize(event) {
 }
 
 if (document.images) {
-% if c.pnav.prev:
-img1 = new Image();
-img1.src = "${c.pnav.prev.get_web_path()}";
-% endif
-% if c.pnav.next:
-img2 = new Image();
-img2.src = "${c.pnav.next.get_web_path()}";
-% endif
+	% if c.pnav.prev:
+	img1 = new Image();
+	img1.src = "${c.pnav.prev.get_web_path()}";
+	% endif
+	% if c.pnav.next:
+	img2 = new Image();
+	img2.src = "${c.pnav.next.get_web_path()}";
+	% endif
 }
 
 //Event.observe(window, 'resize', function (e) { window.alert("qwe");});
@@ -138,8 +140,14 @@ function highlight(tag, f) {
 <% i = 0 %>
 % for a in c.albums:
 		<div class="gallery-album">
-			<a class="gallery-thumb-link" href='${url(controller="album", action="show_first_page", aid=a.id)}'><img  alt="${a.display_name}" src="${a.get_web_thumb()}"/></a>
-			<span class="album-link"><a href='${url(controller="album", action="show_first_page", aid=a.id)}'>${a.display_name}</a></span><br/>
+			<a class="gallery-thumb-link" href='${url(controller="album", action="show_first_page", aid=a.id)}'>
+				<img  alt="${a.display_name}" src="${a.get_web_thumb()}"/>
+			</a>
+			<span class="album-link">
+				<a href='${url(controller="album", action="show_first_page", aid=a.id)}'>
+					${a.display_name}
+				</a>
+			</span><br/>
 			<span class="meta">
 % if c.counts[a.id][1] > 0:
 				${c.counts[a.id][1]} ${c.u.get_mult_word("photo", c.counts[a.id][1])}
@@ -159,7 +167,8 @@ function highlight(tag, f) {
 <div class="pager">${c.photos.pager()}</div>
 % if c.photos:
 	<div class="gallery-thumbs"><div class="gallery-thumbs2">
-	<div id="album-photos-menu">посмотреть <a href="${url(controller = 'photo', action = 'index', aid = c.album.id, pid = c.photos[0].id)}">по одной</a> или
+	<div id="album-photos-menu">посмотреть
+		<a href="${url(controller = 'photo', action = 'index', aid = c.album.id, pid = c.photos[0].id)}">по одной</a> или
 		<a href="${url(controller = 'album', action = 'show_photos', aid = c.album.id)}">все сразу</a>
 	</div>
 % for p in c.photos:
@@ -188,7 +197,10 @@ function highlight(tag, f) {
 <div style="z-index: 11;">
 <div id="photo-close">
 	<a href="${url(controller='album', action='show_page', aid=c.photo.album_id, page = c.photos.page)}">
-		<img alt="close" id="nav-close" onmouseover="highlight('close', true)" onmouseout="highlight('close', false)" src="/gallery-static/i/close.png"></a>
+		<img alt="close" id="nav-close"
+			onmouseover="highlight('close', true)" onmouseout="highlight('close', false)"
+		src="/gallery-static/i/close.png">
+	</a>
 </div>
 
 <div id="photo-header">
@@ -197,26 +209,31 @@ function highlight(tag, f) {
 	</div>
 	<div id="photo-menu">
 	% for tag in ["first", "prev", "next", "last"]:
-	<div onmouseover="highlight('${tag}', true)" onmouseout="highlight('${tag}', false)">
+		<div onmouseover="highlight('${tag}', true)" onmouseout="highlight('${tag}', false)">
 	% if getattr(c.pnav, tag):
-		<a href='${url.current(pid=getattr(c.pnav, tag).id)}'><img id="nav-${tag}" src="/gallery-static/i/${tag}.png"/></a>
+			<a href='${url.current(pid=getattr(c.pnav, tag).id)}'>
+				<img id="nav-${tag}" src="/gallery-static/i/${tag}.png"/>
+			</a>
 	%endif
-	</div>
+		</div>
 	%endfor
 	</div>
 </div>
 
-<img id="mainphoto" alt="" style="display:none" src='${c.photo.get_web_path()}' usemap="#prevnext" width="${c.photo.width}" height="${c.photo.height}"/>
+<img id="mainphoto" style="display:none" src='${c.photo.get_web_path()}' usemap="#prevnext"/>
 <input id="origWidthEl" type="hidden" value="${c.photo.width}" />
 <input id="origHeightEl" type="hidden" value="${c.photo.height}" />
-</div>
 
 <map id="prevnext" name="prevnext">
 % if c.pnav.prev:
-<area onmouseover="highlight('prev', true)" onmouseout="highlight('prev', false)" id="prev-rect" shape="rect" href='${url.current(pid=c.pnav.prev.id)}'/>
+<area onmouseover="highlight('prev', true)"
+	onmouseout="highlight('prev', false)"
+	id="prev-rect" shape="rect" href='${url.current(pid=c.pnav.prev.id)}'/>
 % endif
 % if c.pnav.next:
-<area onmouseover="highlight('next', true)" onmouseout="highlight('next', false)" id="next-rect" shape="rect" href='${url.current(pid=c.pnav.next.id)}'/>
+<area onmouseover="highlight('next', true)"
+	onmouseout="highlight('next', false)"
+	id="next-rect" shape="rect" href='${url.current(pid=c.pnav.next.id)}'/>
 % endif
 
 % endif
