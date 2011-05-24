@@ -13,6 +13,8 @@ def make_map(config):
 	map.minimization = True
 	map.explicit = False
 
+	map.resource('article', 'articles')
+
     # The ErrorController route (handles 404/500 error pages); it should
     # likely stay at the top, ensuring it can always be resolved
 	map.connect('/error/{action}', controller='error')

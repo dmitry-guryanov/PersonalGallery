@@ -177,6 +177,16 @@ class Album(Base):
 			return "%s/i/default-preview.jpg" % \
 					config["web_static_path"]
 
+class Article(Base):
+	__tablename__ = "articles"
+
+	id = Column(Integer, primary_key=True)
+	title = Column(Unicode(256))
+	created = Column(DateTime)
+	body = Column(UnicodeText)
+	hidden = Column(Boolean, default = False)
+
+
 def init_model(engine, conf):
 	"""Call me before using any of the tables or classes in the model."""
 	global config
