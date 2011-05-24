@@ -22,27 +22,52 @@ function get_scale(pw, ph, w, h) {
 		return 1;
 
 }
+function getWidth()
+{
+	if (window.innerWidth)
+		return window.innerWidth;
+	else if (document.documentElement && document.documentElement.clientWidth)
+		return document.documentElement.clientWidth;
+	else if (document.body)
+		screenWidth=document.body.clientWidth;
+	else
+		return 1000;
+}
+
+function getHeight()
+{
+	if (window.innerHeight)
+		return window.innerHeight;
+	else if (document.documentElement && document.documentElement.clientHeight)
+		return document.documentElement.clientHeight;
+	else if (document.body)
+		screenHeight=document.body.clientHeight;
+	else
+		return 1000;
+}
 
 function onresize(event) {
-	photo = document.getElementById("mainphoto")
-	size = document.getElementById("mainphotosize")
+	photo = document.getElementById("mainphoto");
+	size = document.getElementById("mainphotosize");
 
-	width = window.innerWidth - 2 * side_margin;
-	height = window.innerHeight - top_margin - bottom_margin;
+	width = getWidth() - 2 * side_margin;
+	height = getHeight() - top_margin - bottom_margin;
+
+	origWidth = document.getElementById("origWidthEl").value;
+	origHeight = document.getElementById("origHeightEl").value;
 
 	if(width < 600)
 		width = 600;
 	if(height < 400)
 		height = 400;
 
-//	document.getElementById("photo-header").style.top = (height + top_margin + 10) + "px";
 	document.getElementById("photo-menu").style.left = (width / 2 + side_margin - 160) + "px";
 
-	scale = get_scale(width - 2 * border, height - 2 * border, size.width, size.height);
+	scale = get_scale(width - 2 * border, height - 2 * border, origWidth, origHeight);
 
-	photo_width = scale * size.width;
+	photo_width = scale * origWidth;
 	photo.style.width = photo_width + "px";
-	photo_height = scale * size.height;
+	photo_height = scale * origHeight;
 	photo.style.height = photo_height + "px";
 
 	/* center image */
@@ -182,7 +207,8 @@ function highlight(tag, f) {
 </div>
 
 <img id="mainphoto" alt="" style="display:none" src='${c.photo.get_web_path()}' usemap="#prevnext" width="${c.photo.width}" height="${c.photo.height}"/>
-<img id="mainphotosize" style="display:none;" width="${c.photo.width}" height="${c.photo.height}"/>
+<input id="origWidthEl" type="hidden" value="${c.photo.width}" />
+<input id="origHeightEl" type="hidden" value="${c.photo.height}" />
 </div>
 
 <map id="prevnext" name="prevnext">
