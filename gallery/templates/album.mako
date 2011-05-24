@@ -80,10 +80,13 @@ img2.src = "${c.next.get_web_path()}";
 % endif
 }
 
+//Event.observe(window, 'resize', function (e) { window.alert("qwe");});
 window.onresize = onresize;
-//window.onload = onresize;
+
 if (document.addEventListener) {
     document.addEventListener("DOMContentLoaded", onresize, false);
+} else {
+	window.onload = onresize;
 }
 
 function highlight(tag, f) {
@@ -160,7 +163,7 @@ function highlight(tag, f) {
 <div style="z-index: 11;">
 <div id="photo-close">
 	<a href="${url(controller='album', action='show_page', aid=c.photo.album_id, page = c.photos.page)}">
-		<img id="nav-close" onmouseover="highlight('close', true)" onmouseout="highlight('close', false)" src="/gallery-static/i/close.png"></a>
+		<img alt="close" id="nav-close" onmouseover="highlight('close', true)" onmouseout="highlight('close', false)" src="/gallery-static/i/close.png"></a>
 </div>
 
 <div id="photo-header">
@@ -179,7 +182,7 @@ function highlight(tag, f) {
 </div>
 
 <img id="mainphoto" alt="" style="display:none" src='${c.photo.get_web_path()}' usemap="#prevnext" width="${c.photo.width}" height="${c.photo.height}"/>
-<img id="mainphotosize" style="display:none;" width="${c.photo.width}" height="${c.photo.height}" onload="onresize();"/>
+<img id="mainphotosize" style="display:none;" width="${c.photo.width}" height="${c.photo.height}"/>
 </div>
 
 <map id="prevnext" name="prevnext">
