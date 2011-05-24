@@ -8,7 +8,7 @@
 
 side_margin = 10;
 top_margin = 10;
-bottom_margin = 4;
+bottom_margin = 1;
 border = 50;
 
 function get_scale(pw, ph, w, h) {
@@ -66,6 +66,17 @@ function onresize(event) {
 % if c.next:
 	coords = photo_width * 2 / 3 + ",0," + photo_width + "," + photo_height;
 	document.getElementById("next-rect").coords = coords;
+% endif
+}
+
+if (document.images) {
+% if c.prev:
+img1 = new Image();
+img1.src = "${c.prev.get_web_path()}";
+% endif
+% if c.next:
+img2 = new Image();
+img2.src = "${c.next.get_web_path()}";
 % endif
 }
 
