@@ -84,24 +84,24 @@ function onresize(event) {
 	photo.style.display="block";
 
 	/* update image map */
-% if c.prev:
+% if c.pnav.prev:
 	coords = "0,0," + photo_width / 3 + "," + photo_height;
 	document.getElementById("prev-rect").coords = coords;
 % endif
-% if c.next:
+% if c.pnav.next:
 	coords = photo_width * 2 / 3 + ",0," + photo_width + "," + photo_height;
 	document.getElementById("next-rect").coords = coords;
 % endif
 }
 
 if (document.images) {
-% if c.prev:
+% if c.pnav.prev:
 img1 = new Image();
-img1.src = "${c.prev.get_web_path()}";
+img1.src = "${c.pnav.prev.get_web_path()}";
 % endif
-% if c.next:
+% if c.pnav.next:
 img2 = new Image();
-img2.src = "${c.next.get_web_path()}";
+img2.src = "${c.pnav.next.get_web_path()}";
 % endif
 }
 
@@ -193,13 +193,13 @@ function highlight(tag, f) {
 
 <div id="photo-header">
 	<div id="photo-counter">
-		${c.idx}/${c.all}
+		${c.pnav.index + 1}/${c.pnav.count}
 	</div>
 	<div id="photo-menu">
 	% for tag in ["first", "prev", "next", "last"]:
 	<div onmouseover="highlight('${tag}', true)" onmouseout="highlight('${tag}', false)">
-	% if getattr(c, tag):
-		<a href='${url.current(pid=getattr(c, tag).id)}'><img id="nav-${tag}" src="/gallery-static/i/${tag}.png"/></a>
+	% if getattr(c.pnav, tag):
+		<a href='${url.current(pid=getattr(c.pnav, tag).id)}'><img id="nav-${tag}" src="/gallery-static/i/${tag}.png"/></a>
 	%endif
 	</div>
 	%endfor
@@ -212,11 +212,11 @@ function highlight(tag, f) {
 </div>
 
 <map id="prevnext" name="prevnext">
-% if c.prev:
-<area onmouseover="highlight('prev', true)" onmouseout="highlight('prev', false)" id="prev-rect" shape="rect" href='${url.current(pid=c.prev.id)}'/>
+% if c.pnav.prev:
+<area onmouseover="highlight('prev', true)" onmouseout="highlight('prev', false)" id="prev-rect" shape="rect" href='${url.current(pid=c.pnav.prev.id)}'/>
 % endif
-% if c.next:
-<area onmouseover="highlight('next', true)" onmouseout="highlight('next', false)" id="next-rect" shape="rect" href='${url.current(pid=c.next.id)}'/>
+% if c.pnav.next:
+<area onmouseover="highlight('next', true)" onmouseout="highlight('next', false)" id="next-rect" shape="rect" href='${url.current(pid=c.pnav.next.id)}'/>
 % endif
 
 % endif

@@ -12,6 +12,41 @@ from gallery.model.meta import Session as s
 
 from gallery.lib import utils
 
+class PhotosNavError(Exception):
+	pass
+
+class PhotosNav:
+	photo = None
+	index = None
+	first = None
+	prev = None
+	next = None
+	last = None
+	count = None
+
+	def __init__(self, photos, pid):
+		"""
+		photos: list of Photo objects
+		pid: current photo id
+		"""
+		photo_ids = map(lambda x: x.id, photos)
+
+		if pid not in photo_ids:
+			raise PhotosNavError("There is no photo %d" % pid)
+
+		self.index = photo_ids.index(long(pid))
+
+		if self.index != 0:
+			self.prev = photos[self.index - 1]
+			self.first = photos[0]
+
+		if self.index != len(photo_ids) - 1:
+			self.next = photos[self.index + 1]
+			self.last = photos[len(photo_ids) - 1]
+
+		self.count = len(photos)
+		self.photo = photos[self.index]
+
 class AlbumController(BaseController):
 
 	def index(self):
@@ -26,29 +61,27 @@ class AlbumController(BaseController):
 		if not c.album:
 			abort(404)
 
-		c.photos = self._get_photos(aid, page, "show_photos", 10)
+		c.photos = self._get_photos(aid, page, "show_photos", 10)[1]
 
 		return render("/photo-all.mako")
 
 	def show_photo(self, aid, page, pid):
+		pid = int(pid)
 		c.u = utils
 		c.album = s.query(Album).filter(Album.id == aid).first()
 		if not c.album:
 			abort(404)
 
 		c.albums = self._get_albums(aid, page)
-		c.photos = self._get_photos(aid, page, "show_page", 16)
+		all_ph, c.photos = self._get_photos(aid, page, "show_page", 16)
 
-
-		photo_q = s.query(Photo)
-		c.photo = photo_q.filter_by(album_id=aid, id=pid).first()
-
-		if c.photo is None:
+		try:
+			c.pnav = PhotosNav(all_ph, pid)
+		except PhotosNavError:
 			abort(404)
 
+		c.photo = c.pnav.photo
 		c.counts = self._get_counts(c.album)
-
-		(c.idx, c.all, c.first, c.prev, c.next, c.last) = self._find_adj_photos(s, aid, pid)
 
 		return render("/album.mako")
 
@@ -59,7 +92,7 @@ class AlbumController(BaseController):
 			abort(404)
 
 		c.albums = self._get_albums(aid, page)
-		c.photos = self._get_photos(aid, page, "show_page", 16)
+		c.photos = self._get_photos(aid, page, "show_page", 16)[1]
 
 		c.counts = self._get_counts(c.album)
 
@@ -97,9 +130,9 @@ class AlbumController(BaseController):
 		def _get_page_url(page, partial=None):
 			return url(controller = "album", action = act,
 						aid = aid, page = page)
-					
-		return Page(photos_q, page = page,
-			items_per_page = items_per_page, url = _get_page_url)
+		all_photos = photos_q.all()
+		return (all_photos, Page(all_photos, page = page,
+			items_per_page = items_per_page, url = _get_page_url))
 
 	def _get_counts(self, album):
 		# get photo counts
@@ -120,37 +153,4 @@ class AlbumController(BaseController):
 		for a in c.album.albums:
 			counts[a.id] = (album_counts.get(a.id, 0), photo_counts.get(a.id, 0))
 		return counts
-
-	def _find_adj_photos(self, s, aid, pid):
-		photos_q = s.query(Photo).filter(Photo.album_id == aid)
-
-		cur_album = s.query(Album).filter(Album.id == aid).first()
-
-		if cur_album.sort_by == utils.SORT_BY_DATE:
-			photos_q = photos_q.order_by(Photo.created)
-		elif cur_album.sort_by == utils.SORT_BY_DATE_DESC:
-			photos_q = photos_q.order_by(Photo.created.desc())
-
-		if not c.admin:
-			photos_q = photos_q.filter(Photo.hidden == False)
-		photos = photos_q.all()
-
-		photo_ids = map(lambda x: x.id, photos)
-		cur_idx = photo_ids.index(long(pid))
-
-		if cur_idx == 0:
-			prev = None
-			first = None
-		else:
-			prev = photos[cur_idx - 1]
-			first = photos[0]
-
-		if cur_idx == len(photo_ids) - 1:
-			next = None
-			last = None
-		else:
-			next = photos[cur_idx + 1]
-			last = photos[len(photo_ids) - 1]
-
-		return (cur_idx + 1, len(photos), first, prev, next, last)
 
