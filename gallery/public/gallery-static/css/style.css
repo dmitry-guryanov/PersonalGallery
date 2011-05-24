@@ -91,11 +91,12 @@ a img {
 }
 
 #menu #logo p {
-	margin: 0;
+	margin: 10px;
 	padding: 0px 0 0 160px;
 	font: normal 14px Georgia, "Times New Roman", Times, serif;
 	font-style: italic;
-	color: #FFFFFF;
+	color: red;
+	color: #999;
 } 
 
 
@@ -103,6 +104,7 @@ a img {
 	width: 300;
 	min-width: 300px;
 	padding-top: 5px;
+	padding-bottom: 2px;
 }
 
 #menu td#search {
@@ -114,6 +116,8 @@ a img {
 /*	background: #000; */
 	text-align: center;
 	padding-top: 20px;
+	padding-bottom: 10px;
+	vertical-align: bottom;
 }
 
 .pager {
@@ -253,6 +257,7 @@ a img {
 
 #mainphoto {
 	border: 50px solid #EEE;
+	background: #EEE;
 	position: absolute;
 	z-index: 11;
 }

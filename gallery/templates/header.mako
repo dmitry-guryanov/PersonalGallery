@@ -1,7 +1,9 @@
 
 <div id="header">
 <table id="menu" cellspacing="0"><tr>
-	<td id="logo"><a href="${url(controller='album', action='index')}">Фотограф Дмитрий Гурьянов</a></td>
+	<td id="logo"><a href="${url(controller='album', action='index')}">Фотограф Дмитрий Гурьянов</a>
+	<p>тел: 8 915 218-83-54, icq: 227-412-816<br/> e-mail: dmitry.guryanov@gmail.com</p>
+</td>
 	<td>
 <%
 links = []
