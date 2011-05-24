@@ -30,6 +30,8 @@ function onresize(event) {
 	width = window.innerWidth - 2 * side_margin;
 	height = window.innerHeight - top_margin - bottom_margin;
 
+	document.body.style.overflow = 'hidden';
+
 	if(width < 600)
 		width = 600;
 	if(height < 400)
