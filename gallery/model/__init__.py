@@ -7,7 +7,7 @@ import datetime, time
 
 import sqlalchemy as sa
 from sqlalchemy import orm, Column, ForeignKey
-from sqlalchemy.orm import relationship, backref
+from sqlalchemy.orm import relation as relationship, backref
 from sqlalchemy.orm.interfaces import MapperExtension
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm.interfaces import MapperExtension
