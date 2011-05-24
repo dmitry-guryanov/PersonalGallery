@@ -24,6 +24,7 @@ def make_map(config):
 	root_aid = config["root_album_id"]
 
 	map.connect('/', controller='album', action='index')
+	map.connect('/sandbox/{action}', controller='sandbox')
 	map.connect('/album/{aid}', controller='album', action='show_first_page')
 	map.connect('/album/photos/{aid}', controller='album', action='show_photos')
 	map.connect('/album/photos/{aid}/{page}', controller='album', action='show_photos')
