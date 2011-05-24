@@ -30,6 +30,28 @@ class AlbumController(BaseController):
 
 		return render("/photo-all.mako")
 
+	def show_photo(self, aid, page, pid):
+		c.u = utils
+		c.album = s.query(Album).filter(Album.id == aid).first()
+		if not c.album:
+			abort(404)
+
+		c.albums = self._get_albums(aid, page)
+		c.photos = self._get_photos(aid, page, "show_page", 16)
+
+
+		photo_q = s.query(Photo)
+		c.photo = photo_q.filter_by(album_id=aid, id=pid).first()
+
+		if c.photo is None:
+			abort(404)
+
+		c.counts = self._get_counts(c.album)
+
+		(c.idx, c.all, c.first, c.prev, c.next, c.last) = self._find_adj_photos(s, aid, pid)
+
+		return render("/album.mako")
+
 	def show_page(self, aid, page):
 		c.u = utils
 		c.album = s.query(Album).filter(Album.id == aid).first()
@@ -98,3 +120,37 @@ class AlbumController(BaseController):
 		for a in c.album.albums:
 			counts[a.id] = (album_counts.get(a.id, 0), photo_counts.get(a.id, 0))
 		return counts
+
+	def _find_adj_photos(self, s, aid, pid):
+		photos_q = s.query(Photo).filter(Photo.album_id == aid)
+
+		cur_album = s.query(Album).filter(Album.id == aid).first()
+
+		if cur_album.sort_by == utils.SORT_BY_DATE:
+			photos_q = photos_q.order_by(Photo.created)
+		elif cur_album.sort_by == utils.SORT_BY_DATE_DESC:
+			photos_q = photos_q.order_by(Photo.created.desc())
+
+		if not c.admin:
+			photos_q = photos_q.filter(Photo.hidden == False)
+		photos = photos_q.all()
+
+		photo_ids = map(lambda x: x.id, photos)
+		cur_idx = photo_ids.index(long(pid))
+
+		if cur_idx == 0:
+			prev = None
+			first = None
+		else:
+			prev = photos[cur_idx - 1]
+			first = photos[0]
+
+		if cur_idx == len(photo_ids) - 1:
+			next = None
+			last = None
+		else:
+			next = photos[cur_idx + 1]
+			last = photos[len(photo_ids) - 1]
+
+		return (cur_idx + 1, len(photos), first, prev, next, last)
+

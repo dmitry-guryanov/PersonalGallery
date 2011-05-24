@@ -56,6 +56,16 @@ a img {
 	border:0;
 }
 
+
+.overlay {
+	background-color: #000;
+	opacity: .7;
+	filter: alpha(opacity=70);
+	position: absolute; top: 0; left: 0;
+	width: 100%; height: 100%;
+	z-index: 10;
+}
+
 /* HEADER */
 
 #header {
@@ -189,6 +199,7 @@ a img {
 	left:0;
 	width: 99%;
 	min-width: 600px;
+	bottom: 1px;
 }
 
 #photo-header a {
@@ -197,8 +208,9 @@ a img {
 
 #photo-counter {
 	position: absolute;
-	top: 10px;
-	left: 10px;
+	padding: 5px;
+	bottom: 1px;
+	z-index: 12;
 }
 
 #photo-copyright {
@@ -209,8 +221,13 @@ a img {
 
 #photo-menu {
 	display: inline-block;
+	padding-top: 3px;
 	position: absolute;
+	background: #999;
 	min-width: 330px;
+	z-index: 12;
+	opacity: 0.5;
+	bottom: 0px;
 }
 
 #photo-menu div {
@@ -229,12 +246,16 @@ a img {
 
 #photo-close {
 	padding: 5px;
-	float: right;
+	position: absolute;
+	z-index: 12;
+	top: 0px;
+	right: 0px;
 }
 
 #mainphoto {
-	border: 0;
+	border: 50px solid #EEE;
 	position: absolute;
+	z-index: 11;
 }
 
 /* Page */

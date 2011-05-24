@@ -1,5 +1,7 @@
 <%inherit file="base.mako"/>
 
+<%def name="head()">
+</%def>
 <%def name="header()">
 </%def>
 

@@ -1,5 +1,80 @@
 ## -*- coding: utf-8 -*-
 <%inherit file="base.mako"/>
+
+
+<%def name="head()">
+% if hasattr(c, "photo"):
+<script type="text/javascript">
+
+side_margin = 10;
+top_margin = 10;
+bottom_margin = 4;
+border = 50;
+
+function get_scale(pw, ph, w, h) {
+	xscale = pw / w;
+	yscale = ph / h;
+
+	scale = Math.min(xscale, yscale);
+	if (scale < 1)
+		return scale;
+	else
+		return 1;
+
+}
+
+function onresize(event) {
+	photo = document.getElementById("mainphoto")
+	size = document.getElementById("mainphotosize")
+
+	width = window.innerWidth - 2 * side_margin;
+	height = window.innerHeight - top_margin - bottom_margin;
+
+	if(width < 600)
+		width = 600;
+	if(height < 400)
+		height = 400;
+
+//	document.getElementById("photo-header").style.top = (height + top_margin + 10) + "px";
+	document.getElementById("photo-menu").style.left = (width / 2 + side_margin - 160) + "px";
+
+	scale = get_scale(width - 2 * border, height - 2 * border, size.width, size.height);
+
+	photo_width = scale * size.width;
+	photo.style.width = photo_width + "px";
+	photo_height = scale * size.height;
+	photo.style.height = photo_height + "px";
+
+	/* center image */
+	if(width > photo_width + 2 * border)
+		photo.style.left = side_margin -border + (width - photo_width) / 2 + "px";
+	else
+		photo.style.left = side_margin + "px";
+	
+	if(height - 40 > photo_height + 2 * border)
+		photo.style.top = top_margin + (height -40 - photo_height) / 2 - border + "px";
+	else
+		photo.style.top = top_margin + "px";
+
+	photo.style.display="block";
+
+	/* update image map */
+% if c.prev:
+	coords = "0,0," + photo_width / 3 + "," + photo_height;
+	document.getElementById("prev-rect").coords = coords;
+% endif
+% if c.next:
+	coords = photo_width * 2 / 3 + ",0," + photo_width + "," + photo_height;
+	document.getElementById("next-rect").coords = coords;
+% endif
+}
+
+window.onresize = onresize;
+window.onload = onresize;
+</script>
+% endif
+</%def>
+
 <%def name="header()">
 <%include file="header.mako"/>
 </%def>
@@ -36,7 +111,7 @@
 		<a href="${url(controller = 'album', action = 'show_photos', aid = c.album.id)}">все сразу</a>
 	</div>
 % for p in c.photos:
-			<a href='${url(controller="photo", action="index", aid=p.album_id, pid=p.id)}'>
+			<a href='${url.current(action="show_photo", pid=p.id)}'>
 				<img src="${p.get_web_preview_path()}"/>
 			</a>
 % if c.admin:
@@ -54,3 +129,40 @@
 	<h2>There are no photos in this album</h2>
 % endif
 
+
+% if hasattr(c, "photo"):
+<div class="overlay"></div>
+
+<div style="z-index: 11;">
+<div id="photo-close">
+	<a href="${url(controller='album', action='show_page', aid=c.photo.album_id, page = c.photos.page)}"><img src="/gallery-static/i/close.png"></a>
+</div>
+
+<div id="photo-header">
+	<div id="photo-counter">
+		${c.idx}/${c.all}
+	</div>
+	<div id="photo-menu">
+	% for tag in ["first", "prev", "next", "last"]:
+	<div>
+	% if getattr(c, tag):
+		<a href='${url.current(pid=getattr(c, tag).id)}'><img src="/gallery-static/i/${tag}.png"/></a>
+	%endif
+	</div>
+	%endfor
+	</div>
+</div>
+
+<img id="mainphoto" alt="" style="display:none" src='${c.photo.get_web_path()}' usemap="#prevnext" width="${c.photo.width}" height="${c.photo.height}"/>
+<img id="mainphotosize" style="display:none;" width="${c.photo.width}" height="${c.photo.height}" onload="onresize();"/>
+</div>
+
+<map id="prevnext" name="prevnext">
+% if c.prev:
+<area id="prev-rect" shape="rect" href='${url.current(pid=c.prev.id)}'/>
+% endif
+% if c.next:
+<area id="next-rect" shape="rect" href='${url.current(pid=c.next.id)}'/>
+% endif
+
+% endif

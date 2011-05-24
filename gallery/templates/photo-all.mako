@@ -1,5 +1,7 @@
 ## -*- coding: utf-8 -*-
 <%inherit file="base.mako"/>
+<%def name="head()">
+</%def>
 <%def name="header()">
 <%include file="header.mako"/>
 </%def>
