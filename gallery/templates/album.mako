@@ -85,6 +85,16 @@ window.onresize = onresize;
 if (document.addEventListener) {
     document.addEventListener("DOMContentLoaded", onresize, false);
 }
+
+function highlight(tag, f) {
+	if(f)
+		hover = "-hover"
+	else
+		hover = "";
+
+	document.getElementById("nav-" + tag).src = "/gallery-static/i/" + tag + hover + ".png";
+}
+
 </script>
 % endif
 </%def>
@@ -149,7 +159,8 @@ if (document.addEventListener) {
 
 <div style="z-index: 11;">
 <div id="photo-close">
-	<a href="${url(controller='album', action='show_page', aid=c.photo.album_id, page = c.photos.page)}"><img src="/gallery-static/i/close.png"></a>
+	<a href="${url(controller='album', action='show_page', aid=c.photo.album_id, page = c.photos.page)}">
+		<img id="nav-close" onmouseover="highlight('close', true)" onmouseout="highlight('close', false)" src="/gallery-static/i/close.png"></a>
 </div>
 
 <div id="photo-header">
@@ -158,9 +169,9 @@ if (document.addEventListener) {
 	</div>
 	<div id="photo-menu">
 	% for tag in ["first", "prev", "next", "last"]:
-	<div>
+	<div onmouseover="highlight('${tag}', true)" onmouseout="highlight('${tag}', false)">
 	% if getattr(c, tag):
-		<a href='${url.current(pid=getattr(c, tag).id)}'><img src="/gallery-static/i/${tag}.png"/></a>
+		<a href='${url.current(pid=getattr(c, tag).id)}'><img id="nav-${tag}" src="/gallery-static/i/${tag}.png"/></a>
 	%endif
 	</div>
 	%endfor
@@ -173,10 +184,10 @@ if (document.addEventListener) {
 
 <map id="prevnext" name="prevnext">
 % if c.prev:
-<area id="prev-rect" shape="rect" href='${url.current(pid=c.prev.id)}'/>
+<area onmouseover="highlight('prev', true)" onmouseout="highlight('prev', false)" id="prev-rect" shape="rect" href='${url.current(pid=c.prev.id)}'/>
 % endif
 % if c.next:
-<area id="next-rect" shape="rect" href='${url.current(pid=c.next.id)}'/>
+<area onmouseover="highlight('next', true)" onmouseout="highlight('next', false)" id="next-rect" shape="rect" href='${url.current(pid=c.next.id)}'/>
 % endif
 
 % endif
