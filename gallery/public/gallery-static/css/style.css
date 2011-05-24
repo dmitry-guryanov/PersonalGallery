@@ -215,6 +215,13 @@ a img {
 	padding: 5px;
 	bottom: 1px;
 	z-index: 12;
+/*	background: #999;
+	opacity: 0.5;
+	-moz-border-radius-topright: 10px;
+	-webkit-top-right-border-radius: 10px;
+	-khtml-border-radius-topright: 10px;
+	border-top-right-radius: 10px;
+	color: #222; */
 }
 
 #photo-copyright {
@@ -225,13 +232,21 @@ a img {
 
 #photo-menu {
 	display: inline-block;
-	padding-top: 3px;
+	padding-top: 5px;
 	position: absolute;
 	background: #999;
 	min-width: 330px;
 	z-index: 12;
 	opacity: 0.5;
 	bottom: 0px;
+	-moz-border-radius-topleft: 10px;
+	-moz-border-radius-topright: 10px;
+	-webkit-top-left-border-radius: 10px;
+	-webkit-top-right-border-radius: 10px;
+	-khtml-border-radius-topleft: 10px;
+	-khtml-border-radius-topright: 10px;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
 }
 
 #photo-menu div {
@@ -249,11 +264,17 @@ a img {
 }
 
 #photo-close {
-	padding: 5px;
+	padding: 8px 8px 5px 5px;
 	position: absolute;
 	z-index: 12;
 	top: 0px;
 	right: 0px;
+/*	background: #999;
+	opacity: 0.5;
+	-moz-border-radius-bottomleft: 10px;
+	-webkit-bottom-left-border-radius: 10px;
+	-khtml-border-radius-bottomleft: 10px;
+	border-bottom-left-radius: 10px; */
 }
 
 #mainphoto {
