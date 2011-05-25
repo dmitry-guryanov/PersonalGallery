@@ -55,7 +55,7 @@ function complete(s) {
 	window.location.hash = document.getElementById("current-url").innerHTML;
 }
 
-function get_scale(pw, ph, w, h) {
+function getScale(pw, ph, w, h) {
 	xscale = pw / w;
 	yscale = ph / h;
 
@@ -105,7 +105,7 @@ function getViewportSize() {
 }
 
 function resizePhoto(photo, size) {
-	scale = get_scale(size.w - 2 * border, size.h - 2 * border, origWidth, origHeight);
+	scale = getScale(size.w - 2 * border, size.h - 2 * border, origWidth, origHeight);
 
 	photo_width = scale * origWidth;
 	photo.style.width = photo_width + "px";
