@@ -37,21 +37,15 @@ function complete(s) {
 	header = document.getElementById("photo-header");
 	parent.removeChild(header);
 
-
 	parent.innerHTML = s;
-
-	width = getWidth() - 2 * side_margin;
-
-	if(width < 600)
-		width = 600;
-
-	/* center photo navigation bar */
-	menu = document.getElementById("photo-menu");
-	menu.style.left = (width / 2 + side_margin - 160) + "px";
 
 	photo = document.getElementById("mainphoto");
 	photo.useMap = "#prevnext";
-	onresize();
+
+	size = getViewportSize();
+	resizeMapAreas(photo);
+	setControlsPosition(size);
+
 	window.location.hash = document.getElementById("current-url").innerHTML;
 }
 
