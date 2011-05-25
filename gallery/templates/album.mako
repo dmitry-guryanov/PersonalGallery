@@ -53,8 +53,6 @@ function complete(s) {
 	photo.useMap = "#prevnext";
 	onresize();
 	window.location.hash = document.getElementById("current-url").innerHTML;
-
-//#	prev = document.getElementById("mainphoto");
 }
 
 function get_scale(pw, ph, w, h) {
@@ -66,7 +64,6 @@ function get_scale(pw, ph, w, h) {
 		return scale;
 	else
 		return 1;
-
 }
 
 function getWidth()
@@ -125,8 +122,6 @@ function onresize(event) {
 		photo.style.top = top_margin + (height - 40 - photo_height) / 2 - border + "px";
 	else
 		photo.style.top = top_margin + "px";
-
-//	photo.style.display="block";
 
 	/* update image map */
 	coords = "0,0," + photo_width / 3 + "," + photo_height;
