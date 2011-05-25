@@ -26,10 +26,10 @@
 	<div id="current-url" style="display: none;">${url(controller="album", action = "show_photo", aid = c.album.id, pid=nav.photo.id, page = 0)}</div>
 
 % if nav.prev:
-	<img id="prev-photo" style="display: none" src="${nav.prev.get_web_path()}">
+	<img id="prev-photo" style="display: none" src="${nav.prev.get_web_path()}"/>
 % endif
 % if nav.next:
-	<img id="next-photo" style="display: none" src="${nav.next.get_web_path()}">
+	<img id="next-photo" style="display: none" src="${nav.next.get_web_path()}"/>
 % endif
 
 <map id="prevnext" name="prevnext">
