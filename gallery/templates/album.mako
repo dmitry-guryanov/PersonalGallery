@@ -12,6 +12,51 @@ top_margin = 10;
 bottom_margin = 1;
 border = 50;
 
+function loadXMLDoc(url, func) {
+	var xmlhttp;
+	if (window.XMLHttpRequest) {
+		// code for IE7+, Firefox, Chrome, Opera, Safari
+		xmlhttp=new XMLHttpRequest();
+	} else {
+		// code for IE6, IE5
+		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	}
+
+	xmlhttp.onreadystatechange=function() {
+		if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+			func(xmlhttp.responseText);
+		}
+	}
+
+	xmlhttp.open("GET", url, true);
+	xmlhttp.send();
+}
+
+function complete(s) {
+	parent = document.getElementById("photo-navbar");
+	header = document.getElementById("photo-header");
+	parent.removeChild(header);
+
+
+	parent.innerHTML = s;
+
+	width = getWidth() - 2 * side_margin;
+
+	if(width < 600)
+		width = 600;
+
+	/* center photo navigation bar */
+	menu = document.getElementById("photo-menu");
+	menu.style.left = (width / 2 + side_margin - 160) + "px";
+
+	photo = document.getElementById("mainphoto");
+	photo.useMap = "#prevnext";
+	onresize();
+	window.location.hash = document.getElementById("current-url").innerHTML;
+
+//#	prev = document.getElementById("mainphoto");
+}
+
 function get_scale(pw, ph, w, h) {
 	xscale = pw / w;
 	yscale = ph / h;
@@ -54,9 +99,6 @@ function onresize(event) {
 	width = getWidth() - 2 * side_margin;
 	height = getHeight() - top_margin - bottom_margin;
 
-	origWidth = document.getElementById("origWidthEl").value;
-	origHeight = document.getElementById("origHeightEl").value;
-
 	if(width < 600)
 		width = 600;
 	if(height < 400)
@@ -84,25 +126,38 @@ function onresize(event) {
 	else
 		photo.style.top = top_margin + "px";
 
-	photo.style.display="block";
+//	photo.style.display="block";
 
 	/* update image map */
-% if c.pnav.prev:
 	coords = "0,0," + photo_width / 3 + "," + photo_height;
 	document.getElementById("prev-rect").coords = coords;
-% endif
-% if c.pnav.next:
+
 	coords = photo_width * 2 / 3 + ",0," + photo_width + "," + photo_height;
 	document.getElementById("next-rect").coords = coords;
-% endif
 }
 
-function showPhoto(path, width, height) {
+function unhidePhoto() {
+	document.getElementById('mainphoto').style.display="block";
+}
+
+function showPhoto(url, path, width, height) {
 	img1 = document.getElementById("mainphoto");
-	img1.src = path;
-	document.getElementById("origWidthEl").value = width;
-	document.getElementById("origHeightEl").value = height;
+	img1.id = "mainphoto-old";
+
+	img2 = new Image();
+	img2.src = path;
+	img2.id = "mainphoto";
+	img2.style.display = "none";
+	document.getElementById("mainphoto-container").appendChild(img2);
+	img2.onLoad = unhidePhoto();
+
+	origWidth = width;
+	origHeight = height;
 	onresize(0);
+
+	img1.parentNode.removeChild(img1);
+
+	loadXMLDoc(url, complete);
 }
 
 if (document.images) {
@@ -116,13 +171,36 @@ if (document.images) {
 	% endif
 }
 
+var origWidth;
+var origHeight;
+
+function initialiseStateFromURL() {
+	if(window.location.hash) {
+		tmp = window.location.hash.slice(1);
+		window.location.hash = "";
+		window.location.pathname = tmp;
+		return 1;
+	} else
+		return 0;
+}
+
+function onload() {
+	origWidth = document.getElementById("origWidthEl").value;
+	origHeight = document.getElementById("origHeightEl").value;
+	ret = initialiseStateFromURL();
+	if(ret)
+		return 0;
+	onresize();
+	unhidePhoto();
+}
+
 //Event.observe(window, 'resize', function (e) { window.alert("qwe");});
 window.onresize = onresize;
 
 if (document.addEventListener) {
-    document.addEventListener("DOMContentLoaded", onresize, false);
+    document.addEventListener("DOMContentLoaded", onload, false);
 } else {
-	window.onload = onresize;
+	window.onload = onload;
 }
 
 function highlight(tag, f) {
@@ -212,26 +290,14 @@ function highlight(tag, f) {
 	</a>
 </div>
 
+<div id="photo-navbar">
 ${photonav.photoNavBar(nav = c.pnav)}
+</div>
 
+<div id="mainphoto-container">
 <img id="mainphoto" style="display:none" src='${c.photo.get_web_path()}' usemap="#prevnext"/>
+</div>
 <input id="origWidthEl" type="hidden" value="${c.photo.width}" />
 <input id="origHeightEl" type="hidden" value="${c.photo.height}" />
-
-<map id="prevnext" name="prevnext">
-% if c.pnav.prev:
-<% p = c.pnav.prev %>
-<area onmouseover="highlight('prev', true)"
-	onmouseout="highlight('prev', false)"
-	onclick="showPhoto('${p.get_web_path()}', ${p.width}, ${p.height})"
-	id="prev-rect" shape="rect" href='${url.current(pid=c.pnav.prev.id)}'/>
-% endif
-% if c.pnav.next:
-<% p = c.pnav.next %>
-<area onmouseover="highlight('next', true)"
-	onmouseout="highlight('next', false)"
-	onclick="showPhoto('${p.get_web_path()}', ${p.width}, ${p.height})"
-	id="next-rect" shape="rect" href='${url.current(pid=c.pnav.next.id)}'/>
-% endif
 
 % endif
