@@ -90,22 +90,22 @@ function getHeight()
 		return 1000;
 }
 
-function onresize(event) {
-	photo = document.getElementById("mainphoto");
+function getViewportSize() {
+	var size = {
+		w: getWidth() - 2 * side_margin,
+		h: getHeight() - top_margin - bottom_margin,
+	}
 
-	width = getWidth() - 2 * side_margin;
-	height = getHeight() - top_margin - bottom_margin;
+	if(size.w < 600)
+		size.w = 600;
+	if(size.h < 400)
+		size.h = 400;
 
-	if(width < 600)
-		width = 600;
-	if(height < 400)
-		height = 400;
+	return size;
+}
 
-	/* center photo navigation bar */
-	menu = document.getElementById("photo-menu");
-	menu.style.left = (width / 2 + side_margin - 160) + "px";
-
-	scale = get_scale(width - 2 * border, height - 2 * border, origWidth, origHeight);
+function resizePhoto(photo, size) {
+	scale = get_scale(size.w - 2 * border, size.h - 2 * border, origWidth, origHeight);
 
 	photo_width = scale * origWidth;
 	photo.style.width = photo_width + "px";
@@ -113,22 +113,41 @@ function onresize(event) {
 	photo.style.height = photo_height + "px";
 
 	/* center image */
-	if(width > photo_width + 2 * border)
-		photo.style.left = side_margin - border + (width - photo_width) / 2 + "px";
+	if(size.w > photo_width + 2 * border)
+		photo.style.left = side_margin - border + (size.w - photo_width) / 2 + "px";
 	else
 		photo.style.left = side_margin + "px";
 	
-	if(height - 40 > photo_height + 2 * border)
-		photo.style.top = top_margin + (height - 40 - photo_height) / 2 - border + "px";
+	if(size.h - 40 > photo_height + 2 * border)
+		photo.style.top = top_margin + (size.h - 40 - photo_height) / 2 - border + "px";
 	else
 		photo.style.top = top_margin + "px";
+}
 
-	/* update image map */
-	coords = "0,0," + photo_width / 3 + "," + photo_height;
+function setControlsPosition(size) {
+	/* center photo navigation bar */
+	menu = document.getElementById("photo-menu");
+	menu.style.left = (size.w / 2 + side_margin - 160) + "px";
+}
+
+function resizeMapAreas(photo) {
+	width = photo.style.width.replace("px", "");
+	height = photo.style.height.replace("px", "");
+
+	coords = "0,0," + width / 3 + "," + height;
 	document.getElementById("prev-rect").coords = coords;
 
-	coords = photo_width * 2 / 3 + ",0," + photo_width + "," + photo_height;
+	coords = width * 2 / 3 + ",0," + width + "," + height;
 	document.getElementById("next-rect").coords = coords;
+}
+
+function onResize(event) {
+	size = getViewportSize();
+	photo = document.getElementById("mainphoto");
+
+	resizePhoto(photo, size);
+	resizeMapAreas(photo);
+	setControlsPosition(size);
 }
 
 function unhidePhoto() {
@@ -148,7 +167,7 @@ function showPhoto(url, path, width, height) {
 
 	origWidth = width;
 	origHeight = height;
-	onresize(0);
+	onResize(0);
 
 	img1.parentNode.removeChild(img1);
 
@@ -185,12 +204,12 @@ function onload() {
 	ret = initialiseStateFromURL();
 	if(ret)
 		return 0;
-	onresize();
+	onResize();
 	unhidePhoto();
 }
 
 //Event.observe(window, 'resize', function (e) { window.alert("qwe");});
-window.onresize = onresize;
+window.onresize = onResize;
 
 if (document.addEventListener) {
     document.addEventListener("DOMContentLoaded", onload, false);
