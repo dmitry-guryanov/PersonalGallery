@@ -1,3 +1,33 @@
+<%def name="hlProps(tag)"> \
+onmouseover="highlight('${tag}', true)" onmouseout="highlight('${tag}', false)" \
+</%def>
+
+
+<%def name="aProps(p)"> \
+<%
+if not p:
+	return
+purl = url(controller="album", action = "get_photo_ajax",
+				aid = c.album.id, pid=p.id);
+%> \
+onClick="showPhoto('${purl}', '${p.get_web_path()}', ${p.width}, ${p.height})" \
+</%def>
+
+
+<%def name="navButton(tag, p)">
+<div ${hlProps(tag)}>
+<%
+if p:
+	img_tags = ""
+else:
+	img_tags = 'style="display:none;"'
+%>	<a id="link-${tag}" ${aProps(p)}>
+		<img id="nav-${tag}" ${img_tags | n} src="/gallery-static/i/${tag}.png"/>
+	</a>
+</div>
+</%def>
+
+
 <%def name="photoNavBar(nav)">
 <div id="photo-header">
 	<div id="photo-counter">
@@ -5,21 +35,7 @@
 	</div>
 	<div id="photo-menu">
 	% for tag in ["first", "prev", "next", "last"]:
-		<div onmouseover="highlight('${tag}', true)" onmouseout="highlight('${tag}', false)">
-	% if getattr(nav, tag):
-	<%
-	p = getattr(nav, tag)
-	purl = url(controller="album", action = "get_photo_ajax", aid = c.album.id, pid=p.id);
-	%>
-			<a id="link-${tag}" onClick="showPhoto('${purl}', '${p.get_web_path()}', ${p.width}, ${p.height})">
-				<img id="nav-${tag}" src="/gallery-static/i/${tag}.png"/>
-			</a>
-	%else:
-			<a id="link-${tag}">
-			<img id="nav-${tag}" style="display:none;" id="nav-${tag}" src="/gallery-static/i/${tag}.png"/>
-			</a>
-	%endif
-		</div>
+		${navButton(tag, getattr(nav, tag))}
 	%endfor
 	</div>
 
@@ -33,32 +49,10 @@
 % endif
 
 <map id="prevnext" name="prevnext">
-<area onmouseover="highlight('prev', true)"
-	onmouseout="highlight('prev', false)"
-	coords="0,0,0,0"
-% if nav.prev:
-<%
-p = nav.prev
-purl = url(controller="album", action = "get_photo_ajax", aid = c.album.id, pid=p.id);
-%>
-	onclick="showPhoto('${purl}', '${p.get_web_path()}', ${p.width}, ${p.height})"
-% endif
-	id="prev-rect" shape="rect"/>
-
-<area onmouseover="highlight('next', true)"
-	onmouseout="highlight('next', false)"
-	coords="0,0,0,0"
-% if nav.next:
-<%
-p = nav.next
-purl = url(controller="album", action = "get_photo_ajax", aid = c.album.id, pid=p.id);
-%>
-	onclick="showPhoto('${purl}', '${p.get_web_path()}', ${p.width}, ${p.height})"
-% endif
-	id="next-rect" shape="rect"/>
+	<area ${hlProps("prev")} coords="0,0,0,0" ${aProps(nav.prev)} id="prev-rect" shape="rect"/>
+	<area ${hlProps("next")} coords="0,0,0,0" ${aProps(nav.next)} id="next-rect" shape="rect"/>
 </map>
 
 </div>
 </%def>
 
-<!--					href='${url.current(pid=getattr(nav, tag).id)}'> -->
