@@ -174,17 +174,6 @@ function showPhoto(url, path, width, height) {
 	loadXMLDoc(url, complete);
 }
 
-if (document.images) {
-	% if c.pnav.prev:
-	img1 = new Image();
-	img1.src = "${c.pnav.prev.get_web_path()}";
-	% endif
-	% if c.pnav.next:
-	img2 = new Image();
-	img2.src = "${c.pnav.next.get_web_path()}";
-	% endif
-}
-
 var origWidth;
 var origHeight;
 
