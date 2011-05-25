@@ -14,11 +14,11 @@ bottom_margin = 1;
 border = 50;
 
 function complete(s) {
-	parent = document.getElementById("photo-navbar");
+	navbar = document.getElementById("photo-navbar");
 	header = document.getElementById("photo-header");
-	parent.removeChild(header);
+	header.parentNode.removeChild(header);
 
-	parent.innerHTML = s;
+	navbar.innerHTML = s;
 
 	photo = document.getElementById("mainphoto");
 	photo.useMap = "#prevnext";
