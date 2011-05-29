@@ -15,11 +15,11 @@ def view(context, req):
 
 @view_config(context = LoginRoot, name = "login")
 def login(context, req):
-	if "cancel" in req.params:
-		return HTTPFound(location = root_url)
-
 	root_url = req.resource_url(get_root(req))
 	login_url = req.resource_url(context)
+
+	if "cancel" in req.params:
+		return HTTPFound(location = root_url)
 
 	form_username = str(req.params.get('username')).lower()
 	form_password = str(req.params.get('password'))
