@@ -37,6 +37,12 @@ def view(album, req):
 			pnav = None, photo = None, counts = counts)
 
 
+@view_config(context = Album, name = "ss", renderer = r("album-slideshow.mako"))
+def slideshow(album, req):
+	s = DBSession()
+	return dict(album = album, photos = album.photos)
+
+
 @view_config(context = Album, name = "allphotos",
 			renderer = r("album-allphotos.mako"))
 def allphotos(album, req):
