@@ -3,9 +3,9 @@
 <%def name="head()">
 </%def>
 <%def name="header()">
+<%include file="header.mako"/>
 </%def>
 
-<%include file="header.mako"/>
 
 
 <div class="prefs-page">
