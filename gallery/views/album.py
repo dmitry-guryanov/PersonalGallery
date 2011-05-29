@@ -255,7 +255,8 @@ def _get_counts(req, s, album, albums):
 	# get photo counts
 	photo_counts = s.execute("SELECT albums.id AS aid, COUNT(*) FROM albums JOIN "
 				"photos ON album_id = albums.id "
-				"WHERE albums.parent_id = %d GROUP BY photos.album_id;" % int(album.id)).fetchall()
+				"WHERE (photos.hidden = 0 or %d) AND "
+				"albums.parent_id = %d GROUP BY photos.album_id;" % (int(req.admin), int(album.id))).fetchall()
 	photo_counts = dict(photo_counts)
 
 	# get album counts

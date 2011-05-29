@@ -9,7 +9,7 @@ from gallery.lib.links import get_link
 
 @subscriber(NewRequest)
 def new_request(event):
-	event.request.admin = (authenticated_userid(event.request) == "dimak")
+	event.request.admin = (authenticated_userid(event.request) == "admin")
 	config.config = event.request.registry.settings
 
 @subscriber(BeforeRender)
