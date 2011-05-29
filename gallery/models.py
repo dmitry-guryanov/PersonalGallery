@@ -34,6 +34,11 @@ Base = declarative_base()
 #
 
 class IdObject(object):
+	__acl__ = [
+		(Allow, Everyone, 'view'),
+		(Allow, 'admin', ALL_PERMISSIONS),
+	]
+
 	def __init__(self, parent):
 		self.__parent__ = parent
 
@@ -66,6 +71,9 @@ class AlbumRoot(IdObject):
 class PhotoRoot(IdObject):
 	__name__ = "photo"
 
+class ArticleRoot(IdObject):
+	__name__ = "article"
+
 class LoginRoot(SimpleObject):
 	__name__ = "login"
 
@@ -77,6 +85,7 @@ class MyApp(object):
 	def __init__(self):
 		self.__children__["album"] = AlbumRoot(self)
 		self.__children__["photo"] = PhotoRoot(self)
+		self.__children__["article"] = ArticleRoot(self)
 		self.__children__["login"] = LoginRoot(self)
 
 		for key, val in self.__children__.items():
@@ -283,14 +292,37 @@ class Album(Base):
 		else:
 			return "/static/i/default-preview.jpg"
 
+class ArticleExtension(MapperExtension):
+	def after_insert(self, mapper, connection, instance):
+		instance.__name__ = str(instance.id)
+		instance.__parent__ = get_root()["article"]
+
+	def append_result(self, mapper, selectcontext, row,
+				instance, result, *args, **flags):
+		instance.__name__ = str(instance.id)
+		instance.__parent__ = get_root()["article"]
+		return EXT_CONTINUE
+
+
 class Article(Base):
 	__tablename__ = "articles"
+	__mapper_args__ = {"extension": ArticleExtension()}
+	__acl__ = [
+		(Allow, Everyone, 'view'),
+		(Allow, 'admin', ALL_PERMISSIONS),
+	]
 
 	id = Column(Integer, primary_key = True)
 	title = Column(Unicode(256))
-	created = Column(DateTime)
+	created = Column(DateTime, default = sa.func.now())
 	body = Column(UnicodeText)
 	hidden = Column(Boolean, default = False)
+
+	def get_body(self):
+		r = re.compile("(?:\r\n){2}")
+		pars = r.split(self.body)
+		s = "\n".join(map(lambda x: "<p>%s</p>" % x, pars))
+		return s
 
 def appmaker(engine, **settings):
 	DBSession.configure(bind = engine)
