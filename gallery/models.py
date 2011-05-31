@@ -236,11 +236,9 @@ class Album(Base):
 	]
 
 	id = Column(Integer, primary_key = True)
-	name = Column(Unicode(256))
 	display_name = Column(Unicode(256))
 	parent_id = Column(Integer, ForeignKey('albums.id'))
 	created = Column(DateTime, default = sa.func.now())
-	pos = Column(Integer)
 	preview_id = Column(Integer,
 		ForeignKey('photos.id', name = "qweqwe", use_alter = True))
 	descr = Column(Unicode(4096))

@@ -79,7 +79,6 @@ def commitedit(album, req):
 	else:
 		a = album
 
-	a.name = req.params.get("name")
 	a.display_name = req.params.get("title")
 	a.descr = req.params.get("description")
 	a.hidden = bool(req.params.get("hide_album", 0))

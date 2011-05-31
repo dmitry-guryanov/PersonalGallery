@@ -25,11 +25,6 @@ ${h.hidden('new_album', value = 1)}
 % endif
 
 <div>
-<h4>Name</h4>
-${h.text('name', value = album.name, size = 40)}<br/>
-</div>
-
-<div>
 <h4>Title</h4>
 ${h.text('title', value = album.display_name, size = 40)}<br/>
 </div>
